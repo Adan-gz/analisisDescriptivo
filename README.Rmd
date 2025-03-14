@@ -82,7 +82,7 @@ resultados_agrupados_automaticos <- generar_descriptivos_agrupados(
 
 # Formatear los descriptivos univariados para exportar a Excel
 hoja_excel <- generar_hoja_excel_descriptivos(resultados_agrupados_automaticos)
-
+print(hoja_excel)
 ```
 
 ## Uso Avanzado
