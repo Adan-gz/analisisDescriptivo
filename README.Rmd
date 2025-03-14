@@ -41,7 +41,7 @@ knitr::opts_chunk$set(
 
 Puedes instalar la versión de desarrollo de `analisisDescriptivo` desde GitHub con:
 
-```{r example eval: FALSE}
+```{r example, eval=FALSE}
 # install.packages("remotes")
 remotes::install_github("Adan-gz/analisisDescriptivo")
 
@@ -58,7 +58,8 @@ library(analisisDescriptivo)
 # Análisis descriptivo univariado (tanto numérico como categórico)
 resultados_univ <- generar_descriptivos_univariados(
   datos = mtcars,
-  var_peso = "wt"
+  var_peso = "wt", 
+  return_df = TRUE
 )
 print(resultados_univ)
 

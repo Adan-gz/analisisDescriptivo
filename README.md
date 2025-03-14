@@ -42,35 +42,6 @@ GitHub con:
 ``` r
 # install.packages("remotes")
 remotes::install_github("Adan-gz/analisisDescriptivo")
-#> Using GitHub PAT from the git credential store.
-#> Downloading GitHub repo Adan-gz/analisisDescriptivo@HEAD
-#> rlang  (1.1.4  -> 1.1.5 ) [CRAN]
-#> glue   (1.7.0  -> 1.8.0 ) [CRAN]
-#> cli    (3.6.3  -> 3.6.4 ) [CRAN]
-#> purrr  (1.0.2  -> 1.0.4 ) [CRAN]
-#> digest (0.6.36 -> 0.6.37) [CRAN]
-#> Installing 5 packages: rlang, glue, cli, purrr, digest
-#> Installing packages into 'C:/Users/34673/AppData/Local/Temp/RtmpAZ0hAF/temp_libpath310c26dc7e25'
-#> (as 'lib' is unspecified)
-#> package 'rlang' successfully unpacked and MD5 sums checked
-#> package 'glue' successfully unpacked and MD5 sums checked
-#> package 'cli' successfully unpacked and MD5 sums checked
-#> package 'purrr' successfully unpacked and MD5 sums checked
-#> package 'digest' successfully unpacked and MD5 sums checked
-#> 
-#> The downloaded binary packages are in
-#>  C:\Users\34673\AppData\Local\Temp\RtmpW4uaBF\downloaded_packages
-#> ── R CMD build ─────────────────────────────────────────────────────────────────
-#>          checking for file 'C:\Users\34673\AppData\Local\Temp\RtmpW4uaBF\remotes3d2064435032\Adan-gz-analisisDescriptivo-cbc14c0/DESCRIPTION' ...  ✔  checking for file 'C:\Users\34673\AppData\Local\Temp\RtmpW4uaBF\remotes3d2064435032\Adan-gz-analisisDescriptivo-cbc14c0/DESCRIPTION'
-#>       ─  preparing 'analisisDescriptivo':
-#>    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   ✔  checking DESCRIPTION meta-information
-#>       ─  checking for LF line-endings in source and make files and shell scripts
-#>   ─  checking for empty or unneeded directories
-#>       ─  building 'analisisDescriptivo_0.0.0.9000.tar.gz'
-#>      
-#> 
-#> Installing package into 'C:/Users/34673/AppData/Local/Temp/RtmpAZ0hAF/temp_libpath310c26dc7e25'
-#> (as 'lib' is unspecified)
 ```
 
 ## Uso Rápido
@@ -85,77 +56,48 @@ library(analisisDescriptivo)
 # Análisis descriptivo univariado (tanto numérico como categórico)
 resultados_univ <- generar_descriptivos_univariados(
   datos = mtcars,
-  var_peso = "wt"
+  var_peso = "wt", 
+  return_df = TRUE
 )
 #> Descriptivos univariados numéricos generados
 print(resultados_univ)
 #> $Numericas
-#> $Numericas$mpg
-#>   Variable  N     N_w    N_eff Missing    Media  Media_w Media_w_Min_95
-#> 1      mpg 32 102.952 29.36848       0 20.09062 18.54993       16.48476
-#>   Media_w_Max_95  Min    Q25 Mediana  Q75  Max       sd     sd_w     hist
-#> 1       20.61511 10.4 15.425    19.2 22.8 33.9 6.026948 5.466831 ▃▇▇▇▃▂▂▂
-#> 
-#> $Numericas$cyl
-#>   Variable  N     N_w    N_eff Missing  Media  Media_w Media_w_Min_95
-#> 1      cyl 32 102.952 29.36848       0 6.1875 6.599231       5.964794
-#>   Media_w_Max_95 Min Q25 Mediana Q75 Max       sd     sd_w     hist
-#> 1       7.233667   4   4       6   8   8 1.785922 1.679448 ▆▁▁▃▁▁▁▇
-#> 
-#> $Numericas$disp
-#>   Variable  N     N_w    N_eff Missing    Media  Media_w Media_w_Min_95
-#> 1     disp 32 102.952 29.36848       0 230.7219 263.1468       215.9698
-#>   Media_w_Max_95  Min     Q25 Mediana Q75 Max       sd     sd_w     hist
-#> 1       310.3238 71.1 120.825   196.3 326 472 123.9387 124.8846 ▇▆▁▂▅▃▁▂
-#> 
-#> $Numericas$hp
-#>   Variable  N     N_w    N_eff Missing    Media  Media_w Media_w_Min_95
-#> 1       hp 32 102.952 29.36848       0 146.6875 159.9944        134.717
-#>   Media_w_Max_95 Min  Q25 Mediana Q75 Max       sd     sd_w     hist
-#> 1       185.2718  52 96.5     123 180 335 68.56287 66.91301 ▃▇▃▅▂▃▁▁
-#> 
-#> $Numericas$drat
-#>   Variable  N     N_w    N_eff Missing    Media  Media_w Media_w_Min_95
-#> 1     drat 32 102.952 29.36848       0 3.596563 3.484332       3.295567
-#>   Media_w_Max_95  Min  Q25 Mediana  Q75  Max        sd      sd_w     hist
-#> 1       3.673097 2.76 3.08   3.695 3.92 4.93 0.5346787 0.4996883 ▃▇▁▅▇▂▁▁
-#> 
-#> $Numericas$wt
-#>   Variable  N     N_w    N_eff Missing   Media  Media_w Media_w_Min_95
-#> 1       wt 32 102.952 29.36848       0 3.21725 3.505528       3.132122
-#>   Media_w_Max_95   Min     Q25 Mediana  Q75   Max        sd      sd_w     hist
-#> 1       3.878933 1.513 2.58125   3.325 3.61 5.424 0.9784574 0.9884601 ▃▃▃▇▆▁▁▂
-#> 
-#> $Numericas$qsec
-#>   Variable  N     N_w    N_eff Missing    Media  Media_w Media_w_Min_95
-#> 1     qsec 32 102.952 29.36848       0 17.84875 17.75677       17.10277
-#>   Media_w_Max_95  Min     Q25 Mediana  Q75  Max       sd     sd_w     hist
-#> 1       18.41076 14.5 16.8925   17.71 18.9 22.9 1.786943 1.731218 ▃▂▇▆▃▃▁▁
-#> 
-#> $Numericas$vs
-#>   Variable  N     N_w    N_eff Missing  Media   Media_w Media_w_Min_95
-#> 1       vs 32 102.952 29.36848       0 0.4375 0.3550975      0.1734364
-#>   Media_w_Max_95 Min Q25 Mediana Q75 Max        sd     sd_w     hist
-#> 1      0.5367586   0   0       0   1   1 0.5040161 0.480884 ▇▁▁▁▁▁▁▆
-#> 
-#> $Numericas$am
-#>   Variable  N     N_w    N_eff Missing   Media   Media_w Media_w_Min_95
-#> 1       am 32 102.952 29.36848       0 0.40625 0.3044428       0.129756
-#>   Media_w_Max_95 Min Q25 Mediana Q75 Max        sd      sd_w     hist
-#> 1      0.4791297   0   0       0   1   1 0.4989909 0.4624224 ▇▁▁▁▁▁▁▆
-#> 
-#> $Numericas$gear
-#>   Variable  N     N_w    N_eff Missing  Media  Media_w Media_w_Min_95
-#> 1     gear 32 102.952 29.36848       0 3.6875 3.560708       3.291738
-#>   Media_w_Max_95 Min Q25 Mediana Q75 Max        sd      sd_w     hist
-#> 1       3.829678   3   3       4   4   5 0.7378041 0.7120043 ▇▁▁▆▁▁▁▂
-#> 
-#> $Numericas$carb
-#>   Variable  N     N_w    N_eff Missing  Media  Media_w Media_w_Min_95
-#> 1     carb 32 102.952 29.36848       0 2.8125 3.015988       2.422692
-#>   Media_w_Max_95 Min Q25 Mediana Q75 Max     sd     sd_w     hist
-#> 1       3.609284   1   2       2   4   8 1.6152 1.570544 ▆▇▂▇▁▁▁▁
-#> 
+#>    Variable  N     N_w    N_eff Missing      Media     Media_w Media_w_Min_95
+#> 1       mpg 32 102.952 29.36848       0  20.090625  18.5499339     16.4847576
+#> 2       cyl 32 102.952 29.36848       0   6.187500   6.5992307      5.9647943
+#> 3      disp 32 102.952 29.36848       0 230.721875 263.1467946    215.9697711
+#> 4        hp 32 102.952 29.36848       0 146.687500 159.9944052    134.7170244
+#> 5      drat 32 102.952 29.36848       0   3.596563   3.4843321      3.2955675
+#> 6        wt 32 102.952 29.36848       0   3.217250   3.5055275      3.1321221
+#> 7      qsec 32 102.952 29.36848       0  17.848750  17.7567661     17.1027728
+#> 8        vs 32 102.952 29.36848       0   0.437500   0.3550975      0.1734364
+#> 9        am 32 102.952 29.36848       0   0.406250   0.3044428      0.1297560
+#> 10     gear 32 102.952 29.36848       0   3.687500   3.5607079      3.2917377
+#> 11     carb 32 102.952 29.36848       0   2.812500   3.0159880      2.4226917
+#>    Media_w_Max_95    Min       Q25 Mediana    Q75     Max          sd
+#> 1      20.6151103 10.400  15.42500  19.200  22.80  33.900   6.0269481
+#> 2       7.2336671  4.000   4.00000   6.000   8.00   8.000   1.7859216
+#> 3     310.3238181 71.100 120.82500 196.300 326.00 472.000 123.9386938
+#> 4     185.2717859 52.000  96.50000 123.000 180.00 335.000  68.5628685
+#> 5       3.6730968  2.760   3.08000   3.695   3.92   4.930   0.5346787
+#> 6       3.8789330  1.513   2.58125   3.325   3.61   5.424   0.9784574
+#> 7      18.4107593 14.500  16.89250  17.710  18.90  22.900   1.7869432
+#> 8       0.5367586  0.000   0.00000   0.000   1.00   1.000   0.5040161
+#> 9       0.4791297  0.000   0.00000   0.000   1.00   1.000   0.4989909
+#> 10      3.8296781  3.000   3.00000   4.000   4.00   5.000   0.7378041
+#> 11      3.6092843  1.000   2.00000   2.000   4.00   8.000   1.6152000
+#>           sd_w     hist
+#> 1    5.4668309 ▃▇▇▇▃▂▂▂
+#> 2    1.6794480 ▆▁▁▃▁▁▁▇
+#> 3  124.8846405 ▇▆▁▂▅▃▁▂
+#> 4   66.9130092 ▃▇▃▅▂▃▁▁
+#> 5    0.4996883 ▃▇▁▅▇▂▁▁
+#> 6    0.9884601 ▃▃▃▇▆▁▁▂
+#> 7    1.7312180 ▃▂▇▆▃▃▁▁
+#> 8    0.4808840 ▇▁▁▁▁▁▁▆
+#> 9    0.4624224 ▇▁▁▁▁▁▁▆
+#> 10   0.7120043 ▇▁▁▆▁▁▁▂
+#> 11   1.5705441 ▆▇▂▇▁▁▁▁
 #> 
 #> $Categoricas
 #> NULL
