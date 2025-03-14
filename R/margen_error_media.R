@@ -15,7 +15,7 @@
 #' margenError_num(c(30, 40), c(2, 3), conf_level = 0.95)
 #'
 #' @export
-margenError_num <- function(N, sd, conf_level = 0.95) {
+margen_error_media <- function(N, sd, conf_level = 0.95) {
   # Verificar que N y sd tengan la misma longitud
   if (length(N) != length(sd)) {
     stop("Los vectores 'N' y 'sd' deben tener la misma longitud.")

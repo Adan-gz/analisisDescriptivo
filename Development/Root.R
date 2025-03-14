@@ -34,11 +34,12 @@ use_build_ignore("Development") # para ignorar la carpeta
 
 # R Packages --------------------------------------------------------------
 
-c('dplyr','stringr','tidyr','purrr','scales')
+c('dplyr','stringr','tidyr','purrr','scales','skimr')
 
 # Archivos R funciones ----------------------------------------------------
 
-funciones <- paste0(
+#auxiliares
+funciones_auxiliares <- paste0(
   c(
     'add_titleNote',
     'percent',
@@ -50,6 +51,28 @@ funciones <- paste0(
   ),
   '.R'
 )
-for ( f in funciones) {
+
+funciones_excel <- paste0(
+  c('preparar_tabla_excel',
+    'concatenar_tablas_excel'),
+  '.R'
+)
+
+funciones_categoricas <- c(
+  'generar_descriptivo_categorico.R',
+  'generar_descriptivos_categoricos.R'
+)
+
+funciones_num <- c(
+  'generar_descriptivo_numerico.R',
+  'generar_descriptivo_numericos.R'
+)
+
+funciones_globales <- c('generar_descriptivos_agrupados.R',
+                        'generar_descriptivos_univariados.R'
+                        )
+
+for ( f in funciones_globales) {
   use_r( f )
 }
+use_r('generar_hojaExcel_descriptivos.R')

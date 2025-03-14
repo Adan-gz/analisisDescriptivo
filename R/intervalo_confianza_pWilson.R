@@ -16,7 +16,7 @@
 #' ci_margenError_pWilson(c(0.1, 0.5), c(100, 200), conf_level = 0.95, which = "superior")
 #'
 #' @export
-ci_margenError_pWilson <- function(p, N, conf_level = 0.95, limite = c('inferior', 'superior')) {
+intervalo_confianza_pWilson <- function(p, N, conf_level = 0.95, limite = c('inferior', 'superior')) {
   # Se utiliza sólo el primer valor de 'which' en caso de que se hayan pasado ambos
   which <- match.arg(which)
 
