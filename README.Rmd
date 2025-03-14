@@ -80,9 +80,8 @@ resultados_agrupados_automaticos <- generar_descriptivos_agrupados(
   vars_grupo = 'cyl'
   )
 
-# Formatear los descriptivos univariados para exportar a Excel
+# Formatear los descriptivos univariados para exportar a Excel en 1 única hoja
 hoja_excel <- generar_hoja_excel_descriptivos(resultados_agrupados_automaticos)
-print(hoja_excel)
 ```
 
 ## Uso Avanzado
