@@ -30,3 +30,26 @@ use_build_ignore("Development") # para ignorar la carpeta
 # https://happygitwithr.com/new-github-first.html
 
 # https://github.com/Adan-gz/analisisDescriptivo.git #HTTPS SSH Github
+
+
+# R Packages --------------------------------------------------------------
+
+c('dplyr','stringr','tidyr','purrr','scales')
+
+# Archivos R funciones ----------------------------------------------------
+
+funciones <- paste0(
+  c(
+    'add_titleNote',
+    'percent',
+    'number',
+    'convert_p_num',
+    'sd_pond',
+    'ci_margenError_pWilson',
+    'margenError_num'
+  ),
+  '.R'
+)
+for ( f in funciones) {
+  use_r( f )
+}
