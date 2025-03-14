@@ -68,7 +68,7 @@ generar_descriptivo_numerico <- function(
     nivel_confianza = 0.95
 ) {
   # Asegurarse de que la variable es de tipo numeric
-  if (class(datos[[var_numerica]]) != "numeric") {
+  if (is.numeric(datos[[var_numerica]]) != "numeric") {
     datos[[var_numerica]] <- as.numeric(datos[[var_numerica]])
   }
 
@@ -118,7 +118,7 @@ generar_descriptivo_numerico <- function(
         N_w = sum(!!w_sym, na.rm = TRUE),                   # Tamaño de muestra ponderado
         N_eff = (sum(!!w_sym, na.rm = TRUE)^2) / sum((!!w_sym)^2, na.rm = TRUE), # Tamaño muestral efectivo
         Media_w = weighted.mean(!!var_sym, w = !!w_sym, na.rm = TRUE),
-        sd_w = sqrt(Hmisc::wtd.var(!!var_sym, weights = !!w_sym, na.rm = TRUE))
+        sd_w = desviacion_estandar_ponderada(!!var_sym, pesos = !!w_sym)
       )
     # Unir la información de estadísticas sin y con ponderación
     if (is.grouped_df(datos)) {

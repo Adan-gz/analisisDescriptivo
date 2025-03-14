@@ -3,7 +3,7 @@
 #' Esta función agrega una columna denominada "Titulo" al inicio del objeto \code{t}
 #' si se especifica un título, y añade una fila con la nota al final si se proporciona una.
 #'
-#' @param t Data frame o tibble sobre el que se añadirá el título y/o la nota.
+#' @param tabla Data frame o tibble sobre el que se añadirá el título y/o la nota.
 #' @param titulo Cadena de texto que representa el título. Por defecto, cadena vacía.
 #' @param nota Cadena de texto que representa la nota. Por defecto, cadena vacía.
 #'
@@ -19,7 +19,7 @@
 #'   library(dplyr)
 #'   library(tibble)
 #'   t <- tibble(x = 1:5, y = 6:10)
-#'   t_mod <- agregar_titulo_nota(t, titulo = "Datos", nota = "Fuente: encuesta")
+#'   t_mod <- agregar_titulo_nota(tabla = t, titulo = "Datos", nota = "Fuente: encuesta")
 #' }
 #'
 #' @export

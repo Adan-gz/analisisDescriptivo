@@ -9,10 +9,10 @@
 #' @return Vector de caracteres con los números formateados.
 #'
 #' @examples
-#' number(c(1234.56, 7890.12))
+#' formatear_numero(c(1234.56, 7890.12))
 #'
 #' @export
-number <- function(x, accuracy = .1, ...) {
+formatear_numero <- function(x, accuracy = .1, ...) {
   # Convertir número usando separador de miles y decimal definidos
   scales::number(x = x, accuracy = accuracy, big.mark = '.', decimal.mark = ',', ...)
 }

@@ -31,6 +31,6 @@ Se utiliza la función \code{qnorm} para obtener el valor crítico de la distrib
 se calcula el intervalo de confianza siguiendo la fórmula de Wilson.
 }
 \examples{
-ci_margenError_pWilson(c(0.1, 0.5), c(100, 200), conf_level = 0.95, which = "superior")
+intervalo_confianza_pWilson(c(0.1, 0.5), c(100, 200), conf_level = 0.95, which = "superior")
 
 }

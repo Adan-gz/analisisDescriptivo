@@ -14,7 +14,7 @@
 #' sd_pond(c(1,2,3,4,5), c(1,1,1,1,1))
 #'
 #' @export
-sd_pond <- function(x, pesos) {
+desviacion_estandar_ponderada <- function(x, pesos) {
   # Verificar que x y pesos tengan la misma longitud
   if (length(x) != length(pesos)) {
     stop("Los vectores 'x' y 'pesos' deben tener la misma longitud.")

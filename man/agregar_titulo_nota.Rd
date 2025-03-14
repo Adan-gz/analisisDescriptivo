@@ -7,11 +7,11 @@
 agregar_titulo_nota(tabla, titulo = "", nota = "")
 }
 \arguments{
+\item{tabla}{Data frame o tibble sobre el que se añadirá el título y/o la nota.}
+
 \item{titulo}{Cadena de texto que representa el título. Por defecto, cadena vacía.}
 
 \item{nota}{Cadena de texto que representa la nota. Por defecto, cadena vacía.}
-
-\item{t}{Data frame o tibble sobre el que se añadirá el título y/o la nota.}
 }
 \value{
 Data frame o tibble modificado que contiene la columna y/o fila con título y nota.
@@ -31,7 +31,7 @@ resultante para conservar estos valores.
   library(dplyr)
   library(tibble)
   t <- tibble(x = 1:5, y = 6:10)
-  t_mod <- agregar_titulo_nota(t, titulo = "Datos", nota = "Fuente: encuesta")
+  t_mod <- agregar_titulo_nota(tabla = t, titulo = "Datos", nota = "Fuente: encuesta")
 }
 
 }

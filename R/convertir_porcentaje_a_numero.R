@@ -7,10 +7,10 @@
 #' @return Vector numérico.
 #'
 #' @examples
-#' convert_p_num(c("12,5%", "100,0%"))
+#' convertir_porcentaje_a_numero(c("12,5%", "100,0%"))
 #'
 #' @export
-convert_p_num <- function(x) {
+convertir_porcentaje_a_numero <- function(x) {
   # Eliminar el símbolo de porcentaje
   out <- gsub('%', '', x)
   # Reemplazar la coma por punto para adecuar el formato decimal

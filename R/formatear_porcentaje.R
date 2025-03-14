@@ -9,10 +9,10 @@
 #' @return Vector de caracteres con los porcentajes formateados.
 #'
 #' @examples
-#' percent(c(0.1, 0.5, 0.99), 0.01)
+#' formatear_porcentaje(c(0.1, 0.5, 0.99), 0.01)
 #'
 #' @export
-percent <- function(x, accuracy = 1, ...) {
+formatear_porcentaje <- function(x, accuracy = 1, ...) {
   # Convertir a porcentaje usando separador de miles y decimal definidos
   scales::percent(x = x, accuracy = accuracy, big.mark = '.', decimal.mark = ',', ...)
 }
