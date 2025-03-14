@@ -11,6 +11,8 @@
 #' @examples
 #' formatear_numero(c(1234.56, 7890.12))
 #'
+#' @importFrom scales number
+#'
 #' @export
 formatear_numero <- function(x, accuracy = .1, ...) {
   # Convertir número usando separador de miles y decimal definidos

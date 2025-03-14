@@ -1,6 +1,6 @@
 #' Agregar título y nota a un data frame o tibble
 #'
-#' Esta función agrega una columna denominada "Titulo" al inicio del objeto \code{t}
+#' Esta función agrega una columna denominada "Titulo" al inicio del objeto \code{tabla}
 #' si se especifica un título, y añade una fila con la nota al final si se proporciona una.
 #'
 #' @param tabla Data frame o tibble sobre el que se añadirá el título y/o la nota.
@@ -9,7 +9,7 @@
 #'
 #' @return Data frame o tibble modificado que contiene la columna y/o fila con título y nota.
 #'
-#' @details La función desagrupa el objeto \code{t} para evitar problemas de agrupación. Si se
+#' @details La función desagrupa el objeto \code{tabla} para evitar problemas de agrupación. Si se
 #' provee un título, se crea una nueva columna llamada "Titulo" que se inserta al inicio del data frame;
 #' si se provee una nota, se agrega como una fila adicional al final. Se asignan atributos al objeto
 #' resultante para conservar estos valores.
@@ -21,6 +21,10 @@
 #'   t <- tibble(x = 1:5, y = 6:10)
 #'   t_mod <- agregar_titulo_nota(tabla = t, titulo = "Datos", nota = "Fuente: encuesta")
 #' }
+#'
+#' @importFrom dplyr ungroup mutate bind_rows
+#' @importFrom tibble tibble
+#' @importFrom magrittr %>%
 #'
 #' @export
 agregar_titulo_nota <- function(tabla, titulo = '', nota = '') {

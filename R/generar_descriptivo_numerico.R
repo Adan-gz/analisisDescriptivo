@@ -58,6 +58,11 @@
 #'                         )
 #' }
 #'
+#' @importFrom dplyr group_by summarise mutate left_join bind_cols filter relocate ends_with `%>%`
+#' @importFrom skimr n_complete n_missing inline_hist
+#' @importFrom rlang sym syms
+#' @importFrom stringr str_split_i
+#'
 #' @export
 generar_descriptivo_numerico <- function(
     datos,
@@ -106,8 +111,8 @@ generar_descriptivo_numerico <- function(
   if (is.null(var_peso)) {
     salida <- salida %>%
       mutate(
-        Media_Min = Media - margen_error_media(N = N, sd = sd, conf_level = nivel_confianza),
-        Media_Max = Media + margen_error_media(N = N, sd = sd, conf_level = nivel_confianza),
+        Media_Min = Media - margen_error_media(N = N, sd = sd, nivel_confianza = nivel_confianza),
+        Media_Max = Media + margen_error_media(N = N, sd = sd, nivel_confianza = nivel_confianza),
         .after = Media
       )
   } else {
@@ -130,8 +135,8 @@ generar_descriptivo_numerico <- function(
     # Calcular intervalos de confianza para la media ponderada
     salida <- salida %>%
       mutate(
-        Media_w_Min = Media_w - margen_error_media(N = N_eff, sd = sd_w, conf_level = nivel_confianza),
-        Media_w_Max = Media_w + margen_error_media(N = N_eff, sd = sd_w, conf_level = nivel_confianza)
+        Media_w_Min = Media_w - margen_error_media(N = N_eff, sd = sd_w, nivel_confianza = nivel_confianza),
+        Media_w_Max = Media_w + margen_error_media(N = N_eff, sd = sd_w, nivel_confianza = nivel_confianza)
       ) %>%
       relocate(N_w, N_eff, .after = N) %>%
       relocate(Media_w, Media_w_Min, Media_w_Max, .after = Media) %>%

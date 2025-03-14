@@ -44,6 +44,10 @@
 #'                 )
 #' }
 #'
+#' @importFrom dplyr select_if
+#' @importFrom magrittr %>%
+#' @importFrom purrr map set_names
+#'
 #' @export
 generar_descriptivos_categoricos <- function(
     datos,

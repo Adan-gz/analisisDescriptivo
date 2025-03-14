@@ -51,6 +51,11 @@
 #'                 )
 #' }
 #'
+#' @importFrom dplyr mutate across where ends_with contains
+#' @importFrom magrittr %>%
+#' @importFrom purrr map map_df
+#' @importFrom tibble tibble
+#'
 #' @export
 generar_hoja_excel_descriptivos <- function(
     tablas_descriptivos,

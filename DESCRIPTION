@@ -12,8 +12,11 @@ URL: https://github.com/Adan-gz/analisisDescriptivo
 BugReports: https://github.com/Adan-gz/analisisDescriptivo/issues
 Imports: 
     dplyr,
+    magrittr,
     purrr,
+    rlang,
     scales,
     skimr,
     stringr,
+    tibble,
     tidyr

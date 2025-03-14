@@ -42,6 +42,10 @@
 #'                 )
 #' }
 #'
+#' @importFrom dplyr select_if bind_rows
+#' @importFrom purrr map set_names
+#' @importFrom magrittr %>%
+#'
 #' @export
 generar_descriptivos_numericos <- function(
     datos,

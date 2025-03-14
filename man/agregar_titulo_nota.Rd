@@ -17,11 +17,11 @@ agregar_titulo_nota(tabla, titulo = "", nota = "")
 Data frame o tibble modificado que contiene la columna y/o fila con título y nota.
 }
 \description{
-Esta función agrega una columna denominada "Titulo" al inicio del objeto \code{t}
+Esta función agrega una columna denominada "Titulo" al inicio del objeto \code{tabla}
 si se especifica un título, y añade una fila con la nota al final si se proporciona una.
 }
 \details{
-La función desagrupa el objeto \code{t} para evitar problemas de agrupación. Si se
+La función desagrupa el objeto \code{tabla} para evitar problemas de agrupación. Si se
 provee un título, se crea una nueva columna llamada "Titulo" que se inserta al inicio del data frame;
 si se provee una nota, se agrega como una fila adicional al final. Se asignan atributos al objeto
 resultante para conservar estos valores.

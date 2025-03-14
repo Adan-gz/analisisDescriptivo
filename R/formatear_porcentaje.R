@@ -11,6 +11,7 @@
 #' @examples
 #' formatear_porcentaje(c(0.1, 0.5, 0.99), 0.01)
 #'
+#' @importFrom scales percent
 #' @export
 formatear_porcentaje <- function(x, accuracy = 1, ...) {
   # Convertir a porcentaje usando separador de miles y decimal definidos

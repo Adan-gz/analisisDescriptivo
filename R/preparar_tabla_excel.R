@@ -30,6 +30,11 @@
 #'   tabla_formateada <- preparar_tabla_excel(datos, ajustar_proporciones = "a", precision = 1)
 #' }
 #'
+#' @importFrom dplyr mutate across all_of everything bind_rows
+#' @importFrom magrittr %>%
+#' @importFrom tibble as_tibble
+#' @importFrom scales percent
+#'
 #' @export
 preparar_tabla_excel <- function(datos,
                                  ajustar_proporciones = NULL,

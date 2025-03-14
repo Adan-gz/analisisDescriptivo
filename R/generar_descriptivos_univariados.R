@@ -43,6 +43,10 @@
 #'                 )
 #' }
 #'
+#' @importFrom dplyr select_if
+#' @importFrom purrr map set_names
+#' @importFrom magrittr %>%
+#'
 #' @export
 generar_descriptivos_univariados <- function(
     datos,

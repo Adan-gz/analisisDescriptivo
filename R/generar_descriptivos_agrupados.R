@@ -45,6 +45,9 @@
 #'                 )
 #' }
 #'
+#' @importFrom dplyr select_if
+#' @importFrom magrittr %>%
+#'
 #' @export
 generar_descriptivos_agrupados <- function(
     datos,

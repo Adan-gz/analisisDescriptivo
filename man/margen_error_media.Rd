@@ -4,14 +4,14 @@
 \alias{margen_error_media}
 \title{Calcular el margen de error del intervalo de confianza de la media utilizando la distribución t de Student}
 \usage{
-margen_error_media(N, sd, conf_level = 0.95)
+margen_error_media(N, sd, nivel_confianza = 0.95)
 }
 \arguments{
 \item{N}{Vector con el tamaño de muestra.}
 
 \item{sd}{Vector con la desviación estándar.}
 
-\item{conf_level}{Nivel de confianza. Por defecto es \code{0.95}.}
+\item{nivel_confianza}{Nivel de confianza. Por defecto es \code{0.95}.}
 }
 \value{
 Vector numérico con el margen de error correspondiente para cada par de \code{N} y \code{sd}.
@@ -21,9 +21,9 @@ Calcula el margen de error para datos numéricos dado el tamaño de la muestra y
 }
 \details{
 Se utiliza la función \code{qt} para obtener el quantil t para \code{N-1} grados de libertad,
-y se calcula el margen de error como: \eqn{qt(1 - ((1 - conf_level) / 2), N-1) * sd/sqrt(N)}.
+y se calcula el margen de error como: \eqn{qt(1 - ((1 - nivel_confianza) / 2), N-1) * sd/sqrt(N)}.
 }
 \examples{
-margenError_num(c(30, 40), c(2, 3), conf_level = 0.95)
+margen_error_media(c(30, 40), c(2, 3), nivel_confianza = 0.95)
 
 }

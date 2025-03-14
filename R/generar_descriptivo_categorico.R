@@ -68,6 +68,11 @@
 #'                  )
 #' }
 #'
+#' @importFrom dplyr is.grouped_df group_vars group_by count mutate left_join filter if_else arrange desc ungroup select relocate all_of any_of rename_with `%>%`
+#' @importFrom tidyr pivot_wider
+#' @importFrom stringr str_split_i
+#' @importFrom rlang sym syms
+#'
 #' @export
 generar_descriptivo_categorico <- function(
     datos,
@@ -136,8 +141,8 @@ generar_descriptivo_categorico <- function(
   salida <- salida %>% mutate(
     N = sum(n),
     sd = sqrt(p * (1 - p) / N),
-    p_Min = intervalo_confianza_pWilson(p = p, N = N, conf_level = nivel_confianza, limite = "inferior"),
-    p_Max = intervalo_confianza_pWilson(p = p, N = N, conf_level = nivel_confianza, limite = "superior"),
+    p_Min = intervalo_confianza_pWilson(p = p, N = N, nivel_confianza = nivel_confianza, limite = "inferior"),
+    p_Max = intervalo_confianza_pWilson(p = p, N = N, nivel_confianza = nivel_confianza, limite = "superior"),
     .after = p
   ) %>%
     select(-N) %>%

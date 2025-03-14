@@ -43,5 +43,4 @@ para separar visualmente cada tabla. Finalmente, concatena todas las tablas en u
   tabla2 <- tibble(a = 7:9, b = 10:12)
   resultado <- concatenar_tablas_excel(list(tabla1, tabla2), n_filas_vacias = 2, ajustar = TRUE)
 }
-
 }

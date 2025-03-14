@@ -23,6 +23,8 @@
 #'   tabla2 <- tibble(a = 7:9, b = 10:12)
 #'   resultado <- concatenar_tablas_excel(list(tabla1, tabla2), n_filas_vacias = 2, ajustar = TRUE)
 #' }
+#' @importFrom dplyr bind_rows
+#' @importFrom tibble as_tibble
 #'
 #' @export
 concatenar_tablas_excel <- function(lista_tablas,

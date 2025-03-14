@@ -7,7 +7,7 @@
 intervalo_confianza_pWilson(
   p,
   N,
-  conf_level = 0.95,
+  nivel_confianza = 0.95,
   limite = c("inferior", "superior")
 )
 }
@@ -16,7 +16,7 @@ intervalo_confianza_pWilson(
 
 \item{N}{Vector con el tamaño de muestra correspondiente a cada proporción.}
 
-\item{conf_level}{Nivel de confianza. Por defecto es \code{0.95}.}
+\item{nivel_confianza}{Nivel de confianza. Por defecto es \code{0.95}.}
 
 \item{limite}{Cadena que indica si se desea el límite inferior (\code{"inferior"}) o superior (\code{"superior"}) del intervalo.}
 }
@@ -31,6 +31,6 @@ Se utiliza la función \code{qnorm} para obtener el valor crítico de la distrib
 se calcula el intervalo de confianza siguiendo la fórmula de Wilson.
 }
 \examples{
-intervalo_confianza_pWilson(c(0.1, 0.5), c(100, 200), conf_level = 0.95, which = "superior")
+intervalo_confianza_pWilson(c(0.1, 0.5), c(100, 200), nivel_confianza = 0.95, limite = "superior")
 
 }
