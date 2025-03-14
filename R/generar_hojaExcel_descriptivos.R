@@ -169,5 +169,5 @@ generar_hoja_excel_descriptivos <- function(
   out <- append(univ_num, univ_cat)
 
   # Concatenar todas las tablas en un único data frame listo para Excel
-  concatenar_tibbles(out)
+  concatenar_tablas_excel(out)
 }

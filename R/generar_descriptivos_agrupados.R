@@ -76,13 +76,13 @@ generar_descriptivos_agrupados <- function(
   if (length(vars_categoricas) > 0) {
     descriptivos_cat <- generar_descriptivos_categoricos(
       datos = datos,
-      vars_fac = vars_categoricas,
+      vars_categoricas = vars_categoricas,
       vars_grupo = vars_grupo,
       var_peso = var_peso,
       pivot = pivot,
-      pivot_var = variable_pivot,
-      conf_level = nivel_confianza,
-      estrategia_missings = estrategia_valoresPerdidos
+      variable_pivot = variable_pivot,
+      nivel_confianza = nivel_confianza,
+      estrategia_valoresPerdidos = estrategia_valoresPerdidos
     )
     message("Descriptivos agrupados categóricos generados")
   }
@@ -91,11 +91,11 @@ generar_descriptivos_agrupados <- function(
   if (length(vars_numericas) > 0) {
     descriptivos_num <- generar_descriptivos_numericos(
       datos = datos,
-      vars_num = vars_numericas,
+      vars_numericas = vars_numericas,
       vars_grupo = vars_grupo,
       var_peso = var_peso,
       digits = digits,
-      conf_level = nivel_confianza,
+      nivel_confianza = nivel_confianza,
       return_df = return_df
     )
     message("Descriptivos agrupados numéricos generados")

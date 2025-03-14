@@ -73,11 +73,11 @@ generar_descriptivos_univariados <- function(
   if (length(vars_categoricas) > 0) {
     descriptivos_cat <- generar_descriptivos_categoricos(
       datos = datos,
-      vars_fac = vars_categoricas,
+      vars_categoricas = vars_categoricas,
       var_peso = var_peso,
       pivot = pivot,
-      pivot_var = variable_pivot,
-      conf_level = nivel_confianza,
+      variable_pivot = variable_pivot,
+      nivel_confianza = nivel_confianza,
       estrategia_valoresPerdidos = estrategia_valoresPerdidos
     )
     message("Descriptivos univariados categóricos generados")
@@ -87,10 +87,10 @@ generar_descriptivos_univariados <- function(
   if (length(vars_numericas) > 0) {
     descriptivos_num <- generar_descriptivos_numericos(
       datos = datos,
-      vars_num = vars_numericas,
+      vars_numericas = vars_numericas,
       var_peso = var_peso,
       digits = digits,
-      conf_level = nivel_confianza,
+      nivel_confianza = nivel_confianza,
       return_df = return_df
     )
     message("Descriptivos univariados numéricos generados")

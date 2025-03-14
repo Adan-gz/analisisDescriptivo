@@ -130,8 +130,8 @@ generar_descriptivo_numerico <- function(
     # Calcular intervalos de confianza para la media ponderada
     salida <- salida %>%
       mutate(
-        Media_w_Min = Media_w - margenError_num(N = N_eff, sd = sd_w, conf_level = nivel_confianza),
-        Media_w_Max = Media_w + margenError_num(N = N_eff, sd = sd_w, conf_level = nivel_confianza)
+        Media_w_Min = Media_w - margen_error_media(N = N_eff, sd = sd_w, conf_level = nivel_confianza),
+        Media_w_Max = Media_w + margen_error_media(N = N_eff, sd = sd_w, conf_level = nivel_confianza)
       ) %>%
       relocate(N_w, N_eff, .after = N) %>%
       relocate(Media_w, Media_w_Min, Media_w_Max, .after = Media) %>%

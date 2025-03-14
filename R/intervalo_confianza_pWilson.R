@@ -18,7 +18,7 @@
 #' @export
 intervalo_confianza_pWilson <- function(p, N, conf_level = 0.95, limite = c('inferior', 'superior')) {
   # Se utiliza sólo el primer valor de 'which' en caso de que se hayan pasado ambos
-  which <- match.arg(which)
+  limite <- match.arg(limite)
 
   # Obtener el valor crítico de la distribución normal para el nivel de confianza
   z <- qnorm(1 - (1 - conf_level) / 2)
@@ -31,7 +31,7 @@ intervalo_confianza_pWilson <- function(p, N, conf_level = 0.95, limite = c('inf
       denominador <- 1 + (z^2 / N.i)
       numerador_1 <- p.i + (z^2 / (2 * N.i))
       numerador_2 <- z * sqrt((p.i * (1 - p.i) / N.i) + (z^2 / (4 * N.i^2)))
-      if (which == 'inferior') {
+      if (limite == 'inferior') {
         (numerador_1 - numerador_2) / denominador
       } else {
         (numerador_1 + numerador_2) / denominador
