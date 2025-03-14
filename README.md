@@ -34,16 +34,6 @@ su exportación, por ejemplo, a Excel.
 - **Exportación a Excel:** Formatea y concatena tablas de resultados
   para exportarlas a una única hoja de Excel.
 
-## Installation
-
-You can install the development version of analisisDescriptivo from
-[GitHub](https://github.com/) with:
-
-``` r
-# install.packages("pak")
-pak::pak("Adan-gz/analisisDescriptivo")
-```
-
 ## Instalación
 
 Puedes instalar la versión de desarrollo de `analisisDescriptivo` desde
@@ -60,7 +50,7 @@ remotes::install_github("Adan-gz/analisisDescriptivo")
 #> purrr  (1.0.2  -> 1.0.4 ) [CRAN]
 #> digest (0.6.36 -> 0.6.37) [CRAN]
 #> Installing 5 packages: rlang, glue, cli, purrr, digest
-#> Installing packages into 'C:/Users/34673/AppData/Local/Temp/RtmpAZ0hAF/temp_libpath310c742c4776'
+#> Installing packages into 'C:/Users/34673/AppData/Local/Temp/RtmpAZ0hAF/temp_libpath310c26dc7e25'
 #> (as 'lib' is unspecified)
 #> package 'rlang' successfully unpacked and MD5 sums checked
 #> package 'glue' successfully unpacked and MD5 sums checked
@@ -69,9 +59,9 @@ remotes::install_github("Adan-gz/analisisDescriptivo")
 #> package 'digest' successfully unpacked and MD5 sums checked
 #> 
 #> The downloaded binary packages are in
-#>  C:\Users\34673\AppData\Local\Temp\Rtmp8oAIyv\downloaded_packages
+#>  C:\Users\34673\AppData\Local\Temp\RtmpW4uaBF\downloaded_packages
 #> ── R CMD build ─────────────────────────────────────────────────────────────────
-#>       ✔  checking for file 'C:\Users\34673\AppData\Local\Temp\Rtmp8oAIyv\remotes22d864cd677d\Adan-gz-analisisDescriptivo-52f1233/DESCRIPTION'
+#>          checking for file 'C:\Users\34673\AppData\Local\Temp\RtmpW4uaBF\remotes3d2064435032\Adan-gz-analisisDescriptivo-cbc14c0/DESCRIPTION' ...  ✔  checking for file 'C:\Users\34673\AppData\Local\Temp\RtmpW4uaBF\remotes3d2064435032\Adan-gz-analisisDescriptivo-cbc14c0/DESCRIPTION'
 #>       ─  preparing 'analisisDescriptivo':
 #>    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   ✔  checking DESCRIPTION meta-information
 #>       ─  checking for LF line-endings in source and make files and shell scripts
@@ -79,7 +69,7 @@ remotes::install_github("Adan-gz/analisisDescriptivo")
 #>       ─  building 'analisisDescriptivo_0.0.0.9000.tar.gz'
 #>      
 #> 
-#> Installing package into 'C:/Users/34673/AppData/Local/Temp/RtmpAZ0hAF/temp_libpath310c742c4776'
+#> Installing package into 'C:/Users/34673/AppData/Local/Temp/RtmpAZ0hAF/temp_libpath310c26dc7e25'
 #> (as 'lib' is unspecified)
 ```
 

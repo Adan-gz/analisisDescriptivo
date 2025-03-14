@@ -37,23 +37,13 @@ knitr::opts_chunk$set(
 
 -   **Exportación a Excel:** Formatea y concatena tablas de resultados para exportarlas a una única hoja de Excel.
 
-## Installation
-
-You can install the development version of analisisDescriptivo from [GitHub](https://github.com/) with:
-
-``` r
-# install.packages("pak")
-pak::pak("Adan-gz/analisisDescriptivo")
-```
-
 ## Instalación
 
 Puedes instalar la versión de desarrollo de `analisisDescriptivo` desde GitHub con:
 
-```{r example}
+```{r example eval: FALSE}
 # install.packages("remotes")
 remotes::install_github("Adan-gz/analisisDescriptivo")
-
 
 ```
 
