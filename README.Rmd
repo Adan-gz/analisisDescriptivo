@@ -1,0 +1,118 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# analisisDescriptivo
+
+<!-- badges: start -->
+
+<!-- badges: end -->
+
+`analisisDescriptivo` es un paquete de R diseñado para facilitar la generación de estadísticas descriptivas para variables numéricas y categóricas. Proporciona funciones para análisis univariado, análisis agrupado (bivariado) y herramientas para formatear los resultados para su exportación, por ejemplo, a Excel.
+
+## Características
+
+-   **Análisis descriptivo categórico:** Calcula frecuencias, porcentajes y sus intervalos de confianza (usando el método de Wilson) para variables categóricas (con o sin ponderar).
+
+<!-- -->
+
+-   **Análisis descriptivo numérico:** Obtén estadísticas básicas (media, mediana, cuantiles, desviación estándar, histograma inline) de variables numéricas (con o sin ponderar)..
+
+<!-- -->
+
+-   **Análisis agrupado:** Genera de forma sencilla descriptivos numéricos y categóricos agrupando por las categorías de una variable categórica.
+
+<!-- -->
+
+-   **Exportación a Excel:** Formatea y concatena tablas de resultados para exportarlas a una única hoja de Excel.
+
+## Installation
+
+You can install the development version of analisisDescriptivo from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("pak")
+pak::pak("Adan-gz/analisisDescriptivo")
+```
+
+## Instalación
+
+Puedes instalar la versión de desarrollo de `analisisDescriptivo` desde GitHub con:
+
+```{r example}
+# install.packages("remotes")
+remotes::install_github("Adan-gz/analisisDescriptivo")
+
+
+```
+
+## Uso Rápido
+
+A continuación, se muestra un ejemplo básico que ilustra cómo generar estadísticas descriptivas utilizando el paquete:
+
+```{r}
+
+library(analisisDescriptivo)
+
+# Análisis descriptivo univariado (tanto numérico como categórico)
+resultados_univ <- generar_descriptivos_univariados(
+  datos = mtcars,
+  var_peso = "wt"
+)
+print(resultados_univ)
+
+# Análisis descriptivo agrupado por la variable 'gear'
+resultados_agrupados <- generar_descriptivos_agrupados(
+  datos = mtcars,
+  vars_grupo = "gear",
+  vars_numericas = c("mpg", "hp"),
+  vars_categoricas = "cyl",
+  var_peso = "wt",
+  nivel_confianza = 0.95
+)
+print(resultados_agrupados)
+
+
+resultados_agrupados_automaticos <- generar_descriptivos_agrupados( 
+  datos = mtcars,
+  vars_grupo = 'cyl'
+  )
+
+# Formatear los descriptivos univariados para exportar a Excel
+hoja_excel <- generar_hoja_excel_descriptivos(resultados_agrupados_automaticos)
+
+```
+
+## Uso Avanzado
+
+El paquete incluye funciones para personalizar el análisis:
+
+-   **`generar_descriptivo_categorico`**: Genera estadísticas descriptivas para una variable categórica.
+
+-   **`generar_descriptivo_numerico`**: Genera estadísticas descriptivas para una variable numérica.
+
+-   **`preparar_tabla_excel`**: Prepara una tabla para su exportación a Excel, incluyendo encabezados y formateo.
+
+-   **`concatenar_tablas_excel`**: Concatena múltiples tablas (tibbles) en un único data frame, separadas por filas vacías.
+
+Consulta la documentación de cada función (por ejemplo, `?generar_descriptivo_categorico`) para obtener más detalles.
+
+## Contribución
+
+¡Las contribuciones, informes de errores y solicitudes de nuevas funcionalidades son bienvenidos!\
+Por favor, abre un issue o envía un pull request en [GitHub](https://github.com/Adan-gz/analisisDescriptivo).
+
+## Licencia
+
+Este paquete está disponible bajo la Licencia MIT.
