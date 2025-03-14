@@ -5,7 +5,7 @@
 #' @param p Vector de proporciones (valores entre 0 y 1).
 #' @param N Vector con el tamaño de muestra correspondiente a cada proporción.
 #' @param conf_level Nivel de confianza. Por defecto es \code{0.95}.
-#' @param which Cadena que indica si se desea el límite inferior (\code{"Min"}) o superior (\code{"Max"}) del intervalo.
+#' @param limite Cadena que indica si se desea el límite inferior (\code{"inferior"}) o superior (\code{"superior"}) del intervalo.
 #'
 #' @return Vector numérico con el límite inferior o superior del intervalo de confianza para cada par de \code{p} y \code{N}.
 #'
@@ -13,10 +13,10 @@
 #' se calcula el intervalo de confianza siguiendo la fórmula de Wilson.
 #'
 #' @examples
-#' ci_margenError_pWilson(c(0.1, 0.5), c(100, 200), conf_level = 0.95, which = "Max")
+#' ci_margenError_pWilson(c(0.1, 0.5), c(100, 200), conf_level = 0.95, which = "superior")
 #'
 #' @export
-ci_margenError_pWilson <- function(p, N, conf_level = 0.95, which = c('Min', 'Max')) {
+ci_margenError_pWilson <- function(p, N, conf_level = 0.95, limite = c('inferior', 'superior')) {
   # Se utiliza sólo el primer valor de 'which' en caso de que se hayan pasado ambos
   which <- match.arg(which)
 
@@ -31,7 +31,7 @@ ci_margenError_pWilson <- function(p, N, conf_level = 0.95, which = c('Min', 'Ma
       denominador <- 1 + (z^2 / N.i)
       numerador_1 <- p.i + (z^2 / (2 * N.i))
       numerador_2 <- z * sqrt((p.i * (1 - p.i) / N.i) + (z^2 / (4 * N.i^2)))
-      if (which == 'Min') {
+      if (which == 'inferior') {
         (numerador_1 - numerador_2) / denominador
       } else {
         (numerador_1 + numerador_2) / denominador

@@ -23,27 +23,27 @@
 #' }
 #'
 #' @export
-agregar_titulo_nota <- function(t, titulo = '', nota = '') {
+agregar_titulo_nota <- function(tabla, titulo = '', nota = '') {
   # Asegurarse de que t no esté agrupado para evitar problemas posteriores
-  t <- ungroup(t)
+  tabla <- ungroup(tabla)
 
   # Validar que 't' sea un data frame o tibble
-  if (!inherits(t, "data.frame")) {
-    stop("El argumento 't' debe ser un data frame o tibble.")
+  if (!inherits(tabla, "data.frame")) {
+    stop("El argumento 'tabla' debe ser un data frame o tibble.")
   }
 
   # Si se provee un título, se añade una columna "Titulo" al inicio
   if (titulo != '') {
     # Crear un vector de la misma longitud que t, con NA
-    z <- rep(NA, nrow(t))
+    z <- rep(NA, nrow(tabla))
     # Asignar el título a la primera posición
     z[1] <- titulo
 
     # Insertar la nueva columna "Titulo" antes de la primera columna
-    t <- t %>% mutate(Titulo = z, .before = 1)
+    tabla <- tabla %>% mutate(Titulo = z, .before = 1)
 
     # Guardar el título como atributo del objeto
-    attr(t, 'Titulo') <- titulo
+    attr(tabla, 'Titulo') <- titulo
   }
 
   # Si se provee una nota, se añade una fila al final
@@ -52,12 +52,12 @@ agregar_titulo_nota <- function(t, titulo = '', nota = '') {
     nota <- ifelse(nota == '', nota, paste0('Nota: ', nota))
 
     # Agregar una nueva fila con la nota en la columna "Titulo"
-    t <- t %>% bind_rows(tibble(Titulo = nota))
+    tabla <- tabla %>% bind_rows(tibble(Titulo = nota))
 
     # Guardar la nota como atributo del objeto
-    attr(t, 'Nota') <- nota
+    attr(tabla, 'Nota') <- nota
   }
 
   # Retornar el data frame modificado
-  t
+  tabla
 }
