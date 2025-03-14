@@ -30,7 +30,7 @@ use_build_ignore("Development") # para ignorar la carpeta
 # https://happygitwithr.com/new-github-first.html
 
 # https://github.com/Adan-gz/analisisDescriptivo.git #HTTPS SSH Github
-
+use_git_ignore('Development')
 
 # R Packages --------------------------------------------------------------
 
