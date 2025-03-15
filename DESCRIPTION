@@ -12,7 +12,9 @@ URL: https://github.com/Adan-gz/analisisDescriptivo
 BugReports: https://github.com/Adan-gz/analisisDescriptivo/issues
 Imports: 
     dplyr,
+    emmeans,
     magrittr,
+    openxlsx,
     purrr,
     rlang,
     scales,

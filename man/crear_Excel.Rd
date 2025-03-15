@@ -77,13 +77,13 @@ temp_biv_simple <- generar_descriptivos_agrupados(
  var_peso = "w"
  )
 
-crear_Excel(temp_biv_simple_formateado, exportar = T, formatear = T)
+crear_Excel(temp_biv_simple, exportar = T, formatear = T)
 #'
 ## Otro ejemplo
 list_temp <- list(head(mtcars,5),head(mtcars,5),head(mtcars,5))
 list_list_temp <- list(list_temp,list_temp)
 
-workoob_temp <- generar_Excel(
+workoob_temp <- crear_Excel(
  list_list_temp, # lista de listas
  exportar = T
  )

@@ -175,7 +175,7 @@ generar_descriptivo_numerico <- function(
         relocate( Dif, p_value, .after= Media_w )
     }
 
-    # Si no esta agrupado ajustamos las formulas de de lm y usamos broom
+    # Si no esta agrupado ajustamos las formulas de de lm y usamos emmeans
   } else {
     if( is.null( var_peso ) ){
       ## IC para media sin ponderacion
