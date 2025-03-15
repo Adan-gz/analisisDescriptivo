@@ -58,6 +58,7 @@
 #'   # Con agrupación y pesos (suponiendo que 'w' es la variable de peso)
 #'   resultado2 <- mtcars %>%
 #'                  group_by(gear) %>%
+#'                  mutate('w'=rlnorm(32)) %>%
 #'                  generar_descriptivo_categorico(
 #'                    var_categorica = "vs",
 #'                    var_peso = "w",
@@ -67,6 +68,11 @@
 #'                    estrategia_valoresPerdidos = "A"
 #'                  )
 #' }
+#'
+#' generar_descriptivo_categorico( temp, 'cyl' )
+#' generar_descriptivo_categorico( temp, 'cyl', 'vs' )
+#' generar_descriptivo_categorico( temp, 'cyl', var_peso = 'w' )
+#' generar_descriptivo_categorico( temp, 'cyl', 'vs', var_peso = 'w' )
 #'
 #' @importFrom dplyr is.grouped_df group_vars group_by count mutate left_join filter if_else arrange desc ungroup select relocate all_of any_of rename_with `%>%`
 #' @importFrom tidyr pivot_wider
@@ -89,64 +95,92 @@ generar_descriptivo_categorico <- function(
     datos[[var_categorica]] <- as.character(datos[[var_categorica]])
   }
 
+  if ( !is.null(var_peso) ) {
+    if(!is.numeric(datos[[var_peso]])) datos[[var_peso]] <- as.numeric(datos[[var_peso]])
+  }
+
   # Si 'datos' está agrupado, se usan las variables de agrupación definidas en el objeto
   if (is.grouped_df(datos)) {
     vars_grupo <- group_vars(datos)
   }
 
-  # Si se especifican variables de agrupación, volver a agrupar (opcional)
-  if (!is.null(vars_grupo)) {
-    datos <- datos %>% group_by(!!!syms(vars_grupo))
-  }
+  # Si se especifican variables de agrupación, agrupar
+  if ( !is.null(vars_grupo) ) {
+    if( !is.factor(datos[[vars_grupo]]) ) datos[[vars_grupo]] <- factor(datos[[vars_grupo]])
 
+    datos <- datos %>% group_by(!!!syms(vars_grupo))
+
+  }
   # Crear símbolo para la variable categórica (evaluación tidy)
   var_sym <- sym(var_categorica)
 
-  # Calcular recuentos: ponderados si se especifica la variable de peso, o simples
-  if (is.null(var_peso)) {
-    salida <- datos %>% count(!!var_sym)
-  } else {
-    w_sym <- sym(var_peso)
-    salida <- datos %>% count(!!var_sym, wt = !!w_sym) %>%  mutate(n = round(n, 1))
-    # Añadir recuento sin ponderar
-    salida <- salida %>%
-      left_join(datos %>% count(!!var_sym, name = "n_sinW"))
-  }
-
   # Manejo de valores faltantes
   if (!any(is.na(datos[[var_categorica]]))) {
-    salida <- salida %>% mutate(p = n / sum(n))
-  } else {
     estrategia_valoresPerdidos <- match.arg(estrategia_valoresPerdidos)
     if (estrategia_valoresPerdidos == "E") {
-      # Eliminar faltantes para el cálculo de porcentajes
-      salida <- salida %>% filter(!is.na(!!var_sym)) %>%
-        mutate(p = n / sum(n))
+      # Eliminar faltantes para el cálculo de recuentos porcentajes
+      datos <- datos %>% filter(!is.na(!!var_sym))
+
     } else if (estrategia_valoresPerdidos == "A") {
       # Agrupar faltantes bajo la categoría "NS/NC"
-      salida[[var_categorica]] <- if_else(is.na(salida[[var_categorica]]),
-                                          "NS/NC", salida[[var_categorica]])
-      salida <- salida %>% mutate(p = n / sum(n))
+      datos[[var_categorica]] <- if_else(is.na(datos[[var_categorica]]),"NS/NC", datos[[var_categorica]])
     }
   }
 
-  # Ordenar los resultados: descendente si la variable es de tipo carácter, ascendente si es numérica
+    # Calcular recuentos: SI NO HAY PONDERACION
+  if (is.null(var_peso)) {
+    salida <- datos %>%
+      count_p(!!var_sym) %>%
+      mutate(
+        'N_eff' = sum(n),
+        'sd' = sqrt(p * (1 - p) / N_eff),
+      )
+
+  } else { # SI HAY PONDERACION
+    w_sym <- sym(var_peso)
+    # calculamos la N y los porcentajes
+    salida <- datos %>%
+      count_p(!!var_sym, wt = !!w_sym) %>%
+      mutate( n = round(n, 1) )
+
+    # pero necesitamos la N efectiva para la desv.est y los intervalos
+    n_efectiva <- datos %>% summarise('N_eff' = calcular_Nefectiva(!!w_sym) )
+    message("Los intervalos de confianza de las proporciones se calculan mediante la N efectiva")
+    # si esta agrupado o no, ajustamos el join
+    salida <- if( !is.grouped_df(datos) ){
+
+      salida <- bind_cols( salida, n_efectiva )
+
+    } else { # SI ES AGRUPADO EJECUTAMOS UN JOIN
+      salida <- left_join( salida, n_efectiva )
+
+    }
+    # calculamos la sd
+    salida <- salida %>%
+      mutate( 'sd' = sqrt(p * (1 - p) / N_eff) )
+    # añadimos la N sin ponderacion
+    salida <- salida %>%
+      left_join(
+        datos %>% count(!!var_sym, name = 'n_sinW') %>% mutate('p_sinW'=n_sinW/sum(n_sinW))
+      )
+  }
+
+  # Calcular intervalos: se utiliza la función ci_margenError_pWilson (debe estar definida en el paquete)
+  salida <- salida %>% mutate(
+
+    p_Min = intervalo_confianza_pWilson(p = p, N = N_eff, nivel_confianza = nivel_confianza, limite = "inferior"),
+    p_Max = intervalo_confianza_pWilson(p = p, N = N_eff, nivel_confianza = nivel_confianza, limite = "superior"),
+    .after = p
+  ) %>%
+    select(-N_eff) %>%
+    relocate(sd, .after = p_Max)
+
+  # Ordenar los resultados: descendente si la variable es de tipo carácter, por levels si es factor
   if (is.character(datos[[var_categorica]])) {
     salida <- salida %>% arrange(desc(p))
   } else {
     salida <- salida %>% arrange(!!sym(var_categorica))
   }
-
-  # Calcular intervalos: se utiliza la función ci_margenError_pWilson (debe estar definida en el paquete)
-  salida <- salida %>% mutate(
-    N = sum(n),
-    sd = sqrt(p * (1 - p) / N),
-    p_Min = intervalo_confianza_pWilson(p = p, N = N, nivel_confianza = nivel_confianza, limite = "inferior"),
-    p_Max = intervalo_confianza_pWilson(p = p, N = N, nivel_confianza = nivel_confianza, limite = "superior"),
-    .after = p
-  ) %>%
-    select(-N) %>%
-    relocate(sd, .after = p_Max)
 
   # Pivotear la tabla si se solicita y si 'datos' está agrupado
   if (pivot && is.grouped_df(datos)) {
@@ -159,7 +193,7 @@ generar_descriptivo_categorico <- function(
     }
 
     # Definir los valores a pivotear
-    valores_pivot <- c("p", "p_Min", "p_Max", "n", "n_sinW", "sd")
+    valores_pivot <- c("p", "p_Min", "p_Max", "n","sd","p_sinW", "n_sinW", 'N','N_eff')
 
     salida <- salida %>%
       ungroup() %>%
@@ -167,9 +201,30 @@ generar_descriptivo_categorico <- function(
         names_from = all_of(variable_pivot),
         values_from = any_of(valores_pivot),
         names_glue = "{.name}_{.value}"
+      ) %>%
+      # añado nombre de variable alas primeras columnas para identificar el nombrede la variable
+      rename_with(
+        .cols = ends_with('_p'),
+        .fn = \(x) paste0(variable_pivot,'_',x)
       )
+
     # Ajustar nombres de columnas eliminando prefijos no deseados
-    colnames(salida) <- gsub("^p_Min_|^p_Max_|^sd_|^n_|^p_|^N_|^n_sinW_", "", colnames(salida))
+    # return(colnames(salida))
+    colnames(salida) <- gsub("^(p_Min_|p_Max_|sd_|p_sinW_|n_sinW_|n_|p_|N_)", "", colnames(salida))
+  }
+
+  # AÑADIMOS SI HAY DIFERENCIAS SIGNIFICATIVSA Y LA V DE CRAMER
+  if( is.grouped_df(datos) ){
+    pesos <- if( !is.null(var_peso) ) datos[[var_peso]] else rep(1,nrow(datos))
+    resultado_chi2 <- calcular_chi2( var1 = datos[[var_categorica]], var2 = datos[[vars_grupo]],weight = pesos )
+    Vcramer <- calcular_VCramer(resultado_chi2 = resultado_chi2)
+
+    salida <- salida %>%
+      mutate(
+        'Chi2' = c( resultado_chi2$Chisq, rep(NA, nrow(salida)-1) ),
+        'p_value' = c( resultado_chi2$p.value, rep(NA, nrow(salida)-1) ),
+        'VCramer' = c( Vcramer, rep(NA, nrow(salida)-1) )
+      )
   }
 
   # Añadir sufijo a los nombres de los intervalos según el nivel de confianza (por ejemplo, 95 para 0.95)
@@ -182,3 +237,4 @@ generar_descriptivo_categorico <- function(
 
   salida
 }
+

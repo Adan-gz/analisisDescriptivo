@@ -93,7 +93,7 @@ generar_hoja_excel_descriptivos <- function(
         .df %>%
           mutate(
             across(
-              c(where(is.numeric), -c(N, Missing)),
+              c(where(is.numeric), -any_of(c('N', 'Missing', 'p_value'))),
               function(x) {
                 scales::number(
                   x,
@@ -106,6 +106,10 @@ generar_hoja_excel_descriptivos <- function(
                   style_positive = estilo_positivo_num
                 )
               }
+            ),
+            across(
+              any_of('p_value'),
+              \(x) scales::number(x,accuracy = .0001,decimal.mark = separador_decimal,big.mark = separador_miles)
             )
           )
       }
@@ -156,7 +160,23 @@ generar_hoja_excel_descriptivos <- function(
                     style_positive = estilo_positivo_fac
                   )
                 }
-              )
+              ),
+              across(
+                c(Chi2,VCramer),
+                function(x){
+                  scales::number(
+                    x,
+                    accuracy = 0.01,
+                    scale = escala_num,
+                    decimal.mark = separador_decimal,
+                    big.mark = separador_miles,
+                    prefix = prefijo_num,
+                    suffix = sufijo_num,
+                    style_positive = estilo_positivo_num
+                  )
+                }
+              ),
+              'p_value' = scales::number(p_value,accuracy = .0001,decimal.mark = separador_decimal,big.mark = separador_miles)
             )
         }
       }

@@ -4,14 +4,14 @@
 #' Si no se especifican las variables a analizar, se seleccionan automáticamente según su clase.
 #'
 #' @param datos Data frame o tibble con los datos a analizar.
-#' @param vars_categoricas Vector de nombres de variables categóricas. Si es \code{NULL} y \code{select_vars_auto} es \code{TRUE},
+#' @param vars_categoricas Vector de nombres de variables categóricas. Si es \code{NULL} y \code{selecc_vars_auto} es \code{TRUE},
 #'   se seleccionan automáticamente las variables de tipo carácter o factor.
-#' @param vars_numericas Vector de nombres de variables numéricas. Si es \code{NULL} y \code{select_vars_auto} es \code{TRUE},
+#' @param vars_numericas Vector de nombres de variables numéricas. Si es \code{NULL} y \code{selecc_vars_auto} es \code{TRUE},
 #'   se seleccionan automáticamente las variables numéricas.
 #' @param vars_grupo Vector de nombres de variables de agrupación.
 #' @param var_peso Nombre de la variable de peso, si se desea ponderar los cálculos. Por defecto \code{NULL}.
 #' @param nivel_confianza Nivel de confianza para los intervalos. Por defecto \code{0.95}.
-#' @param select_vars_auto Lógico. Si es \code{TRUE}, se seleccionan automáticamente las variables si no se especifican. Por defecto \code{TRUE}.
+#' @param selecc_vars_auto Lógico. Si es \code{TRUE}, se seleccionan automáticamente las variables si no se especifican. Por defecto \code{TRUE}.
 #' @param pivot Lógico. Si es \code{TRUE}, se pivota la salida de variables categóricas a formato ancho (solo para tibbles agrupados). Por defecto \code{TRUE}.
 #' @param variable_pivot Vector de caracteres que indica la variable a utilizar para pivotear: \code{"var_grupo"} o \code{"var_categorica"}. Por defecto \code{c("var_grupo", "var_categorica")}.
 #' @param estrategia_valoresPerdidos Estrategia para el manejo de valores faltantes en variables categóricas: \code{"E"} (eliminar) o \code{"A"} (agrupar en "NS/NC"). Por defecto \code{c("E", "A")}.
@@ -56,7 +56,7 @@ generar_descriptivos_agrupados <- function(
     vars_grupo = NULL,
     var_peso = NULL,
     nivel_confianza = 0.95,
-    select_vars_auto = TRUE,
+    selecc_vars_auto = TRUE,
     pivot = TRUE,
     variable_pivot = c("var_grupo", "var_categorica"),
     estrategia_valoresPerdidos = c("E", "A"),
@@ -68,12 +68,15 @@ generar_descriptivos_agrupados <- function(
   descriptivos_cat <- NULL
 
   # Seleccionar automáticamente variables numéricas y categóricas si no se especifican
-  if (is.null(vars_numericas) && select_vars_auto) {
-    vars_numericas <- datos %>% select_if(is.numeric) %>% colnames()
+  if (is.null(vars_numericas) && selecc_vars_auto) {
+    vars_numericas <- datos %>% select_if(is.numeric) %>% select(-any_of(c(vars_grupo,var_peso)) ) %>% colnames()
   }
-  if (is.null(vars_categoricas) && select_vars_auto) {
-    vars_categoricas <- datos %>% select_if(~ is.character(.) || is.factor(.)) %>% colnames()
+  if (is.null(vars_categoricas) && selecc_vars_auto) {
+    vars_categoricas <- datos %>% select_if(~ is.character(.) || is.factor(.)) %>% select(-any_of(c(vars_grupo,var_peso)) ) %>% colnames()
   }
+
+  # Convertir variables dummies a numericas
+  ## POR IMPLEMENTAR
 
   # Calcular descriptivos para variables categóricas agrupadas (si existen)
   if (length(vars_categoricas) > 0) {
@@ -92,6 +95,7 @@ generar_descriptivos_agrupados <- function(
 
   # Calcular descriptivos para variables numéricas agrupadas (si existen)
   if (length(vars_numericas) > 0) {
+
     descriptivos_num <- generar_descriptivos_numericos(
       datos = datos,
       vars_numericas = vars_numericas,

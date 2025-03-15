@@ -11,7 +11,7 @@ generar_descriptivos_agrupados(
   vars_grupo = NULL,
   var_peso = NULL,
   nivel_confianza = 0.95,
-  select_vars_auto = TRUE,
+  selecc_vars_auto = TRUE,
   pivot = TRUE,
   variable_pivot = c("var_grupo", "var_categorica"),
   estrategia_valoresPerdidos = c("E", "A"),
@@ -22,10 +22,10 @@ generar_descriptivos_agrupados(
 \arguments{
 \item{datos}{Data frame o tibble con los datos a analizar.}
 
-\item{vars_categoricas}{Vector de nombres de variables categóricas. Si es \code{NULL} y \code{select_vars_auto} es \code{TRUE},
+\item{vars_categoricas}{Vector de nombres de variables categóricas. Si es \code{NULL} y \code{selecc_vars_auto} es \code{TRUE},
 se seleccionan automáticamente las variables de tipo carácter o factor.}
 
-\item{vars_numericas}{Vector de nombres de variables numéricas. Si es \code{NULL} y \code{select_vars_auto} es \code{TRUE},
+\item{vars_numericas}{Vector de nombres de variables numéricas. Si es \code{NULL} y \code{selecc_vars_auto} es \code{TRUE},
 se seleccionan automáticamente las variables numéricas.}
 
 \item{vars_grupo}{Vector de nombres de variables de agrupación.}
@@ -34,7 +34,7 @@ se seleccionan automáticamente las variables numéricas.}
 
 \item{nivel_confianza}{Nivel de confianza para los intervalos. Por defecto \code{0.95}.}
 
-\item{select_vars_auto}{Lógico. Si es \code{TRUE}, se seleccionan automáticamente las variables si no se especifican. Por defecto \code{TRUE}.}
+\item{selecc_vars_auto}{Lógico. Si es \code{TRUE}, se seleccionan automáticamente las variables si no se especifican. Por defecto \code{TRUE}.}
 
 \item{pivot}{Lógico. Si es \code{TRUE}, se pivota la salida de variables categóricas a formato ancho (solo para tibbles agrupados). Por defecto \code{TRUE}.}
 

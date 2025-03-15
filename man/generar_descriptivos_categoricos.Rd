@@ -13,13 +13,13 @@ generar_descriptivos_categoricos(
   variable_pivot = c("var_grupo", "var_categorica"),
   nivel_confianza = 0.95,
   estrategia_valoresPerdidos = c("E", "A"),
-  select_vars_auto = TRUE
+  selecc_vars_auto = TRUE
 )
 }
 \arguments{
 \item{datos}{Data frame o tibble con las variables a analizar.}
 
-\item{vars_categoricas}{Vector de nombres de variables categóricas. Si es \code{NULL} y \code{select_vars_auto} es
+\item{vars_categoricas}{Vector de nombres de variables categóricas. Si es \code{NULL} y \code{selecc_vars_auto} es
 \code{TRUE}, se seleccionan automáticamente las variables de tipo carácter o factor.}
 
 \item{vars_grupo}{Vector de nombres de variables de agrupación.}
@@ -36,7 +36,7 @@ generar_descriptivos_categoricos(
 \item{estrategia_valoresPerdidos}{Estrategia para manejar faltantes: \code{"E"} (eliminar) o \code{"A"} (agrupar en "NS/NC").
 Por defecto es \code{c("E", "A")}, lo que selecciona \code{"E"}.}
 
-\item{select_vars_auto}{Lógico. Si es \code{TRUE} y \code{vars_categoricas} es \code{NULL}, se seleccionan
+\item{selecc_vars_auto}{Lógico. Si es \code{TRUE} y \code{vars_categoricas} es \code{NULL}, se seleccionan
 automáticamente las variables de tipo carácter o factor. Por defecto es \code{TRUE}.}
 }
 \value{
@@ -50,7 +50,7 @@ aquellas variables categóricas que coincidan con las de agrupación.
 \details{
 La función:
 \enumerate{
-\item Selecciona las variables categóricas a analizar (si no se especifican y \code{select_vars_auto} es \code{TRUE}).
+\item Selecciona las variables categóricas a analizar (si no se especifican y \code{selecc_vars_auto} es \code{TRUE}).
 \item Elimina de \code{vars_categoricas} aquellas variables que coincidan con las de agrupación.
 \item Itera sobre cada variable categórica, aplicando \code{generar_descriptivo_categorico} y retorna una lista
 con los resultados.
@@ -68,7 +68,7 @@ con los resultados.
                   variable_pivot = "var_grupo",
                   nivel_confianza = 0.95,
                   estrategia_valoresPerdidos = "E",
-                  select_vars_auto = FALSE
+                  selecc_vars_auto = FALSE
                 )
 }
 

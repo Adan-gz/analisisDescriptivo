@@ -83,6 +83,7 @@ La función realiza los siguientes pasos:
   # Con agrupación y pesos (suponiendo que 'w' es la variable de peso)
   resultado2 <- mtcars \%>\%
                  group_by(gear) \%>\%
+                 mutate('w'=rlnorm(32)) \%>\%
                  generar_descriptivo_categorico(
                    var_categorica = "vs",
                    var_peso = "w",
@@ -92,5 +93,10 @@ La función realiza los siguientes pasos:
                    estrategia_valoresPerdidos = "A"
                  )
 }
+
+generar_descriptivo_categorico( temp, 'cyl' )
+generar_descriptivo_categorico( temp, 'cyl', 'vs' )
+generar_descriptivo_categorico( temp, 'cyl', var_peso = 'w' )
+generar_descriptivo_categorico( temp, 'cyl', 'vs', var_peso = 'w' )
 
 }

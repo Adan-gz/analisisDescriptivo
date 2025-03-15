@@ -1,8 +1,9 @@
 #' Generar descriptivo para una variable numérica
 #'
 #' Calcula medidas descriptivas básicas para una variable numérica, incluyendo conteos, estadísticos (media, mediana, cuantiles, etc.),
-#' desviación estándar y un histograma inline. Además, calcula intervalos de confianza para la media utilizando el margen de error.
-#' Si se especifica una variable de pesos, se calculan estadísticas ponderadas y se utiliza el tamaño muestral efectivo para el intervalo.
+#' desviación estándar y un histograma inline. Además, calcula intervalos de confianza para la media y, si se especifica una variable de pesos,
+#' se calculan estadísticas ponderadas. Internamente se utiliza \code{lm} y \code{emmeans} para obtener los intervalos, especialmente relevante
+#' en el caso de agrupar.
 #'
 #' @param datos Data frame o tibble que contiene la variable numérica a analizar.
 #' @param var_numerica Nombre (carácter) de la variable numérica a analizar.
@@ -58,10 +59,12 @@
 #'                         )
 #' }
 #'
-#' @importFrom dplyr group_by summarise mutate left_join bind_cols filter relocate ends_with `%>%`
+#' @importFrom dplyr group_by summarise mutate left_join full_join bind_cols filter relocate ends_with `%>%`
+#' @importFrom tibble as_tibble
 #' @importFrom skimr n_complete n_missing inline_hist
 #' @importFrom rlang sym syms
 #' @importFrom stringr str_split_i
+#' @importFrom emmeans emmeans
 #'
 #' @export
 generar_descriptivo_numerico <- function(
@@ -73,14 +76,22 @@ generar_descriptivo_numerico <- function(
     nivel_confianza = 0.95
 ) {
   # Asegurarse de que la variable es de tipo numeric
-  if (is.numeric(datos[[var_numerica]]) != "numeric") {
+  if ( !is.numeric(datos[[var_numerica]]) ) {
     datos[[var_numerica]] <- as.numeric(datos[[var_numerica]])
   }
 
-  # Si se especifica la variable de peso, crear símbolo para evaluación tidy
-  if (!is.null(var_peso)) {
-    w_sym <- sym(var_peso)
+  if ( !is.null(var_peso)  ) {
+    if( !is.numeric(datos[[var_peso]]) )  datos[[var_peso]] <- as.numeric(datos[[var_peso]])
   }
+
+  if ( !is.null(vars_grupo) ) {
+    if( !is.factor(datos[[vars_grupo]]) ) datos[[vars_grupo]] <- factor(datos[[vars_grupo]])
+  }
+
+  # Si se especifica la variable de peso, crear símbolo para evaluación tidy
+  # if (!is.null(var_peso)) {
+  #   w_sym <- sym(var_peso)
+  # }
 
   # Si se especifican variables de agrupación, agrupar el data frame
   if (!is.null(vars_grupo)) {
@@ -107,48 +118,107 @@ generar_descriptivo_numerico <- function(
       .groups = "drop"
     )
 
-  # Si no se especifica variable de peso, calcular intervalos de confianza basados en N y sd
-  if (is.null(var_peso)) {
-    salida <- salida %>%
-      mutate(
-        Media_Min = Media - margen_error_media(N = N, sd = sd, nivel_confianza = nivel_confianza),
-        Media_Max = Media + margen_error_media(N = N, sd = sd, nivel_confianza = nivel_confianza),
-        .after = Media
-      )
-  } else {
-    # Calcular medidas ponderadas: media, desviación y tamaño muestral efectivo
-    salida_w <- datos %>%
-      filter(!is.na(!!var_sym)) %>%
-      summarise(
-        N_w = sum(!!w_sym, na.rm = TRUE),                   # Tamaño de muestra ponderado
-        N_eff = (sum(!!w_sym, na.rm = TRUE)^2) / sum((!!w_sym)^2, na.rm = TRUE), # Tamaño muestral efectivo
-        Media_w = weighted.mean(!!var_sym, w = !!w_sym, na.rm = TRUE),
-        sd_w = desviacion_estandar_ponderada(!!var_sym, pesos = !!w_sym)
-      )
-    # Unir la información de estadísticas sin y con ponderación
-    if (is.grouped_df(datos)) {
-      salida <- salida %>% left_join(salida_w)
-    } else {
-      salida <- salida %>% bind_cols(salida_w)
+  if( !is.null(var_peso) ){
+    # de caro a los modelos utilizo una variable con nombre conocido para que lm() pueda evaluarla correctamente
+    datos <- datos %>% mutate( 'pesos_mod' = !!sym(var_peso)  )
+
+  }
+
+  # Calculamos los intervalos de confianza, ajustamos codigo segun si esta agrupado o no
+  if (is.grouped_df(datos)) {
+    if( is.null( var_peso ) ){
+
+      model_lm <-  lm( obtener_formula( VD = var_numerica, Xs = vars_grupo ), data = datos )
+
+      IC_media_grupos <- model_lm %>%
+        emmeans::emmeans( specs = vars_grupo, level = nivel_confianza ) %>%
+        as_tibble() %>%
+        select(1, 'Media_Min'=lower.CL, 'Media_Max'=upper.CL)
+
+      salida <- IC_media_grupos %>%
+        full_join(salida) %>%
+        relocate(Media_Min, Media_Max, .after = Media)
+
+      # Añadir diferencia de medias
+      dif_medias <- obtener_diferencia_medias( model_lm, var_grupo =  vars_grupo )
+
+      salida <- salida %>%
+        left_join(dif_medias) %>%
+        relocate( Dif, p_value, .after= Media )
+
+    } else { # CON PESOS
+      model_lm <-  lm( obtener_formula( VD = var_numerica, Xs = vars_grupo ), data = datos, weights = pesos_mod )
+
+      IC_media_grupos <- model_lm %>%
+        emmeans::emmeans( specs = vars_grupo, level = nivel_confianza ) %>%
+        as_tibble() %>%
+        select(1, 'Media_w' = emmean, 'Media_w_Min'=lower.CL, 'Media_w_Max'=upper.CL)
+
+      salida <- IC_media_grupos %>%
+        full_join(salida) %>%
+        relocate(Media_w, Media_w_Min, Media_w_Max, .after = Media)
+
+      # añado la desviacion estandar ponderada
+      salida <- salida %>%
+        left_join(
+          datos %>%
+            dplyr::summarise(
+              'sd.w' = desviacion_estandar_ponderada(!!var_sym, pesos = pesos_mod )
+            )
+        ) %>%
+        relocate(sd.w, .after = sd)
+
+      dif_medias <- obtener_diferencia_medias( model_lm, var_grupo =  vars_grupo )
+
+      salida <- salida %>%
+        left_join(dif_medias) %>%
+        relocate( Dif, p_value, .after= Media_w )
     }
 
-    # Calcular intervalos de confianza para la media ponderada
-    salida <- salida %>%
-      mutate(
-        Media_w_Min = Media_w - margen_error_media(N = N_eff, sd = sd_w, nivel_confianza = nivel_confianza),
-        Media_w_Max = Media_w + margen_error_media(N = N_eff, sd = sd_w, nivel_confianza = nivel_confianza)
-      ) %>%
-      relocate(N_w, N_eff, .after = N) %>%
-      relocate(Media_w, Media_w_Min, Media_w_Max, .after = Media) %>%
-      relocate(sd_w, .after = sd)
+    # Si no esta agrupado ajustamos las formulas de de lm y usamos broom
+  } else {
+    if( is.null( var_peso ) ){
+      ## IC para media sin ponderacion
+      IC_media <-  lm( obtener_formula( VD = var_numerica, Xs = 1 ), data = datos  ) %>%
+        emmeans::emmeans( specs = ~1, level = nivel_confianza ) %>%
+        as_tibble() %>%
+        select( 'Media_Min'=lower.CL, 'Media_Max'=upper.CL)
+
+      salida <- IC_media %>%
+        bind_cols(salida) %>%
+        relocate(Media_Min, Media_Max, .after = Media)
+
+    } else {
+      ## IC para media con ponderacion
+      IC_media <-  lm( obtener_formula( VD = var_numerica, Xs = 1 ), data = datos, weights = pesos_mod  ) %>%
+        emmeans::emmeans( specs = ~1, level = nivel_confianza ) %>%
+        as_tibble() %>%
+        select('Media_w' = emmean, 'Media_w_Min'=lower.CL, 'Media_w_Max'=upper.CL)
+
+      salida <- IC_media %>%
+        bind_cols(salida) %>%
+        relocate(Media_w, Media_w_Min, Media_w_Max, .after = Media)
+
+      # añado la desviacion estandar ponderada
+      salida <- salida %>%
+        bind_cols(
+          datos %>%
+            dplyr::summarise(
+              'sd_w' = desviacion_estandar_ponderada(!!var_sym, pesos = pesos_mod )
+            )
+        ) %>%
+        relocate(sd_w, .after = sd)
+    }
   }
 
   # Renombrar columnas de intervalos añadiendo un sufijo que indica el nivel de confianza
-  salida <- salida %>% rename_with(
-    .cols = ends_with(c("_Min", "_Max")),
-    .fn = \(x) paste0(x, "_", as.character(stringr::str_split_i(as.character(nivel_confianza), "\\.", 2)))
-  )
+  salida <- salida %>%
+    rename_with(
+      .cols = ends_with(c("_Min", "_Max")),
+      .fn = function(x){ paste0(x, "_", as.character(stringr::str_split_i(as.character(nivel_confianza), "\\.", 2))) }
+    )
 
-  # Se podría aplicar formateo numérico adicional si fuera necesario (por ejemplo, con una función similar a number())
   salida
 }
+
+

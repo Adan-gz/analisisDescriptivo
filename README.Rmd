@@ -19,7 +19,15 @@ knitr::opts_chunk$set(
 
 <!-- badges: end -->
 
-`analisisDescriptivo` es un paquete de R diseñado para facilitar la generación de estadísticas descriptivas para variables numéricas y categóricas. Proporciona funciones para análisis univariado, análisis agrupado (bivariado) y herramientas para formatear los resultados para su exportación, por ejemplo, a Excel.
+`analisisDescriptivo` es un paquete de R diseñado para facilitar la generación de estadísticas descriptivas para variables numéricas y categóricas. Proporciona funciones para análisis univariado, análisis agrupado (bivariado) y herramientas para formatear los resultados para su exportación, por ejemplo, a Excel. Además, calcula los intervalos de confianza de las medias y proporciones (con y sin variable de ponderación), calcula si las diferencias de medias son significativas entre grupos (a través de OLS) y si hay diferencia significativa entre dos variables categóricas (mediante chi cuadrado).
+
+## Advertencia
+
+Actualmente, este documento así como la documentación de las funciones está elaborado principalmente a través del modelo 03-mini de ChatGPT, por lo que puede haber algún error.
+
+Tampoco se explica, por ahora, con todo detalle las funcionalidades del paquete.
+
+Esta tarea está pendiente de llevarse a cabo.
 
 ## Características
 
@@ -77,8 +85,9 @@ print(resultados_agrupados)
 
 resultados_agrupados_automaticos <- generar_descriptivos_agrupados( 
   datos = mtcars,
-  vars_grupo = 'cyl'
-  )
+  vars_grupo = 'cyl', 
+  selecc_vars_auto = TRUE
+)
 
 # Formatear los descriptivos univariados para exportar a Excel en 1 única hoja
 hoja_excel <- generar_hoja_excel_descriptivos(resultados_agrupados_automaticos)

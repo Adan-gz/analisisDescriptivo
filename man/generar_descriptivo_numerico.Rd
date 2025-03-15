@@ -45,8 +45,9 @@ Data frame con las estadísticas descriptivas calculadas. Entre las variables se
 }
 \description{
 Calcula medidas descriptivas básicas para una variable numérica, incluyendo conteos, estadísticos (media, mediana, cuantiles, etc.),
-desviación estándar y un histograma inline. Además, calcula intervalos de confianza para la media utilizando el margen de error.
-Si se especifica una variable de pesos, se calculan estadísticas ponderadas y se utiliza el tamaño muestral efectivo para el intervalo.
+desviación estándar y un histograma inline. Además, calcula intervalos de confianza para la media y, si se especifica una variable de pesos,
+se calculan estadísticas ponderadas. Internamente se utiliza \code{lm} y \code{emmeans} para obtener los intervalos, especialmente relevante
+en el caso de agrupar.
 }
 \details{
 La función realiza los siguientes pasos:

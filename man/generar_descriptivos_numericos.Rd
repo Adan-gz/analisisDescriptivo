@@ -12,13 +12,13 @@ generar_descriptivos_numericos(
   digits = 0.1,
   nivel_confianza = 0.95,
   return_df = FALSE,
-  select_vars_auto = TRUE
+  selecc_vars_auto = TRUE
 )
 }
 \arguments{
 \item{datos}{Data frame o tibble que contiene las variables numéricas a analizar.}
 
-\item{vars_numericas}{Vector de nombres de variables numéricas a analizar. Si es \code{NULL} y \code{select_vars_auto} es
+\item{vars_numericas}{Vector de nombres de variables numéricas a analizar. Si es \code{NULL} y \code{selecc_vars_auto} es
 \code{TRUE}, se seleccionan automáticamente todas las variables numéricas.}
 
 \item{vars_grupo}{Vector de nombres de variables para agrupar. Por defecto es \code{NULL} (sin agrupamiento).}
@@ -32,7 +32,7 @@ generar_descriptivos_numericos(
 \item{return_df}{Lógico. Si es \code{TRUE}, se retorna un único data frame combinando todos los descriptivos; de lo contrario,
 se retorna una lista de data frames.}
 
-\item{select_vars_auto}{Lógico. Si es \code{TRUE} y \code{vars_numericas} es \code{NULL}, se seleccionan automáticamente las variables numéricas.}
+\item{selecc_vars_auto}{Lógico. Si es \code{TRUE} y \code{vars_numericas} es \code{NULL}, se seleccionan automáticamente las variables numéricas.}
 }
 \value{
 Lista de data frames, uno por cada variable numérica analizada, o un data frame único si \code{return_df} es \code{TRUE}.
@@ -40,12 +40,12 @@ Lista de data frames, uno por cada variable numérica analizada, o un data frame
 \description{
 Calcula estadísticas descriptivas para múltiples variables numéricas de un data frame o tibble,
 permitiendo la especificación de variables de agrupación y de peso. Si no se especifican las variables
-numéricas y \code{select_vars_auto} es \code{TRUE}, se seleccionan automáticamente todas las variables numéricas.
+numéricas y \code{selecc_vars_auto} es \code{TRUE}, se seleccionan automáticamente todas las variables numéricas.
 }
 \details{
 La función:
 \enumerate{
-\item Selecciona las variables numéricas a analizar (si no se especifican y \code{select_vars_auto} es \code{TRUE}).
+\item Selecciona las variables numéricas a analizar (si no se especifican y \code{selecc_vars_auto} es \code{TRUE}).
 \item Aplica \code{generar_descriptivo_numerico} a cada variable.
 \item Retorna una lista con los resultados o, si se solicita, un data frame combinado con todos los descriptivos.
 }
@@ -56,7 +56,7 @@ La función:
   resultados <- generar_descriptivos_numericos(
                   datos = mtcars,
                   nivel_confianza = 0.95,
-                  select_vars_auto = TRUE
+                  selecc_vars_auto = TRUE
                 )
 
   # Ejemplo combinando resultados en un único data frame:

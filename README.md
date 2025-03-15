@@ -10,7 +10,22 @@
 generación de estadísticas descriptivas para variables numéricas y
 categóricas. Proporciona funciones para análisis univariado, análisis
 agrupado (bivariado) y herramientas para formatear los resultados para
-su exportación, por ejemplo, a Excel.
+su exportación, por ejemplo, a Excel. Además, calcula los intervalos de
+confianza de las medias y proporciones (con y sin variable de
+ponderación), calcula si las diferencias de medias son significativas
+entre grupos (a través de OLS) y si hay diferencia significativa entre
+dos variables categóricas (mediante chi cuadrado).
+
+## Advertencia
+
+Actualmente, este documento así como la documentación de las funciones
+está elaborado principalmente a través del modelo 03-mini de ChatGPT,
+por lo que puede haber algún error.
+
+Tampoco se explica, por ahora, con todo detalle las funcionalidades del
+paquete.
+
+Esta tarea está pendiente de llevarse a cabo.
 
 ## Características
 
@@ -59,45 +74,47 @@ resultados_univ <- generar_descriptivos_univariados(
   var_peso = "wt", 
   return_df = TRUE
 )
+#> Warning: Model has 32 prior weights, but we recovered 2 rows of data.
+#> So prior weights were ignored.
+#> Warning: Model has 32 prior weights, but we recovered 2 rows of data.
+#> So prior weights were ignored.
+#> Warning: Model has 32 prior weights, but we recovered 2 rows of data.
+#> So prior weights were ignored.
+#> Warning: Model has 32 prior weights, but we recovered 2 rows of data.
+#> So prior weights were ignored.
+#> Warning: Model has 32 prior weights, but we recovered 2 rows of data.
+#> So prior weights were ignored.
+#> Warning: Model has 32 prior weights, but we recovered 2 rows of data.
+#> So prior weights were ignored.
+#> Warning: Model has 32 prior weights, but we recovered 2 rows of data.
+#> So prior weights were ignored.
+#> Warning: Model has 32 prior weights, but we recovered 2 rows of data.
+#> So prior weights were ignored.
+#> Warning: Model has 32 prior weights, but we recovered 2 rows of data.
+#> So prior weights were ignored.
+#> Warning: Model has 32 prior weights, but we recovered 2 rows of data.
+#> So prior weights were ignored.
+#> Warning: Model has 32 prior weights, but we recovered 2 rows of data.
+#> So prior weights were ignored.
 #> Descriptivos univariados numéricos generados
 print(resultados_univ)
 #> $Numericas
-#>    Variable  N     N_w    N_eff Missing      Media     Media_w Media_w_Min_95
-#> 1       mpg 32 102.952 29.36848       0  20.090625  18.5499339     16.4847576
-#> 2       cyl 32 102.952 29.36848       0   6.187500   6.5992307      5.9647943
-#> 3      disp 32 102.952 29.36848       0 230.721875 263.1467946    215.9697711
-#> 4        hp 32 102.952 29.36848       0 146.687500 159.9944052    134.7170244
-#> 5      drat 32 102.952 29.36848       0   3.596563   3.4843321      3.2955675
-#> 6        wt 32 102.952 29.36848       0   3.217250   3.5055275      3.1321221
-#> 7      qsec 32 102.952 29.36848       0  17.848750  17.7567661     17.1027728
-#> 8        vs 32 102.952 29.36848       0   0.437500   0.3550975      0.1734364
-#> 9        am 32 102.952 29.36848       0   0.406250   0.3044428      0.1297560
-#> 10     gear 32 102.952 29.36848       0   3.687500   3.5607079      3.2917377
-#> 11     carb 32 102.952 29.36848       0   2.812500   3.0159880      2.4226917
-#>    Media_w_Max_95    Min       Q25 Mediana    Q75     Max          sd
-#> 1      20.6151103 10.400  15.42500  19.200  22.80  33.900   6.0269481
-#> 2       7.2336671  4.000   4.00000   6.000   8.00   8.000   1.7859216
-#> 3     310.3238181 71.100 120.82500 196.300 326.00 472.000 123.9386938
-#> 4     185.2717859 52.000  96.50000 123.000 180.00 335.000  68.5628685
-#> 5       3.6730968  2.760   3.08000   3.695   3.92   4.930   0.5346787
-#> 6       3.8789330  1.513   2.58125   3.325   3.61   5.424   0.9784574
-#> 7      18.4107593 14.500  16.89250  17.710  18.90  22.900   1.7869432
-#> 8       0.5367586  0.000   0.00000   0.000   1.00   1.000   0.5040161
-#> 9       0.4791297  0.000   0.00000   0.000   1.00   1.000   0.4989909
-#> 10      3.8296781  3.000   3.00000   4.000   4.00   5.000   0.7378041
-#> 11      3.6092843  1.000   2.00000   2.000   4.00   8.000   1.6152000
-#>           sd_w     hist
-#> 1    5.4668309 ▃▇▇▇▃▂▂▂
-#> 2    1.6794480 ▆▁▁▃▁▁▁▇
-#> 3  124.8846405 ▇▆▁▂▅▃▁▂
-#> 4   66.9130092 ▃▇▃▅▂▃▁▁
-#> 5    0.4996883 ▃▇▁▅▇▂▁▁
-#> 6    0.9884601 ▃▃▃▇▆▁▁▂
-#> 7    1.7312180 ▃▂▇▆▃▃▁▁
-#> 8    0.4808840 ▇▁▁▁▁▁▁▆
-#> 9    0.4624224 ▇▁▁▁▁▁▁▆
-#> 10   0.7120043 ▇▁▁▆▁▁▁▂
-#> 11   1.5705441 ▆▇▂▇▁▁▁▁
+#> # A tibble: 11 × 15
+#>    Variable     N Missing   Media Media_w Media_w_Min_95 Media_w_Max_95   Min
+#>    <chr>    <int>   <int>   <dbl>   <dbl>          <dbl>          <dbl> <dbl>
+#>  1 mpg         32       0  20.1    18.5           16.6           20.5   10.4 
+#>  2 cyl         32       0   6.19    6.60           5.99           7.21   4   
+#>  3 disp        32       0 231.    263.           218.           309.    71.1 
+#>  4 hp          32       0 147.    160.           136.           184.    52   
+#>  5 drat        32       0   3.60    3.48           3.30           3.67   2.76
+#>  6 wt          32       0   3.22    3.51           3.15           3.87   1.51
+#>  7 qsec        32       0  17.8    17.8           17.1           18.4   14.5 
+#>  8 vs          32       0   0.438   0.355          0.180          0.530  0   
+#>  9 am          32       0   0.406   0.304          0.136          0.473  0   
+#> 10 gear        32       0   3.69    3.56           3.30           3.82   3   
+#> 11 carb        32       0   2.81    3.02           2.44           3.59   1   
+#> # ℹ 7 more variables: Q25 <dbl>, Mediana <dbl>, Q75 <dbl>, Max <dbl>, sd <dbl>,
+#> #   sd_w <dbl>, hist <chr>
 #> 
 #> $Categoricas
 #> NULL
@@ -114,8 +131,14 @@ resultados_agrupados <- generar_descriptivos_agrupados(
   var_peso = "wt",
   nivel_confianza = 0.95
 )
+#> Los intervalos de confianza de las proporciones se calculan mediante la N efectiva
+#> Joining with `by = join_by(gear)`
 #> Joining with `by = join_by(gear, cyl)`
 #> Descriptivos agrupados categóricos generados
+#> Joining with `by = join_by(gear)`
+#> Joining with `by = join_by(gear)`
+#> Joining with `by = join_by(gear)`
+#> Joining with `by = join_by(gear)`
 #> Joining with `by = join_by(gear)`
 #> Joining with `by = join_by(gear)`
 #> Descriptivos agrupados numéricos generados
@@ -123,36 +146,38 @@ print(resultados_agrupados)
 #> $Numericas
 #> $Numericas$mpg
 #> # A tibble: 3 × 18
-#>    gear Variable     N   N_w N_eff Missing Media Media_w Media_w_Min_95
-#>   <dbl> <chr>    <int> <dbl> <dbl>   <int> <dbl>   <dbl>          <dbl>
-#> 1     3 mpg         15  58.4 14.4        0  16.1    15.6           13.7
-#> 2     4 mpg         12  31.4 11.4        0  24.5    23.6           20.4
-#> 3     5 mpg          5  13.2  4.64       0  21.4    19.7           12.2
+#>   gear  Variable     N Missing Media Media_w   Dif    p_value Media_w_Min_95
+#>   <chr> <chr>    <int>   <int> <dbl>   <dbl> <dbl>      <dbl>          <dbl>
+#> 1 3     mpg         15       0  16.1    15.6 NA    NA                   13.5
+#> 2 4     mpg         12       0  24.5    23.6  7.99  0.0000609           20.8
+#> 3 5     mpg          5       0  21.4    19.7  4.16  0.0875              15.4
 #> # ℹ 9 more variables: Media_w_Max_95 <dbl>, Min <dbl>, Q25 <dbl>,
-#> #   Mediana <dbl>, Q75 <dbl>, Max <dbl>, sd <dbl>, sd_w <dbl>, hist <chr>
+#> #   Mediana <dbl>, Q75 <dbl>, Max <dbl>, sd <dbl>, sd.w <dbl>, hist <chr>
 #> 
 #> $Numericas$hp
 #> # A tibble: 3 × 18
-#>    gear Variable     N   N_w N_eff Missing Media Media_w Media_w_Min_95
-#>   <dbl> <chr>    <int> <dbl> <dbl>   <int> <dbl>   <dbl>          <dbl>
-#> 1     3 hp          15  58.4 14.4        0 176.    182.           157. 
-#> 2     4 hp          12  31.4 11.4        0  89.5    93.7           77.4
-#> 3     5 hp           5  13.2  4.64       0 196.    219.            90.5
+#>   gear  Variable     N Missing Media Media_w   Dif   p_value Media_w_Min_95
+#>   <chr> <chr>    <int>   <int> <dbl>   <dbl> <dbl>     <dbl>          <dbl>
+#> 1 3     hp          15       0 176.    182.   NA   NA                 158. 
+#> 2 4     hp          12       0  89.5    93.7 -88.6  0.000146           60.3
+#> 3 5     hp           5       0 196.    219.   36.7  0.199             167. 
 #> # ℹ 9 more variables: Media_w_Max_95 <dbl>, Min <dbl>, Q25 <dbl>,
-#> #   Mediana <dbl>, Q75 <dbl>, Max <dbl>, sd <dbl>, sd_w <dbl>, hist <chr>
+#> #   Mediana <dbl>, Q75 <dbl>, Max <dbl>, sd <dbl>, sd.w <dbl>, hist <chr>
 #> 
 #> 
 #> $Categoricas
 #> $Categoricas$cyl
-#> # A tibble: 3 × 19
-#>   cyl    `3_p`  `4_p` `5_p` `3_p_Min_95` `4_p_Min_95` `5_p_Min_95` `3_p_Max_95`
-#>   <chr>  <dbl>  <dbl> <dbl>        <dbl>        <dbl>        <dbl>        <dbl>
-#> 1 8     0.842  NA     0.508       0.728        NA           0.268         0.914
-#> 2 4     0.0428  0.605 0.280       0.0134        0.432       0.111         0.129
-#> 3 6     0.115   0.395 0.212       0.0558        0.245       0.0724        0.221
-#> # ℹ 11 more variables: `4_p_Max_95` <dbl>, `5_p_Max_95` <dbl>, `3_n` <dbl>,
-#> #   `4_n` <dbl>, `5_n` <dbl>, `3_n_sinW` <int>, `4_n_sinW` <int>,
-#> #   `5_n_sinW` <int>, `3_sd` <dbl>, `4_sd` <dbl>, `5_sd` <dbl>
+#> # A tibble: 3 × 25
+#>   cyl   gear_p_3_p gear_p_4_p gear_p_5_p `3_p_Min_95` `4_p_Min_95` `5_p_Min_95`
+#>   <chr>      <dbl>      <dbl>      <dbl>        <dbl>        <dbl>        <dbl>
+#> 1 8         0.843      NA          0.512      0.589         NA           0.170 
+#> 2 4         0.0422      0.606      0.278      0.00517        0.332       0.0605
+#> 3 6         0.114       0.394      0.210      0.0284         0.174       0.0375
+#> # ℹ 18 more variables: `3_p_Max_95` <dbl>, `4_p_Max_95` <dbl>,
+#> #   `5_p_Max_95` <dbl>, `3_n` <dbl>, `4_n` <dbl>, `5_n` <dbl>, `3_sd` <dbl>,
+#> #   `4_sd` <dbl>, `5_sd` <dbl>, `3_p_sinW` <dbl>, `4_p_sinW` <dbl>,
+#> #   `5_p_sinW` <dbl>, `3_n_sinW` <int>, `4_n_sinW` <int>, `5_n_sinW` <int>,
+#> #   Chi2 <dbl>, p_value <dbl>, VCramer <dbl>
 #> 
 #> 
 #> attr(,"vars_grupo")
@@ -163,8 +188,29 @@ print(resultados_agrupados)
 
 resultados_agrupados_automaticos <- generar_descriptivos_agrupados( 
   datos = mtcars,
-  vars_grupo = 'cyl'
-  )
+  vars_grupo = 'cyl', 
+  selecc_vars_auto = TRUE
+)
+#> Joining with `by = join_by(cyl)`
+#> Joining with `by = join_by(cyl)`
+#> Joining with `by = join_by(cyl)`
+#> Joining with `by = join_by(cyl)`
+#> Joining with `by = join_by(cyl)`
+#> Joining with `by = join_by(cyl)`
+#> Joining with `by = join_by(cyl)`
+#> Joining with `by = join_by(cyl)`
+#> Joining with `by = join_by(cyl)`
+#> Joining with `by = join_by(cyl)`
+#> Joining with `by = join_by(cyl)`
+#> Joining with `by = join_by(cyl)`
+#> Joining with `by = join_by(cyl)`
+#> Joining with `by = join_by(cyl)`
+#> Joining with `by = join_by(cyl)`
+#> Joining with `by = join_by(cyl)`
+#> Joining with `by = join_by(cyl)`
+#> Joining with `by = join_by(cyl)`
+#> Joining with `by = join_by(cyl)`
+#> Joining with `by = join_by(cyl)`
 #> Descriptivos agrupados numéricos generados
 
 # Formatear los descriptivos univariados para exportar a Excel en 1 única hoja

@@ -5,7 +5,7 @@
 #' aquellas variables categóricas que coincidan con las de agrupación.
 #'
 #' @param datos Data frame o tibble con las variables a analizar.
-#' @param vars_categoricas Vector de nombres de variables categóricas. Si es \code{NULL} y \code{select_vars_auto} es
+#' @param vars_categoricas Vector de nombres de variables categóricas. Si es \code{NULL} y \code{selecc_vars_auto} es
 #'   \code{TRUE}, se seleccionan automáticamente las variables de tipo carácter o factor.
 #' @param vars_grupo Vector de nombres de variables de agrupación.
 #' @param var_peso Nombre (carácter) de la variable de pesos. Por defecto es \code{NULL}.
@@ -15,14 +15,14 @@
 #' @param nivel_confianza Nivel de confianza para los intervalos. Por defecto es \code{0.95}.
 #' @param estrategia_valoresPerdidos Estrategia para manejar faltantes: \code{"E"} (eliminar) o \code{"A"} (agrupar en "NS/NC").
 #'   Por defecto es \code{c("E", "A")}, lo que selecciona \code{"E"}.
-#' @param select_vars_auto Lógico. Si es \code{TRUE} y \code{vars_categoricas} es \code{NULL}, se seleccionan
+#' @param selecc_vars_auto Lógico. Si es \code{TRUE} y \code{vars_categoricas} es \code{NULL}, se seleccionan
 #'   automáticamente las variables de tipo carácter o factor. Por defecto es \code{TRUE}.
 #'
 #' @return Lista de data frames, uno por cada variable categórica analizada, nombrados según dicha variable.
 #'
 #' @details La función:
 #' \enumerate{
-#'   \item Selecciona las variables categóricas a analizar (si no se especifican y \code{select_vars_auto} es \code{TRUE}).
+#'   \item Selecciona las variables categóricas a analizar (si no se especifican y \code{selecc_vars_auto} es \code{TRUE}).
 #'   \item Elimina de \code{vars_categoricas} aquellas variables que coincidan con las de agrupación.
 #'   \item Itera sobre cada variable categórica, aplicando \code{generar_descriptivo_categorico} y retorna una lista
 #'      con los resultados.
@@ -40,7 +40,7 @@
 #'                   variable_pivot = "var_grupo",
 #'                   nivel_confianza = 0.95,
 #'                   estrategia_valoresPerdidos = "E",
-#'                   select_vars_auto = FALSE
+#'                   selecc_vars_auto = FALSE
 #'                 )
 #' }
 #'
@@ -58,12 +58,13 @@ generar_descriptivos_categoricos <- function(
     variable_pivot = c("var_grupo", "var_categorica"),
     nivel_confianza = 0.95,
     estrategia_valoresPerdidos = c("E", "A"),
-    select_vars_auto = TRUE
+    selecc_vars_auto = TRUE
 ) {
   # Seleccionar automáticamente variables categóricas si no se especifica ninguna
-  if (is.null(vars_categoricas) && select_vars_auto) {
+  if (is.null(vars_categoricas) && selecc_vars_auto) {
     vars_categoricas <- datos %>%
       select_if(\(x) is.character(x) || is.factor(x)) %>%
+      select(-any_of(c(vars_grupo,var_peso)) ) %>%
       colnames()
   }
 
