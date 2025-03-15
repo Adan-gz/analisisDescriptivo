@@ -59,6 +59,8 @@
 #' @export
 generar_hoja_excel_descriptivos <- function(
     tablas_descriptivos,
+    concatenar = TRUE,
+    añadir_titulos = TRUE,
     # tablas_descriptivos_numericos = NULL,
     # tablas_descriptivos_categoricos = NULL,
     precision_num = 0.1,
@@ -114,11 +116,16 @@ generar_hoja_excel_descriptivos <- function(
           )
       }
     )
-    # Agregar encabezado a la sección numérica
-    univ_num <- append(
-      list(tibble("DESCRIPTIVOS - VARIABLES NUMÉRICAS" = "")),
-      list(univ_num)
-    )
+    if( añadir_titulos ){
+      # Agregar encabezado a la sección numérica
+      univ_num <- append(
+        list(tibble("DESCRIPTIVOS - VARIABLES NUMÉRICAS" = "")),
+        list(univ_num)
+      )
+    }else {
+      univ_num <- list(univ_num)
+    }
+
   }
 
   # Si existen descriptivos categóricos, aplicar formateo a cada data frame
@@ -184,15 +191,24 @@ generar_hoja_excel_descriptivos <- function(
 
     # Asegurar que 'univ_cat' sea una lista y agregar encabezado a la sección categórica
     if (!is.list(univ_cat)) univ_cat <- list(univ_cat)
-    univ_cat <- append(
-      list(tibble("DESCRIPTIVOS - VARIABLES CATEGÓRICAS" = "")),
-      univ_cat
-    )
+    if( añadir_titulos ){
+      univ_cat <- append(
+        list(tibble("DESCRIPTIVOS - VARIABLES CATEGÓRICAS" = "")),
+        univ_cat
+      )
+    }
+
+
   }
 
-  # Combinar las secciones numérica y categórica
-  out <- append(univ_num, univ_cat)
+  if( concatenar ){
+    # Combinar las secciones numérica y categórica
+    out <- append(univ_num, univ_cat)
+    # Concatenar todas las tablas en un único data frame listo para Excel
+    return(concatenar_tablas_excel(out))
+  } else {
+    return( list('Numericas'=univ_num,'Categoricas'=univ_cat) )
+  }
 
-  # Concatenar todas las tablas en un único data frame listo para Excel
-  concatenar_tablas_excel(out)
+
 }

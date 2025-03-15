@@ -6,6 +6,8 @@
 \usage{
 generar_hoja_excel_descriptivos(
   tablas_descriptivos,
+  concatenar = TRUE,
+  añadir_titulos = TRUE,
   precision_num = 0.1,
   escala_num = 1,
   sufijo_num = "",
