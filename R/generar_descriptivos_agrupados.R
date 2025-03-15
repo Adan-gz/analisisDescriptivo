@@ -61,7 +61,8 @@ generar_descriptivos_agrupados <- function(
     variable_pivot = c("var_grupo", "var_categorica"),
     estrategia_valoresPerdidos = c("E", "A"),
     digits = 0.1,
-    return_df = FALSE
+    return_df = FALSE,
+    simplificar_output = TRUE
 ) {
   # Inicializar resultados para descriptivos numéricos y categóricos
   descriptivos_num <- NULL
@@ -88,7 +89,8 @@ generar_descriptivos_agrupados <- function(
       pivot = pivot,
       variable_pivot = variable_pivot,
       nivel_confianza = nivel_confianza,
-      estrategia_valoresPerdidos = estrategia_valoresPerdidos
+      estrategia_valoresPerdidos = estrategia_valoresPerdidos,
+      simplificar_output = simplificar_output
     )
     message("Descriptivos agrupados categóricos generados")
   }

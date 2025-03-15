@@ -13,7 +13,8 @@ generar_descriptivos_categoricos(
   variable_pivot = c("var_grupo", "var_categorica"),
   nivel_confianza = 0.95,
   estrategia_valoresPerdidos = c("E", "A"),
-  selecc_vars_auto = TRUE
+  selecc_vars_auto = TRUE,
+  simplificar_output = TRUE
 )
 }
 \arguments{

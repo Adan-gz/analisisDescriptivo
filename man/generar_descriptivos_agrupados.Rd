@@ -16,7 +16,8 @@ generar_descriptivos_agrupados(
   variable_pivot = c("var_grupo", "var_categorica"),
   estrategia_valoresPerdidos = c("E", "A"),
   digits = 0.1,
-  return_df = FALSE
+  return_df = FALSE,
+  simplificar_output = TRUE
 )
 }
 \arguments{

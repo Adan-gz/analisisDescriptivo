@@ -58,7 +58,8 @@ generar_descriptivos_categoricos <- function(
     variable_pivot = c("var_grupo", "var_categorica"),
     nivel_confianza = 0.95,
     estrategia_valoresPerdidos = c("E", "A"),
-    selecc_vars_auto = TRUE
+    selecc_vars_auto = TRUE,
+    simplificar_output = TRUE
 ) {
   # Seleccionar automáticamente variables categóricas si no se especifica ninguna
   if (is.null(vars_categoricas) && selecc_vars_auto) {
@@ -85,7 +86,8 @@ generar_descriptivos_categoricos <- function(
       pivot = pivot,
       variable_pivot = variable_pivot,
       nivel_confianza = nivel_confianza,
-      estrategia_valoresPerdidos = estrategia_valoresPerdidos
+      estrategia_valoresPerdidos = estrategia_valoresPerdidos,
+      simplificar_output = simplificar_output
     )
   )
 

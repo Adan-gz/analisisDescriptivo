@@ -12,7 +12,8 @@ generar_descriptivo_categorico(
   pivot = TRUE,
   variable_pivot = c("var_grupo", "var_categorica"),
   nivel_confianza = 0.95,
-  estrategia_valoresPerdidos = c("E", "A")
+  estrategia_valoresPerdidos = c("E", "A"),
+  simplificar_output = TRUE
 )
 }
 \arguments{
@@ -36,6 +37,9 @@ utilizando la variable de agrupación o la variable categórica, según lo defin
 \item{estrategia_valoresPerdidos}{Estrategia para el manejo de valores faltantes en la variable categórica. Se debe elegir
 \code{"E"} para eliminar o \code{"A"} para agrupar (NS/NC). Por defecto es \code{c("E", "A")}, de modo que se selecciona
 \code{"E"}.}
+
+\item{simplificar_output}{Por defecto \code{TRUE}. Cuando se calculan descriptivos agrupados reduce la cantidad de información
+exportada en caso de pivotar.}
 }
 \value{
 Data frame con los descriptivos calculados para la variable categórica, que incluye:

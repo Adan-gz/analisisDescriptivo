@@ -17,6 +17,8 @@
 #' @param estrategia_valoresPerdidos Estrategia para el manejo de valores faltantes en la variable categórica. Se debe elegir
 #'   \code{"E"} para eliminar o \code{"A"} para agrupar (NS/NC). Por defecto es \code{c("E", "A")}, de modo que se selecciona
 #'   \code{"E"}.
+#' @param simplificar_output Por defecto \code{TRUE}. Cuando se calculan descriptivos agrupados reduce la cantidad de información
+#' exportada en caso de pivotar.
 #'
 #' @return Data frame con los descriptivos calculados para la variable categórica, que incluye:
 #' \itemize{
@@ -88,7 +90,8 @@ generar_descriptivo_categorico <- function(
     pivot = TRUE,
     variable_pivot = c("var_grupo", "var_categorica"),
     nivel_confianza = 0.95,
-    estrategia_valoresPerdidos = c("E", "A")
+    estrategia_valoresPerdidos = c("E", "A"),
+    simplificar_output = TRUE
 ) {
   # Convertir la variable categórica a carácter si es numérica
   if (is.numeric(datos[[var_categorica]])) {
@@ -192,25 +195,36 @@ generar_descriptivo_categorico <- function(
       variable_pivot <- vars_grupo
     }
 
+    valores_pivot_init <- c("p", "p_Min", "p_Max", "n","sd","p_sinW", "n_sinW", 'N','N_eff')
     # Definir los valores a pivotear
-    valores_pivot <- c("p", "p_Min", "p_Max", "n","sd","p_sinW", "n_sinW", 'N','N_eff')
+    if( simplificar_output ){
+
+      valores_pivot <- c("p", "n","p_sinW")
+      eliminar_variables <- setdiff(valores_pivot_init,valores_pivot)
+      salida <- salida %>% select(-any_of(eliminar_variables))
+
+    } else {
+      valores_pivot <- Definir
+    }
 
     salida <- salida %>%
       ungroup() %>%
       tidyr::pivot_wider(
-        names_from = all_of(variable_pivot),
+        names_from  = all_of(variable_pivot),
         values_from = any_of(valores_pivot),
         names_glue = "{.name}_{.value}"
-      ) %>%
-      # añado nombre de variable alas primeras columnas para identificar el nombrede la variable
-      rename_with(
-        .cols = ends_with('_p'),
-        .fn = \(x) paste0(variable_pivot,'_',x)
       )
 
     # Ajustar nombres de columnas eliminando prefijos no deseados
     # return(colnames(salida))
     colnames(salida) <- gsub("^(p_Min_|p_Max_|sd_|p_sinW_|n_sinW_|n_|p_|N_)", "", colnames(salida))
+
+    salida <- salida %>%
+      # añado nombre de variable alas primeras columnas para identificar el nombrede la variable
+      rename_with(
+        .cols = ends_with('_p'),
+        .fn = \(x) paste0(variable_pivot,'_',x)
+      )
   }
 
   # AÑADIMOS SI HAY DIFERENCIAS SIGNIFICATIVSA Y LA V DE CRAMER
@@ -228,13 +242,15 @@ generar_descriptivo_categorico <- function(
   }
 
   # Añadir sufijo a los nombres de los intervalos según el nivel de confianza (por ejemplo, 95 para 0.95)
-  chr_nivel <- as.character(stringr::str_split_i(as.character(nivel_confianza), "\\.", 2))
-  salida <- salida %>%
-    rename_with(
-      .cols = contains(c("_Min", "_Max")),
-      .fn = \(x) paste0(x, "_", chr_nivel)
-    )
-
+  if( !simplificar_output ){
+    # en caso de no haber simplificado
+    chr_nivel <- as.character(stringr::str_split_i(as.character(nivel_confianza), "\\.", 2))
+    salida <- salida %>%
+      rename_with(
+        .cols = contains(c("_Min", "_Max")),
+        .fn = \(x) paste0(x, "_", chr_nivel)
+      )
+  }
   salida
 }
 
