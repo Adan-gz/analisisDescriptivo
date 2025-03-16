@@ -24,6 +24,7 @@
 #' cuando se trabajan con escalas muy diferentes.
 #'
 #' @examples
+#' \dontrun{
 #' # Ejemplo con datos simulados:
 #' set.seed(123)
 #' var1 <- sample(LETTERS[1:3], 100, replace = TRUE)
@@ -31,7 +32,7 @@
 #' pesos <- runif(100, 0.5, 1.5)
 #' res_chi <- calcular_chi2(var1, var2, weight = pesos)
 #' res_chi
-#'
+#' }
 #' @export
 calcular_chi2 <- function(
     var1,

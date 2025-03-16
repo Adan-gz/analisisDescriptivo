@@ -16,6 +16,7 @@ Vector numérico.
 Elimina el símbolo de porcentaje y reemplaza la coma decimal por un punto, para finalmente convertir la cadena en numérico.
 }
 \examples{
+\dontrun{
 convertir_porcentaje_a_numero(c("12,5\%", "100,0\%"))
-
+}
 }

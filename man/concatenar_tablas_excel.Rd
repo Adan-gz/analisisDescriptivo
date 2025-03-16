@@ -37,6 +37,9 @@ La función itera sobre cada tabla en \code{lista_tablas} y, si \code{ajustar} e
 formatea la tabla mediante \code{preparar_tabla_excel}. Luego, añade filas vacías (según \code{n_filas_vacias})
 para separar visualmente cada tabla. Finalmente, concatena todas las tablas en un único data frame.
 }
+\note{
+\strong{Deprecated}  Esta función está obsoleta y será eliminada en futuras actualizaciones. Utiliza las funciones \verb{crear_Excel_*()} en su lugar.
+}
 \examples{
 \dontrun{
   tabla1 <- tibble(a = 1:3, b = 4:6)

@@ -26,12 +26,15 @@
 #' @importFrom dplyr bind_rows
 #' @importFrom tibble as_tibble
 #'
+#' @note **Deprecated**  Esta función está obsoleta y será eliminada en futuras actualizaciones. Utiliza las funciones `crear_Excel_*()` en su lugar.
 #' @export
 concatenar_tablas_excel <- function(lista_tablas,
                                     n_filas_vacias = 2,
                                     ajustar = TRUE,
                                     ajustar_proporciones = NULL,
                                     precision = 0.1) {
+  .Deprecated(new = 'crear_Excel_*')
+
   # Si se pasa un único data frame, lo encapsula en una lista
   if (is.data.frame(lista_tablas)) {
     lista_tablas <- list(lista_tablas)

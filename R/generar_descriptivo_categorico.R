@@ -50,6 +50,8 @@
 #' \dontrun{
 #'   library(dplyr)
 #'   # Sin agrupación y sin pesos
+#'   mtcars$cyl <- factor(mtcars$cyl)
+#'   mtcars$vs <- factor(mtcars$vs)
 #'   resultado <- generar_descriptivo_categorico(
 #'                  datos = mtcars,
 #'                  var_categorica = "cyl",
@@ -175,7 +177,7 @@ generar_descriptivo_categorico <- function(
     p_Max = intervalo_confianza_pWilson(p = p, N = N_eff, nivel_confianza = nivel_confianza, limite = "superior"),
     .after = p
   ) %>%
-    select(-N_eff) %>%
+    # select(-N_eff) %>%
     relocate(sd, .after = p_Max)
 
   # Ordenar los resultados: descendente si la variable es de tipo carácter, por levels si es factor
@@ -204,7 +206,7 @@ generar_descriptivo_categorico <- function(
       salida <- salida %>% select(-any_of(eliminar_variables))
 
     } else {
-      valores_pivot <- Definir
+      valores_pivot <- valores_pivot_init
     }
 
     salida <- salida %>%
@@ -217,7 +219,7 @@ generar_descriptivo_categorico <- function(
 
     # Ajustar nombres de columnas eliminando prefijos no deseados
     # return(colnames(salida))
-    colnames(salida) <- gsub("^(p_Min_|p_Max_|sd_|p_sinW_|n_sinW_|n_|p_|N_)", "", colnames(salida))
+    colnames(salida) <- gsub("^(p_Min_|p_Max_|sd_|p_sinW_|N_eff_|n_sinW_|n_|p_|N_)", "", colnames(salida))
 
     salida <- salida %>%
       # añado nombre de variable alas primeras columnas para identificar el nombrede la variable
@@ -251,6 +253,10 @@ generar_descriptivo_categorico <- function(
         .fn = \(x) paste0(x, "_", chr_nivel)
       )
   }
+
+  attr(salida,'tipo_tabla') <- 'categorica'
+  attr(salida,'vars_grupo') <- !is.null(vars_grupo)
+
   salida
 }
 

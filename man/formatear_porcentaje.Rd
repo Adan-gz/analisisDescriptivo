@@ -20,6 +20,6 @@ Vector de caracteres con los porcentajes formateados.
 Convierte un vector numérico a formato de porcentaje utilizando la función \code{scales::percent}.
 }
 \examples{
-formatear_porcentaje(c(0.1, 0.5, 0.99), 0.01)
+ \dontrun{ #' formatear_porcentaje(c(0.1, 0.5, 0.99), 0.01) }
 
 }

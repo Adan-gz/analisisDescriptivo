@@ -18,6 +18,8 @@
 #' @param digits Valor de precisión para formatear los descriptivos numéricos. Por defecto \code{0.1}.
 #' @param return_df Lógico. Si es \code{TRUE}, se retorna un único data frame combinando los descriptivos numéricos; si es \code{FALSE},
 #'   se retorna una lista. Por defecto \code{FALSE}.
+#' @param simplificar_output Por defecto \code{TRUE}. Cuando se calculan descriptivos agrupados reduce la cantidad de información
+#' exportada en caso de pivotar.
 #'
 #' @return Una lista con dos elementos:
 #'   \itemize{

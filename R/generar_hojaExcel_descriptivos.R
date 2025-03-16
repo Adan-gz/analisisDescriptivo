@@ -6,6 +6,8 @@
 #' en un único data frame.
 #'
 #' @param tablas_descriptivos Lista nombrada con los descriptivos univariados, que debe contener los elementos \code{Numericas} y \code{Categoricas}.
+#' @param concatenar Por defecto \code{TRUE}. Concatena las tablas para elaborar 1 único dataframe para exportar a excel.
+#' @param añadir_titulos Por defecto \code{TRUE}. Añade títulos a las tablas.
 #' @param precision_num Precisión para formatear los números. Por defecto es \code{0.1}.
 #' @param escala_num Factor de escala para los números. Por defecto es \code{1}.
 #' @param sufijo_num Sufijo a añadir a los números. Por defecto es cadena vacía.
@@ -56,6 +58,7 @@
 #' @importFrom purrr map map_df
 #' @importFrom tibble tibble
 #'
+#' @note **Deprecated** Esta función está obsoleta y será eliminada en futuras actualizaciones. Utiliza las funciones `crear_Excel_*()` en su lugar.
 #' @export
 generar_hoja_excel_descriptivos <- function(
     tablas_descriptivos,
@@ -78,7 +81,7 @@ generar_hoja_excel_descriptivos <- function(
 
   # univ_num <- if (!is.null(tablas_descriptivos)) tablas_descriptivos$Numericas else tablas_descriptivos_numericos
   # univ_cat <- if (!is.null(tablas_descriptivos)) tablas_descriptivos$Categoricas else tablas_descriptivos_categoricos
-
+  .Deprecated(new = 'crear_Excel_*')
 
   # Extraer descriptivos numéricos y categóricos de la lista
   univ_num <- tablas_descriptivos$Numericas

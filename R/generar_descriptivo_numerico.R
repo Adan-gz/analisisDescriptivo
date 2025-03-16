@@ -218,6 +218,9 @@ generar_descriptivo_numerico <- function(
       .fn = function(x){ paste0(x, "_", as.character(stringr::str_split_i(as.character(nivel_confianza), "\\.", 2))) }
     )
 
+  attr(salida,'tipo_tabla') <- 'numerica'
+  attr(salida,'vars_grupo') <- !is.null(vars_grupo)
+
   salida
 }
 

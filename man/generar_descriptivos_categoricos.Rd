@@ -39,6 +39,8 @@ Por defecto es \code{c("E", "A")}, lo que selecciona \code{"E"}.}
 
 \item{selecc_vars_auto}{Lógico. Si es \code{TRUE} y \code{vars_categoricas} es \code{NULL}, se seleccionan
 automáticamente las variables de tipo carácter o factor. Por defecto es \code{TRUE}.}
+
+\item{simplificar_output}{Reducir la cantidad de información que se exporta cuando se utiliza \code{vars_grupo}.}
 }
 \value{
 Lista de data frames, uno por cada variable categórica analizada, nombrados según dicha variable.

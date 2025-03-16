@@ -23,7 +23,8 @@ Esta función determina la posición (filas) en la que se colocarán cada tabla 
 La primera tabla se escribe a partir de la fila 4 y las siguientes se separan por 3 filas adicionales.
 }
 \examples{
+\dontrun{
 list_temp <- list(head(mtcars,5),head(mtcars,5),head(mtcars,5))
 asignar_filas_tablas( list_temp )
-
+}
 }

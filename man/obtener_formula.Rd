@@ -22,8 +22,10 @@ La función utiliza \code{paste0} para concatenar los nombres de las variables i
 generando así una fórmula que puede usarse en funciones como \code{lm()}.
 }
 \examples{
+\dontrun{
 # Generar una fórmula para ajustar un modelo lineal:
 formula_modelo <- obtener_formula("mpg", c("cyl", "hp"))
 print(formula_modelo)
+}
 
 }

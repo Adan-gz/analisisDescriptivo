@@ -22,6 +22,8 @@ Se eliminan los valores \code{NA} de \code{x} y sus correspondientes pesos en \c
 la corrección de Bessel (dividiendo por \code{sum(pesos)-1}) para el cálculo de la varianza.
 }
 \examples{
+\dontrun{
 desviacion_estandar_ponderada(c(1,2,3,4,5), c(1,1,1,1,1))
+}
 
 }

@@ -77,6 +77,8 @@ La función realiza los siguientes pasos:
 \dontrun{
   library(dplyr)
   # Sin agrupación y sin pesos
+  mtcars$cyl <- factor(mtcars$cyl)
+  mtcars$vs <- factor(mtcars$vs)
   resultado <- generar_descriptivo_categorico(
                  datos = mtcars,
                  var_categorica = "cyl",

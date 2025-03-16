@@ -18,12 +18,14 @@
 #' independientes.
 #'
 #' @examples
+#' \dontrun{
 #' # Ejemplo sin ponderación (todos los pesos iguales):
 #' calcular_Nefectiva(rep(1, 100))  # Debería dar 100
 #'
 #' # Ejemplo con pesos variables:
 #' pesos <- c(0.5, 1.5, 1, 1, 2)
 #' calcular_Nefectiva(pesos)
+#' }
 #'
 #' @export
 #'

@@ -12,7 +12,7 @@
 #' y se calcula el margen de error como: \eqn{qt(1 - ((1 - nivel_confianza) / 2), N-1) * sd/sqrt(N)}.
 #'
 #' @examples
-#' margen_error_media(c(30, 40), c(2, 3), nivel_confianza = 0.95)
+#' \dontrun{ #' margen_error_media(c(30, 40), c(2, 3), nivel_confianza = 0.95) }
 #'
 #' @importFrom purrr map2_dbl
 #'

@@ -47,6 +47,9 @@ se seleccionan automáticamente las variables numéricas.}
 
 \item{return_df}{Lógico. Si es \code{TRUE}, se retorna un único data frame combinando los descriptivos numéricos; si es \code{FALSE},
 se retorna una lista. Por defecto \code{FALSE}.}
+
+\item{simplificar_output}{Por defecto \code{TRUE}. Cuando se calculan descriptivos agrupados reduce la cantidad de información
+exportada en caso de pivotar.}
 }
 \value{
 Una lista con dos elementos:

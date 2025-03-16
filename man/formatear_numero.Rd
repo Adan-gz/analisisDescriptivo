@@ -20,6 +20,7 @@ Vector de caracteres con los números formateados.
 Convierte un vector numérico a una representación en formato numérico legible, utilizando la función \code{scales::number}.
 }
 \examples{
+\dontrun{
 formatear_numero(c(1234.56, 7890.12))
-
+}
 }

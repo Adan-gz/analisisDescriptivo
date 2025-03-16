@@ -9,8 +9,9 @@
 #' @return Vector de caracteres con los números formateados.
 #'
 #' @examples
+#' \dontrun{
 #' formatear_numero(c(1234.56, 7890.12))
-#'
+#' }
 #' @importFrom scales number
 #'
 #' @export

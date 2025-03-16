@@ -35,10 +35,14 @@
 #' @importFrom tibble as_tibble
 #' @importFrom scales percent
 #'
+#' @note **Deprecated** Esta función está obsoleta y será eliminada en futuras actualizaciones. Utiliza las funciones `crear_Excel_*()` en su lugar.
 #' @export
 preparar_tabla_excel <- function(datos,
                                  ajustar_proporciones = NULL,
                                  precision = 0.1) {
+
+  .Deprecated(new = 'crear_Excel_*')
+
   # Si se especifica alguna columna para ajustar como proporción, se formatea
   if (!is.null(ajustar_proporciones)) {
     datos <- datos %>%

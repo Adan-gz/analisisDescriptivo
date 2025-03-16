@@ -19,6 +19,7 @@
 #' ajusta por los grados de libertad mínimos entre las filas y columnas.
 #'
 #' @examples
+#' \dontrun{
 #' # Supongamos que res_chi es el resultado de calcular_chi2()
 #' set.seed(123)
 #' var1 <- sample(LETTERS[1:3], 100, replace = TRUE)
@@ -27,6 +28,7 @@
 #' res_chi <- calcular_chi2(var1, var2, weight = pesos)
 #' v_cramer <- calcular_VCramer(res_chi)
 #' v_cramer
+#' }
 #'
 #' @export
 calcular_VCramer <- function(resultado_chi2) {

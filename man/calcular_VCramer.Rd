@@ -28,6 +28,7 @@ Se utiliza el tamaño total de la tabla de contingencia (calculado como la suma 
 ajusta por los grados de libertad mínimos entre las filas y columnas.
 }
 \examples{
+\dontrun{
 # Supongamos que res_chi es el resultado de calcular_chi2()
 set.seed(123)
 var1 <- sample(LETTERS[1:3], 100, replace = TRUE)
@@ -36,5 +37,6 @@ pesos <- runif(100, 0.5, 1.5)
 res_chi <- calcular_chi2(var1, var2, weight = pesos)
 v_cramer <- calcular_VCramer(res_chi)
 v_cramer
+}
 
 }

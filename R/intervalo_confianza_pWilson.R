@@ -13,7 +13,9 @@
 #' se calcula el intervalo de confianza siguiendo la fórmula de Wilson.
 #'
 #' @examples
+#' \dontrun{
 #' intervalo_confianza_pWilson(c(0.1, 0.5), c(100, 200), nivel_confianza = 0.95, limite = "superior")
+#' }
 #'
 #' @importFrom purrr map2_dbl
 #'

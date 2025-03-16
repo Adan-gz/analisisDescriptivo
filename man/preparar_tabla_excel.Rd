@@ -34,6 +34,9 @@ La función realiza los siguientes pasos:
 \item Se une la fila con los nombres originales y la tabla formateada.
 }
 }
+\note{
+\strong{Deprecated} Esta función está obsoleta y será eliminada en futuras actualizaciones. Utiliza las funciones \verb{crear_Excel_*()} en su lugar.
+}
 \examples{
 \dontrun{
   library(dplyr)

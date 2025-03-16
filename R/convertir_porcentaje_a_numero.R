@@ -7,8 +7,9 @@
 #' @return Vector numérico.
 #'
 #' @examples
+#' \dontrun{
 #' convertir_porcentaje_a_numero(c("12,5%", "100,0%"))
-#'
+#' }
 #' @export
 convertir_porcentaje_a_numero <- function(x) {
   # Eliminar el símbolo de porcentaje

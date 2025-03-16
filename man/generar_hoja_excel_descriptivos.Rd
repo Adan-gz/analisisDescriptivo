@@ -24,6 +24,10 @@ generar_hoja_excel_descriptivos(
 \arguments{
 \item{tablas_descriptivos}{Lista nombrada con los descriptivos univariados, que debe contener los elementos \code{Numericas} y \code{Categoricas}.}
 
+\item{concatenar}{Por defecto \code{TRUE}. Concatena las tablas para elaborar 1 único dataframe para exportar a excel.}
+
+\item{añadir_titulos}{Por defecto \code{TRUE}. Añade títulos a las tablas.}
+
 \item{precision_num}{Precisión para formatear los números. Por defecto es \code{0.1}.}
 
 \item{escala_num}{Factor de escala para los números. Por defecto es \code{1}.}
@@ -66,6 +70,9 @@ de si los datos están agrupados, se seleccionan diferentes columnas.
 \item Agrega una fila de encabezado a cada sección (numérica y categórica).
 \item Concatena todas las tablas utilizando la función \code{concatenar_tibbles}.
 }
+}
+\note{
+\strong{Deprecated} Esta función está obsoleta y será eliminada en futuras actualizaciones. Utiliza las funciones \verb{crear_Excel_*()} en su lugar.
 }
 \examples{
 \dontrun{

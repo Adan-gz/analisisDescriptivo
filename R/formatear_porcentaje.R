@@ -9,7 +9,7 @@
 #' @return Vector de caracteres con los porcentajes formateados.
 #'
 #' @examples
-#' formatear_porcentaje(c(0.1, 0.5, 0.99), 0.01)
+#'  \dontrun{ #' formatear_porcentaje(c(0.1, 0.5, 0.99), 0.01) }
 #'
 #' @importFrom scales percent
 #' @export

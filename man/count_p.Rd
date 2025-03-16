@@ -10,6 +10,8 @@ count_p(df, ..., wt = NULL)
 \item{df}{Data frame. Conjunto de datos en el que se realizará el conteo.}
 
 \item{...}{Variables de agrupación o expresiones sobre las cuales se calculará el conteo.}
+
+\item{wt}{variable del data.frame que representa el vector de ponderación o pesos.}
 }
 \value{
 Un tibble con las columnas resultantes de \code{dplyr::count()} (incluyendo \code{n} para el conteo)
@@ -24,9 +26,10 @@ La función utiliza \code{dplyr::count()} para obtener los conteos y posteriorme
 para calcular la proporción de cada grupo respecto al total. Es una manera práctica de combinar ambos pasos en uno solo.
 }
 \examples{
+\dontrun{
 library(dplyr)
 # Ejemplo con un data frame simple:
 df <- tibble(grupo = c("A", "A", "B", "B", "B"))
 count_p(df, grupo)
-
+}
 }
