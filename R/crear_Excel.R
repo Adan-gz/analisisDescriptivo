@@ -94,12 +94,12 @@ crear_Excel <- function(
 
   }
 
-  titulos_principales <- if( is.null(titulos_principales) ) paste0('TÍTULO PRINCIPAL ', 1:length(list_list_tablas))
+  if( is.null(titulos_principales) ) titulos_principales <-  paste0('TÍTULO PRINCIPAL ', 1:length(list_list_tablas))
 
-  nombres_hojas <- if( is.null(nombres_hojas) ) paste0('Hoja ', 1:length(list_list_tablas))
+  if( is.null(nombres_hojas) ) nombres_hojas <-  paste0('Hoja ', 1:length(list_list_tablas))
 
   workbook <- createWorkbook()
-
+  # print(unificar_misma_hoja)
   if( unificar_misma_hoja ){ # genero las hojas
     # creo la hoja y tambien ubico las tablas
     addWorksheet(workbook, sheetName = nombres_hojas[1], gridLines = FALSE)
@@ -176,8 +176,8 @@ crear_Excel <- function(
   }
 
   if (exportar) {
-    nombre_archivo <- if(is.null(nombre_archivo)) 'Excel_analisisDescriptivo_temp'
-    saveWorkbook(workbook, paste0(nombre_archivo, ".xlsx"), overwrite = sobreescribir_archivo)
+    if(is.null(nombre_archivo))  nombre_archivo <- 'Excel_analisisDescriptivo_temp'
+    saveWorkbook(workbook, file = paste0(nombre_archivo, ".xlsx"), overwrite = sobreescribir_archivo)
   }
   workbook
 }
