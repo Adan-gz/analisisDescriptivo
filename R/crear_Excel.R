@@ -51,7 +51,7 @@
 #'    'grupo' = sample(c('A','B'),nrow(.),T),
 #'    'w'=rlnorm(32))
 #'  temp_agruados_num1 <-  generar_descriptivos_agrupados(temp, vars_grupo = 'grupo', return_df = T)
-#'  crear_Excel_variasHojas(temp_agruados_num1, exportar = T)
+#'  crear_Excel(temp_agruados_num1, exportar = T)
 #' }
 #'
 #' @importFrom openxlsx createWorkbook addWorksheet saveWorkbook
