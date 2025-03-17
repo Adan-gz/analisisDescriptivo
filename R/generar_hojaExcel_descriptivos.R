@@ -1,4 +1,4 @@
-#' Formatear descriptivos para hoja de Excel
+#' Formatear descriptivos para hoja de Excel (deprecated)
 #'
 #' Esta función formatea una lista de descriptivos univariados (generada con \code{generar_descriptivos_univariados})
 #' para exportarla a una hoja de Excel. Aplica un formateo numérico a las variables numéricas y un formateo porcentual a

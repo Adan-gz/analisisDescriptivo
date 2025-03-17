@@ -2,7 +2,7 @@
 % Please edit documentation in R/generar_hojaExcel_descriptivos.R
 \name{generar_hoja_excel_descriptivos}
 \alias{generar_hoja_excel_descriptivos}
-\title{Formatear descriptivos para hoja de Excel}
+\title{Formatear descriptivos para hoja de Excel (deprecated)}
 \usage{
 generar_hoja_excel_descriptivos(
   tablas_descriptivos,

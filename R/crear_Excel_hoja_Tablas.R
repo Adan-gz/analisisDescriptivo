@@ -25,7 +25,7 @@
 #' @param exportar Lógico. Si es \code{TRUE}, se guarda el workbook en un archivo Excel. Por defecto es \code{TRUE}.
 #' @param sobreescribir_archivo Lógico. Si es \code{TRUE}, se sobrescribe el archivo de salida en caso de existir. Por defecto es \code{TRUE}.
 #' @param workbook Objeto workbook de \code{openxlsx}. Si es \code{NULL}, se crea un nuevo workbook.
-#'
+#' @param filas_tablas_asignadas Data.frame con la posición de cada tabla. Por defecto \code{NULL}, es de uso interno.
 #' @return Devuelve un objeto workbook de \code{openxlsx} con la hoja y las tablas agregadas.
 #'
 #' @details La función valida que \code{list_tablas} sea una lista y, en caso de que se proporcionen nombres para las tablas (a través de \code{names(list_tablas)}), se incorporan al título de cada tabla.
@@ -53,6 +53,7 @@
 crear_Excel_hoja_Tablas <- function(
     list_tablas,
     titulo_principal = NULL,#"DESCRIPTIVOS UNIVARIADOS",
+    fila_titulo_principal = 1,
     titulos_tablas = NULL,
     nombre_hoja = NULL,
     hoja = 1,
@@ -74,8 +75,8 @@ crear_Excel_hoja_Tablas <- function(
     exportar = TRUE,
     sobreescribir_archivo = TRUE,
 
-    workbook = NULL
-
+    workbook = NULL,
+    filas_tablas_asignadas = NULL
 
 ) {
 
@@ -88,16 +89,22 @@ crear_Excel_hoja_Tablas <- function(
   titulos_tablas <- if( is.null(titulos_tablas) ) paste0('Tabla ', 1:length(list_tablas))
   titulos_tablas <- if(!is.null(names(list_tablas)))paste0(titulos_tablas,'. ', names(list_tablas))
 
-  # Obtengo la posición de cada tabla
-  tablas_posicion <- asignar_filas_tablas(list_tablas)
 
 
+  # genero workbook si no hay
   if (is.null(workbook)) {
     # nombre de la hoja
     nombre_hoja <- if( is.null(nombre_hoja) ) paste0('Hoja ', hoja)
     # Creando el workbook y la hoja
     workbook <- createWorkbook()
     addWorksheet(workbook, sheetName = nombre_hoja, gridLines = FALSE)
+  }
+
+  # Obtengo la posición de cada tabla
+  if ( is.null(filas_tablas_asignadas)  ){
+    tablas_posicion <- asignar_filas_tablas(list_tablas)
+  } else {
+    tablas_posicion <- filas_tablas_asignadas
   }
 
   # Escribir el título principal en la hoja
@@ -108,8 +115,8 @@ crear_Excel_hoja_Tablas <- function(
     fontSize = titulo_principal_tamanyo,
     fontColour = titulo_principal_colorFuente
   )
-  writeData(workbook, sheet = hoja, x = titulo_principal, startRow = 1, startCol = 1)
-  addStyle(wb = workbook, sheet = hoja, rows = 1, cols = 1, style = estilo_titulo_principal)
+  writeData(workbook, sheet = hoja, x = titulo_principal, startRow = fila_titulo_principal, startCol = 1)
+  addStyle(wb = workbook, sheet = hoja, rows = fila_titulo_principal, cols = 1, style = estilo_titulo_principal)
 
   ## GENERAMOS LAS HOJA
   estilo_titulo_tabla <- createStyle(

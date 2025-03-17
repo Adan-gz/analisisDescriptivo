@@ -4,10 +4,12 @@
 \alias{asignar_filas_tablas}
 \title{Asigna filas para la exportación de tablas a Excel}
 \usage{
-asignar_filas_tablas(list_tablas)
+asignar_filas_tablas(list_tablas, primeraFila = 4)
 }
 \arguments{
 \item{list_tablas}{Lista de data.frames que se exportarán.}
+
+\item{primeraFila}{Fila donde comienza la primera tabla. Numeric.}
 }
 \value{
 Un tibble con las siguientes columnas:

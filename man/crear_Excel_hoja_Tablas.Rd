@@ -7,6 +7,7 @@
 crear_Excel_hoja_Tablas(
   list_tablas,
   titulo_principal = NULL,
+  fila_titulo_principal = 1,
   titulos_tablas = NULL,
   nombre_hoja = NULL,
   hoja = 1,
@@ -22,7 +23,8 @@ crear_Excel_hoja_Tablas(
   nombre_archivo = NULL,
   exportar = TRUE,
   sobreescribir_archivo = TRUE,
-  workbook = NULL
+  workbook = NULL,
+  filas_tablas_asignadas = NULL
 )
 }
 \arguments{
@@ -61,6 +63,8 @@ crear_Excel_hoja_Tablas(
 \item{sobreescribir_archivo}{Lógico. Si es \code{TRUE}, se sobrescribe el archivo de salida en caso de existir. Por defecto es \code{TRUE}.}
 
 \item{workbook}{Objeto workbook de \code{openxlsx}. Si es \code{NULL}, se crea un nuevo workbook.}
+
+\item{filas_tablas_asignadas}{Data.frame con la posición de cada tabla. Por defecto \code{NULL}, es de uso interno.}
 }
 \value{
 Devuelve un objeto workbook de \code{openxlsx} con la hoja y las tablas agregadas.

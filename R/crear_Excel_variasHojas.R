@@ -8,6 +8,8 @@
 #'
 #' @param list_list_tablas Lista de listas. Cada elemento de esta lista debe ser, a su vez, una lista de data.frames o tibbles
 #'   que se escribirán en una hoja separada. Si algún elemento es un data.frame, se convertirá en una lista para asegurar la consistencia.
+#' @param unificar_misma_hoja Unificar listas en 1 misma hoja. Por ejemplo, que las tablas de descriptivos numéricos y categóricos, que por defecto
+#' se recogen en 2 listas distintas, aparezcan en la misma hoja. Por defecto \(code){TRUE}.
 #' @param titulos_principales Vector de caracteres. Títulos principales para cada hoja. Si es \code{NULL}, se asignan títulos por defecto.
 #' @param titulos_tablas Lista o vector. Títulos para las tablas de cada hoja. Cada elemento de \code{titulos_tablas} se corresponde
 #'   con el conjunto de tablas de la hoja respectiva.
@@ -54,12 +56,12 @@
 #'
 #' @importFrom openxlsx createWorkbook addWorksheet saveWorkbook
 #' @export
-crear_Excel_variasHojas <- function(
-    list_list_tablas,
+crear_Excel <- function(
+    list_list_tablas,# output de generar_descriptivos_univariados o generar_descriptivos_agrupados
+    unificar_misma_hoja = TRUE,
     titulos_principales = NULL,#"DESCRIPTIVOS UNIVARIADOS",
     titulos_tablas = NULL,
     nombres_hojas = NULL,
-    hoja = 1,
     hay_var_grupo = NULL,
     #formatear: redondear valores y ajustarlo a formato para Excel
     formatear_tabla = TRUE,
@@ -98,19 +100,61 @@ crear_Excel_variasHojas <- function(
 
   workbook <- createWorkbook()
 
+  if( unificar_misma_hoja ){ # genero las hojas
+    # creo la hoja y tambien ubico las tablas
+    addWorksheet(workbook, sheetName = nombres_hojas[1], gridLines = FALSE)
+    # generar las posiciones
+    # genero una lista de tibbles con las posiciones de lsa tablas
+    filas_tablas_asignadas <- vector('list',length = length(list_list_tablas))
+    primera_fila.i <- 4 # primera fila de la tabla, se va ajustando
+    # ubico tambien la fila del titulo principa
+    fila_titulo_principal  <- rep(NA,length = length(list_list_tablas))
+    for (i in seq_len(length(list_list_tablas))) {
+      # Creando el workbook y la hoja
+      filas_tablas_asignadas.i    <- asignar_filas_tablas(list_list_tablas[[i]], primeraFila = primera_fila.i )
+      filas_tablas_asignadas[[i]] <- filas_tablas_asignadas.i
+      # la primera tabla de la lista i se ubica 4 filas despues de la ultima de la tabla i-1
+      primera_fila.i <- filas_tablas_asignadas.i$primeraFila[nrow(filas_tablas_asignadas.i)] +
+        filas_tablas_asignadas.i$Nfilas[nrow(filas_tablas_asignadas.i)] + 4
+      fila_titulo_principal[i] <- filas_tablas_asignadas.i$primeraFila[1] - 2
+    }
+
+
+  } else {
+    # si no unifico, genero varias hojas
+    for (i in seq_len(length(list_list_tablas))) {
+      # Creando el workbook y la hoja
+      addWorksheet(workbook, sheetName = nombres_hojas[i], gridLines = FALSE)
+      filas_tablas_asignadas <- NULL
+    }
+
+  }
+
+  # gEnero el Excel
   for (i in seq_len(length(list_list_tablas))) {
+    # ajustes en funcion de si es misma hoha o no
+    if( unificar_misma_hoja ){
+      hoja <- 1 # el parametro de hoja es constante
+      fila_titulo_principal.i  <- fila_titulo_principal[i]
+      filas_tablas_asignadas.i <- filas_tablas_asignadas[[i]]
 
-    # Creando el workbook y la hoja
-    addWorksheet(workbook, sheetName = nombres_hojas[i], gridLines = FALSE)
-
+    } else {
+      hoja <- i
+      fila_titulo_principal.i <- 1
+      filas_tablas_asignadas.i <- NULL
+    }
 
     crear_Excel_hoja_Tablas(
       workbook         = workbook,
+
+      filas_tablas_asignadas = filas_tablas_asignadas.i,
+      fila_titulo_principal  = fila_titulo_principal.i,
+
       list_tablas      = list_list_tablas[[i]],
       titulo_principal = titulos_principales[i],#"DESCRIPTIVOS UNIVARIADOS",
       titulos_tablas   = titulos_tablas[[i]],
-      nombre_hoja      = nombres_hojas[i],
-      hoja             = i,
+      nombre_hoja      = nombres_hojas.i,
+      hoja             = hoja,
       hay_var_grupo = NULL,
       #formatear: redondear valores y ajustarlo a formato para Excel
       formatear_tabla = TRUE,

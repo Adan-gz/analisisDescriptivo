@@ -2,7 +2,7 @@
 % Please edit documentation in R/concatenar_tablas_excel.R
 \name{concatenar_tablas_excel}
 \alias{concatenar_tablas_excel}
-\title{Concatenar múltiples tablas para exportación a Excel}
+\title{Concatenar múltiples tablas para exportación a Excel (deprecated)}
 \usage{
 concatenar_tablas_excel(
   lista_tablas,

@@ -4,6 +4,7 @@
 #' La primera tabla se escribe a partir de la fila 4 y las siguientes se separan por 3 filas adicionales.
 #'
 #' @param list_tablas Lista de data.frames que se exportarán.
+#' @param primeraFila Fila donde comienza la primera tabla. Numeric.
 #'
 #' @return Un tibble con las siguientes columnas:
 #' \describe{
@@ -22,14 +23,14 @@
 #'
 #'
 #' @export
-asignar_filas_tablas <- function(list_tablas) {
+asignar_filas_tablas <- function(list_tablas, primeraFila = 4) {
 
   if( is.data.frame(list_tablas) ){
     salida <-   data.frame(
       Tablas = 'Tabla_1',
       Nfilas = nrow(list_tablas),
-      primeraFila = 4,
-      tituloFila = 3
+      primeraFila = primeraFila,
+      tituloFila = primeraFila-1
     )
     return(salida)
   }
@@ -40,8 +41,8 @@ asignar_filas_tablas <- function(list_tablas) {
     salida <-   data.frame(
       Tablas = 'Tabla_1',
       Nfilas = nrow(list_tablas[[1]]),
-      primeraFila = 4,
-      tituloFila = 3
+      primeraFila = primeraFila,
+      tituloFila = primeraFila-1
     )
     return(salida)
   }
@@ -50,7 +51,7 @@ asignar_filas_tablas <- function(list_tablas) {
   # Cada tabla va separada por 3 espacios, porque en la fila intermedia va el título.
   n_filas_tablas <- purrr::map_dbl(list_tablas, \(t.i) nrow(t.i) )
 
-  primera_fila_tablas <- c(4, rep(NA, n_tablas - 1))
+  primera_fila_tablas <- c(primeraFila, rep(NA, n_tablas - 1))
 
   for (i in 2:length(primera_fila_tablas)) {
     # primera_fila_tablas[i] <- primera_fila_tablas[i - 1] + n_filas_tablas[i] + 3

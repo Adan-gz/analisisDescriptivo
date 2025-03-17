@@ -1,4 +1,4 @@
-#' Agregar título y nota a un data frame o tibble
+#' Agregar título y nota a un data frame o tibble (deprecated)
 #'
 #' Esta función agrega una columna denominada "Titulo" al inicio del objeto \code{tabla}
 #' si se especifica un título, y añade una fila con la nota al final si se proporciona una.
@@ -26,8 +26,12 @@
 #' @importFrom tibble tibble
 #' @importFrom magrittr %>%
 #'
+#' @note **Deprecated**  Esta función está obsoleta y será eliminada en futuras actualizaciones. Utiliza las funciones `crear_Excel_*()` en su lugar.
+#'
 #' @export
+#'
 agregar_titulo_nota <- function(tabla, titulo = '', nota = '') {
+  .Deprecated(new = 'crear_Excel_*')
   # Asegurarse de que t no esté agrupado para evitar problemas posteriores
   tabla <- ungroup(tabla)
 

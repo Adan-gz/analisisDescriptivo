@@ -1,4 +1,4 @@
-#' Concatenar múltiples tablas para exportación a Excel
+#' Concatenar múltiples tablas para exportación a Excel (deprecated)
 #'
 #' Une varias tablas (tibbles o data frames) en una sola, separándolas mediante filas vacías.
 #' Esto permite exportar muchas tablas en una única hoja de Excel. Opcionalmente, se puede formatear cada

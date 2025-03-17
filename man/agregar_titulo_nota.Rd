@@ -2,7 +2,7 @@
 % Please edit documentation in R/agregar_titulo_nota.R
 \name{agregar_titulo_nota}
 \alias{agregar_titulo_nota}
-\title{Agregar título y nota a un data frame o tibble}
+\title{Agregar título y nota a un data frame o tibble (deprecated)}
 \usage{
 agregar_titulo_nota(tabla, titulo = "", nota = "")
 }
@@ -25,6 +25,9 @@ La función desagrupa el objeto \code{tabla} para evitar problemas de agrupació
 provee un título, se crea una nueva columna llamada "Titulo" que se inserta al inicio del data frame;
 si se provee una nota, se agrega como una fila adicional al final. Se asignan atributos al objeto
 resultante para conservar estos valores.
+}
+\note{
+\strong{Deprecated}  Esta función está obsoleta y será eliminada en futuras actualizaciones. Utiliza las funciones \verb{crear_Excel_*()} en su lugar.
 }
 \examples{
 \dontrun{
