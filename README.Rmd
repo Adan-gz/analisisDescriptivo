@@ -127,7 +127,7 @@ workbook <- crear_Excel(
 
 Así se vería:
 
-![](Development/img/Imagen1.png)
+![](img/Imagen1.png)
 
 Si queremos obtener los descriptivos agrupads por `grupo` bastaría con:
 
@@ -158,7 +158,7 @@ crear_Excel(
 
 Y este sería el output (se muestra sólo la segunda hoja):
 
-![](Development/img/Imagen2.png)
+![](img/Imagen2.png)
 
 Únicamente es necesario crear el workbook (`workbook <- crear_Excel()`) la primera vez. Las siguientes al llamar la función `crear_Excel()` ya se actualiza el objeto creado de forma automática.
 
