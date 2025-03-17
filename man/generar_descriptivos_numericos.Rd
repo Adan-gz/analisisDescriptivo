@@ -11,7 +11,7 @@ generar_descriptivos_numericos(
   var_peso = NULL,
   digits = 0.1,
   nivel_confianza = 0.95,
-  return_df = FALSE,
+  unificar_1tabla = FALSE,
   selecc_vars_auto = TRUE
 )
 }
@@ -29,13 +29,13 @@ generar_descriptivos_numericos(
 
 \item{nivel_confianza}{Nivel de confianza para el cálculo de intervalos (por defecto \code{0.95}).}
 
-\item{return_df}{Lógico. Si es \code{TRUE}, se retorna un único data frame combinando todos los descriptivos; de lo contrario,
+\item{unificar_1tabla}{Lógico. Si es \code{TRUE}, se retorna un único data frame combinando todos los descriptivos; de lo contrario,
 se retorna una lista de data frames.}
 
 \item{selecc_vars_auto}{Lógico. Si es \code{TRUE} y \code{vars_numericas} es \code{NULL}, se seleccionan automáticamente las variables numéricas.}
 }
 \value{
-Lista de data frames, uno por cada variable numérica analizada, o un data frame único si \code{return_df} es \code{TRUE}.
+Lista de data frames, uno por cada variable numérica analizada, o un data frame único si \code{unificar_1tabla} es \code{TRUE}.
 }
 \description{
 Calcula estadísticas descriptivas para múltiples variables numéricas de un data frame o tibble,
@@ -63,7 +63,7 @@ La función:
   resumen_df <- generar_descriptivos_numericos(
                   datos = mtcars,
                   vars_numericas = c("mpg", "hp"),
-                  return_df = TRUE
+                  unificar_1tabla = TRUE
                 )
 }
 

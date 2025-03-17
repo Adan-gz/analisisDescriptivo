@@ -4,19 +4,19 @@
 #' Si no se especifican las variables, se seleccionan automáticamente según su clase.
 #'
 #' @param datos Data frame o tibble con los datos a analizar.
-#' @param vars_categoricas Vector de nombres de variables categóricas. Si es \code{NULL} y \code{select_vars_auto} es \code{TRUE},
+#' @param vars_categoricas Vector de nombres de variables categóricas. Si es \code{NULL} y \code{selecc_vars_auto} es \code{TRUE},
 #'   se seleccionan automáticamente las variables de tipo carácter o factor.
-#' @param vars_numericas Vector de nombres de variables numéricas. Si es \code{NULL} y \code{select_vars_auto} es \code{TRUE},
+#' @param vars_numericas Vector de nombres de variables numéricas. Si es \code{NULL} y \code{selecc_vars_auto} es \code{TRUE},
 #'   se seleccionan automáticamente las variables numéricas.
 #' @param var_peso Nombre de la variable de peso, si se desea ponderar los cálculos. Por defecto \code{NULL}.
 #' @param nivel_confianza Nivel de confianza para los intervalos. Por defecto \code{0.95}.
-#' @param select_vars_auto Lógico. Si es \code{TRUE}, se seleccionan automáticamente las variables si no se especifican. Por defecto \code{TRUE}.
+#' @param selecc_vars_auto Lógico. Si es \code{TRUE}, se seleccionan automáticamente las variables si no se especifican. Por defecto \code{TRUE}.
 #' @param pivot Lógico. Si es \code{TRUE}, se pivota la salida de variables categóricas a formato ancho (solo si los datos están agrupados). Por defecto \code{TRUE}.
 #' @param variable_pivot Vector de caracteres que indica la variable a utilizar para pivotear: \code{"var_grupo"} o \code{"var_categorica"}. Por defecto \code{"var_grupo"}.
 #' @param estrategia_valoresPerdidos Estrategia para el manejo de valores faltantes en variables categóricas: \code{"E"} (eliminar) o \code{"A"} (agrupar en "NS/NC"). Por defecto \code{"E")}.
 #' @param digits Valor de precisión para formatear los descriptivos numéricos. Por defecto \code{0.1}.
-#' @param return_df Lógico. Si es \code{TRUE}, se retorna un único data frame combinando los descriptivos numéricos; si es \code{FALSE},
-#'   se retorna una lista. Por defecto \code{FALSE}.
+#' @param num_unificar_1tabla Lógico. Si es \code{TRUE}, se retorna un único data frame combinando los descriptivos numéricos; si es \code{FALSE},
+#'   se retorna una lista. Por defecto \code{FALSE}. Sólo para las numéricas
 #'
 #' @return Una lista con dos elementos:
 #'   \itemize{
@@ -39,7 +39,7 @@
 #'                   variable_pivot = "var_grupo",
 #'                   estrategia_valoresPerdidos = "E",
 #'                   digits = 0.1,
-#'                   return_df = FALSE
+#'                   num_unificar_1tabla = FALSE
 #'                 )
 #' }
 #'
@@ -54,22 +54,22 @@ generar_descriptivos_univariados <- function(
     vars_numericas = NULL,
     var_peso = NULL,
     nivel_confianza = 0.95,
-    select_vars_auto = TRUE,
+    selecc_vars_auto = TRUE,
     pivot = TRUE,
     variable_pivot = c("var_grupo", "var_categorica"),
     estrategia_valoresPerdidos = c("E", "A"),
     digits = 0.1,
-    return_df = FALSE
+    num_unificar_1tabla = FALSE
 ) {
   # Inicializar resultados para descriptivos numéricos y categóricos
   descriptivos_num <- NULL
   descriptivos_cat <- NULL
 
   # Seleccionar automáticamente variables numéricas y categóricas si no se especifican
-  if (is.null(vars_numericas) && select_vars_auto) {
+  if (is.null(vars_numericas) && selecc_vars_auto) {
     vars_numericas <- datos %>% select_if(is.numeric) %>% colnames()
   }
-  if (is.null(vars_categoricas) && select_vars_auto) {
+  if (is.null(vars_categoricas) && selecc_vars_auto) {
     vars_categoricas <- datos %>% select_if(~ is.character(.) || is.factor(.)) %>% colnames()
   }
 
@@ -95,7 +95,7 @@ generar_descriptivos_univariados <- function(
       var_peso = var_peso,
       digits = digits,
       nivel_confianza = nivel_confianza,
-      return_df = return_df
+      unificar_1tabla = num_unificar_1tabla
     )
     message("Descriptivos univariados numéricos generados")
   }

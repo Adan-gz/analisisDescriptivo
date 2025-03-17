@@ -175,6 +175,7 @@ generar_descriptivo_categorico <- function(
 
     p_Min = intervalo_confianza_pWilson(p = p, N = N_eff, nivel_confianza = nivel_confianza, limite = "inferior"),
     p_Max = intervalo_confianza_pWilson(p = p, N = N_eff, nivel_confianza = nivel_confianza, limite = "superior"),
+    'N_eff' = round(N_eff,1),
     .after = p
   ) %>%
     # select(-N_eff) %>%

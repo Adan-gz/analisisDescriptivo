@@ -16,7 +16,7 @@
 #' @param variable_pivot Vector de caracteres que indica la variable a utilizar para pivotear: \code{"var_grupo"} o \code{"var_categorica"}. Por defecto \code{c("var_grupo", "var_categorica")}.
 #' @param estrategia_valoresPerdidos Estrategia para el manejo de valores faltantes en variables categóricas: \code{"E"} (eliminar) o \code{"A"} (agrupar en "NS/NC"). Por defecto \code{c("E", "A")}.
 #' @param digits Valor de precisión para formatear los descriptivos numéricos. Por defecto \code{0.1}.
-#' @param return_df Lógico. Si es \code{TRUE}, se retorna un único data frame combinando los descriptivos numéricos; si es \code{FALSE},
+#' @param num_unificar_1tabla Lógico. Si es \code{TRUE}, se retorna un único data frame combinando los descriptivos numéricos; si es \code{FALSE},
 #'   se retorna una lista. Por defecto \code{FALSE}.
 #' @param simplificar_output Por defecto \code{TRUE}. Cuando se calculan descriptivos agrupados reduce la cantidad de información
 #' exportada en caso de pivotar.
@@ -43,7 +43,7 @@
 #'                   variable_pivot = "var_grupo",
 #'                   estrategia_valoresPerdidos = "E",
 #'                   digits = 0.1,
-#'                   return_df = FALSE
+#'                   num_unificar_1tabla = FALSE
 #'                 )
 #' }
 #'
@@ -63,7 +63,7 @@ generar_descriptivos_agrupados <- function(
     variable_pivot = c("var_grupo", "var_categorica"),
     estrategia_valoresPerdidos = c("E", "A"),
     digits = 0.1,
-    return_df = FALSE,
+    num_unificar_1tabla = FALSE,
     simplificar_output = TRUE
 ) {
   # Inicializar resultados para descriptivos numéricos y categóricos
@@ -107,7 +107,7 @@ generar_descriptivos_agrupados <- function(
       var_peso = var_peso,
       digits = digits,
       nivel_confianza = nivel_confianza,
-      return_df = return_df
+      unificar_1tabla = num_unificar_1tabla
     )
     message("Descriptivos agrupados numéricos generados")
   }

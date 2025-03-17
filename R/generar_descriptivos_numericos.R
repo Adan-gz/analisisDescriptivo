@@ -11,11 +11,11 @@
 #' @param var_peso Nombre (carácter) de la variable de peso. Si es \code{NULL} (por defecto), se calculan estadísticas sin ponderación.
 #' @param digits Valor de precisión para formateos numéricos (por defecto \code{0.1}).
 #' @param nivel_confianza Nivel de confianza para el cálculo de intervalos (por defecto \code{0.95}).
-#' @param return_df Lógico. Si es \code{TRUE}, se retorna un único data frame combinando todos los descriptivos; de lo contrario,
+#' @param unificar_1tabla Lógico. Si es \code{TRUE}, se retorna un único data frame combinando todos los descriptivos; de lo contrario,
 #'   se retorna una lista de data frames.
 #' @param selecc_vars_auto Lógico. Si es \code{TRUE} y \code{vars_numericas} es \code{NULL}, se seleccionan automáticamente las variables numéricas.
 #'
-#' @return Lista de data frames, uno por cada variable numérica analizada, o un data frame único si \code{return_df} es \code{TRUE}.
+#' @return Lista de data frames, uno por cada variable numérica analizada, o un data frame único si \code{unificar_1tabla} es \code{TRUE}.
 #'
 #' @details
 #' La función:
@@ -38,7 +38,7 @@
 #'   resumen_df <- generar_descriptivos_numericos(
 #'                   datos = mtcars,
 #'                   vars_numericas = c("mpg", "hp"),
-#'                   return_df = TRUE
+#'                   unificar_1tabla = TRUE
 #'                 )
 #' }
 #'
@@ -54,7 +54,7 @@ generar_descriptivos_numericos <- function(
     var_peso = NULL,
     digits = 0.1,
     nivel_confianza = 0.95,
-    return_df = FALSE,
+    unificar_1tabla = FALSE,
     selecc_vars_auto = TRUE
 ) {
   # Seleccionar automáticamente las variables numéricas si no se especifican
@@ -75,7 +75,7 @@ generar_descriptivos_numericos <- function(
   ) %>% purrr::set_names(vars_numericas)
 
   # Si se solicita retornar un data frame único, combinar los resultados
-  if (return_df) {
+  if (unificar_1tabla) {
     return(bind_rows(resultados))
   }
   resultados

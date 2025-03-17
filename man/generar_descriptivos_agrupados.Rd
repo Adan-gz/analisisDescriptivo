@@ -16,7 +16,7 @@ generar_descriptivos_agrupados(
   variable_pivot = c("var_grupo", "var_categorica"),
   estrategia_valoresPerdidos = c("E", "A"),
   digits = 0.1,
-  return_df = FALSE,
+  num_unificar_1tabla = FALSE,
   simplificar_output = TRUE
 )
 }
@@ -45,7 +45,7 @@ se seleccionan automáticamente las variables numéricas.}
 
 \item{digits}{Valor de precisión para formatear los descriptivos numéricos. Por defecto \code{0.1}.}
 
-\item{return_df}{Lógico. Si es \code{TRUE}, se retorna un único data frame combinando los descriptivos numéricos; si es \code{FALSE},
+\item{num_unificar_1tabla}{Lógico. Si es \code{TRUE}, se retorna un único data frame combinando los descriptivos numéricos; si es \code{FALSE},
 se retorna una lista. Por defecto \code{FALSE}.}
 
 \item{simplificar_output}{Por defecto \code{TRUE}. Cuando se calculan descriptivos agrupados reduce la cantidad de información
@@ -78,7 +78,7 @@ considerando las variables de agrupación especificadas.
                   variable_pivot = "var_grupo",
                   estrategia_valoresPerdidos = "E",
                   digits = 0.1,
-                  return_df = FALSE
+                  num_unificar_1tabla = FALSE
                 )
 }
 

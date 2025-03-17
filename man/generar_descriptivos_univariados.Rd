@@ -10,28 +10,28 @@ generar_descriptivos_univariados(
   vars_numericas = NULL,
   var_peso = NULL,
   nivel_confianza = 0.95,
-  select_vars_auto = TRUE,
+  selecc_vars_auto = TRUE,
   pivot = TRUE,
   variable_pivot = c("var_grupo", "var_categorica"),
   estrategia_valoresPerdidos = c("E", "A"),
   digits = 0.1,
-  return_df = FALSE
+  num_unificar_1tabla = FALSE
 )
 }
 \arguments{
 \item{datos}{Data frame o tibble con los datos a analizar.}
 
-\item{vars_categoricas}{Vector de nombres de variables categóricas. Si es \code{NULL} y \code{select_vars_auto} es \code{TRUE},
+\item{vars_categoricas}{Vector de nombres de variables categóricas. Si es \code{NULL} y \code{selecc_vars_auto} es \code{TRUE},
 se seleccionan automáticamente las variables de tipo carácter o factor.}
 
-\item{vars_numericas}{Vector de nombres de variables numéricas. Si es \code{NULL} y \code{select_vars_auto} es \code{TRUE},
+\item{vars_numericas}{Vector de nombres de variables numéricas. Si es \code{NULL} y \code{selecc_vars_auto} es \code{TRUE},
 se seleccionan automáticamente las variables numéricas.}
 
 \item{var_peso}{Nombre de la variable de peso, si se desea ponderar los cálculos. Por defecto \code{NULL}.}
 
 \item{nivel_confianza}{Nivel de confianza para los intervalos. Por defecto \code{0.95}.}
 
-\item{select_vars_auto}{Lógico. Si es \code{TRUE}, se seleccionan automáticamente las variables si no se especifican. Por defecto \code{TRUE}.}
+\item{selecc_vars_auto}{Lógico. Si es \code{TRUE}, se seleccionan automáticamente las variables si no se especifican. Por defecto \code{TRUE}.}
 
 \item{pivot}{Lógico. Si es \code{TRUE}, se pivota la salida de variables categóricas a formato ancho (solo si los datos están agrupados). Por defecto \code{TRUE}.}
 
@@ -41,8 +41,8 @@ se seleccionan automáticamente las variables numéricas.}
 
 \item{digits}{Valor de precisión para formatear los descriptivos numéricos. Por defecto \code{0.1}.}
 
-\item{return_df}{Lógico. Si es \code{TRUE}, se retorna un único data frame combinando los descriptivos numéricos; si es \code{FALSE},
-se retorna una lista. Por defecto \code{FALSE}.}
+\item{num_unificar_1tabla}{Lógico. Si es \code{TRUE}, se retorna un único data frame combinando los descriptivos numéricos; si es \code{FALSE},
+se retorna una lista. Por defecto \code{FALSE}. Sólo para las numéricas}
 }
 \value{
 Una lista con dos elementos:
@@ -70,7 +70,7 @@ La función aplica internamente \code{generar_descriptivos_categoricos} y \code{
                   variable_pivot = "var_grupo",
                   estrategia_valoresPerdidos = "E",
                   digits = 0.1,
-                  return_df = FALSE
+                  num_unificar_1tabla = FALSE
                 )
 }
 
