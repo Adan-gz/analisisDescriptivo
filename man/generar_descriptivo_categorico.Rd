@@ -87,17 +87,17 @@ La función realiza los siguientes pasos:
                )
 
   # Con agrupación y pesos (suponiendo que 'w' es la variable de peso)
-mtcars$w <- rlnorm(32) # añadimos pesos
-resultado2 <- generar_descriptivo_categorico(
-  datos = mtcars,
-  var_categorica = "vs",
-  vars_grupo = 'gear',
-  var_peso = "w",
-  pivot = TRUE,
-  variable_pivot = "var_grupo",
-  nivel_confianza = 0.95,
-  estrategia_valoresPerdidos = "A"
-)
+  mtcars$w <- rlnorm(32) # añadimos pesos
+  resultado2 <- generar_descriptivo_categorico(
+   datos = mtcars,
+   var_categorica = "vs",
+   vars_grupo = 'gear',
+   var_peso = "w",
+   pivot = TRUE,
+   variable_pivot = "var_grupo",
+   nivel_confianza = 0.95,
+   estrategia_valoresPerdidos = "A"
+  )
 }
 
 generar_descriptivo_categorico( temp, 'cyl' )

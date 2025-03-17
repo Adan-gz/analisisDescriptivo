@@ -20,14 +20,15 @@ crear_Excel(
   titulo_tabla_tamanyo = 12,
   tabla_conFiltro = TRUE,
   nombre_archivo = NULL,
-  exportar = TRUE,
+  exportar = FALSE,
   sobreescribir_archivo = TRUE,
   workbook = NULL
 )
 }
 \arguments{
 \item{list_list_tablas}{Lista de listas. Cada elemento de esta lista debe ser, a su vez, una lista de data.frames o tibbles
-que se escribirán en una hoja separada. Si algún elemento es un data.frame, se convertirá en una lista para asegurar la consistencia.}
+que se escribirán en una hoja separada. Si algún elemento es un data.frame, se convertirá en una lista para asegurar la consistencia. Si únicamente
+se quiere exportar una tabla (1 data.frame), utilizar \code{crear_Excel_tabla}.}
 
 \item{unificar_misma_hoja}{Unificar listas en 1 misma hoja. Por ejemplo, que las tablas de descriptivos numéricos y categóricos, que por defecto
 se recogen en 2 listas distintas, aparezcan en la misma hoja. Por defecto \(code){TRUE}.}
@@ -39,11 +40,10 @@ con el conjunto de tablas de la hoja respectiva.}
 
 \item{nombres_hojas}{Vector de caracteres. Nombres de las hojas. Si es \code{NULL}, se asignan nombres por defecto (por ejemplo, "Hoja 1", "Hoja 2", ...).}
 
-\item{hay_var_grupo}{Lógico. Indica si se utilizó una variable de agrupación en la generación de las tablas.
-Este parámetro se pasa a las funciones de formateo.}
+\item{hay_var_grupo}{Lógico. Indica si se utilizó una variable de agrupación en la generación de las tablas. Este parámetro se pasa a las funciones de formateo. No utilizar salvo Error.}
 
 \item{formatear_tabla}{Lógico. Si es \code{TRUE}, se formatearán los datos (por ejemplo, redondeo, formato de porcentajes)
-antes de escribirlos en Excel. Por defecto es \code{TRUE}.}
+antes de escribirlos en Excel. Por defecto es \code{TRUE}. Si las tablas que se introducen no provienen de las funciones \code{generar_descriptivos_*} pasarlo a \code{FALSE}.}
 
 \item{estilo_tabla}{Carácter. Estilo de la tabla en Excel. Por defecto es \code{"TableStyleLight1"}.}
 
@@ -70,7 +70,7 @@ antes de escribirlos en Excel. Por defecto es \code{TRUE}.}
 \item{hoja}{Número. Valor por defecto para referenciar la primera hoja. No afecta el nombre de las hojas creadas.}
 }
 \value{
-Devuelve un objeto workbook de \code{openxlsx} con todas las hojas y tablas agregadas.
+Devuelve un objeto workbook de \code{openxlsx} con todas las hojas y tablas agregadas. Exporta un archivo Excel.
 }
 \description{
 Esta función genera un archivo Excel en el que cada hoja contiene un conjunto de tablas formateadas.
@@ -96,6 +96,33 @@ seguido de las tablas formateadas (usando \code{crear_Excel_hoja_Tablas}). Si \c
    'w'=rlnorm(32))
  temp_agruados_num1 <-  generar_descriptivos_agrupados(temp, vars_grupo = 'grupo', return_df = T)
  crear_Excel(temp_agruados_num1, exportar = T)
+
+ ## Es posible generar los univariados y luego los agrupados:
+ library(dplyr)
+ temp <- mtcars \%>\%
+   mutate('cyl'=as.character(cyl),
+          'carb'=factor(carb),
+          'gear' = factor(gear),
+          'grupo' = sample(c('A','B'),nrow(.),T),
+          'w'=rlnorm(32))
+
+ desc_univariados <- generar_descriptivos_univariados(temp)
+ desc_agrupados <- generar_descriptivos_agrupados(temp, vars_grupo = 'grupo', var_peso = 'w')
+
+ workbook <- crear_Excel(
+   desc_univariados,
+   nombres_hojas = 'UNIVARIADOS',
+   unificar_misma_hoja = T,
+   exportar = F
+ )
+
+ workbook <- crear_Excel(
+   desc_agrupados,
+   workbook = workbook,
+   nombres_hojas = 'AGRUPADO',
+   unificar_misma_hoja = T,
+   exportar = T
+ )#'
 }
 
 }

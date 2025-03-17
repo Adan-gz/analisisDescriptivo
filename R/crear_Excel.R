@@ -7,7 +7,8 @@
 #' y se puede optar por exportar el workbook a un archivo Excel.
 #'
 #' @param list_list_tablas Lista de listas. Cada elemento de esta lista debe ser, a su vez, una lista de data.frames o tibbles
-#'   que se escribirán en una hoja separada. Si algún elemento es un data.frame, se convertirá en una lista para asegurar la consistencia.
+#'   que se escribirán en una hoja separada. Si algún elemento es un data.frame, se convertirá en una lista para asegurar la consistencia. Si únicamente
+#'   se quiere exportar una tabla (1 data.frame), utilizar \code{crear_Excel_tabla}.
 #' @param unificar_misma_hoja Unificar listas en 1 misma hoja. Por ejemplo, que las tablas de descriptivos numéricos y categóricos, que por defecto
 #' se recogen en 2 listas distintas, aparezcan en la misma hoja. Por defecto \(code){TRUE}.
 #' @param titulos_principales Vector de caracteres. Títulos principales para cada hoja. Si es \code{NULL}, se asignan títulos por defecto.
@@ -15,11 +16,10 @@
 #'   con el conjunto de tablas de la hoja respectiva.
 #' @param nombres_hojas Vector de caracteres. Nombres de las hojas. Si es \code{NULL}, se asignan nombres por defecto (por ejemplo, "Hoja 1", "Hoja 2", ...).
 #' @param hoja Número. Valor por defecto para referenciar la primera hoja. No afecta el nombre de las hojas creadas.
-#' @param hay_var_grupo Lógico. Indica si se utilizó una variable de agrupación en la generación de las tablas.
-#'   Este parámetro se pasa a las funciones de formateo.
+#' @param hay_var_grupo Lógico. Indica si se utilizó una variable de agrupación en la generación de las tablas. Este parámetro se pasa a las funciones de formateo. No utilizar salvo Error.
 #'
 #' @param formatear_tabla Lógico. Si es \code{TRUE}, se formatearán los datos (por ejemplo, redondeo, formato de porcentajes)
-#'   antes de escribirlos en Excel. Por defecto es \code{TRUE}.
+#'   antes de escribirlos en Excel. Por defecto es \code{TRUE}. Si las tablas que se introducen no provienen de las funciones \code{generar_descriptivos_*} pasarlo a \code{FALSE}.
 #' @param estilo_tabla Carácter. Estilo de la tabla en Excel. Por defecto es \code{"TableStyleLight1"}.
 #'
 #' @param fuente Carácter. Nombre de la fuente a utilizar en los textos. Por defecto es \code{"Calibri"}.
@@ -34,7 +34,7 @@
 #' @param sobreescribir_archivo Lógico. Si es \code{TRUE}, se sobrescribe el archivo existente. Por defecto es \code{TRUE}.
 #' @param workbook Objeto workbook de \code{openxlsx}. Si es \code{NULL}, se crea un nuevo workbook.
 #'
-#' @return Devuelve un objeto workbook de \code{openxlsx} con todas las hojas y tablas agregadas.
+#' @return Devuelve un objeto workbook de \code{openxlsx} con todas las hojas y tablas agregadas. Exporta un archivo Excel.
 #'
 #' @details La función revisa cada elemento de \code{list_list_tablas} para asegurar que sea una lista de tablas.
 #' Para cada hoja se crea un nuevo worksheet con el nombre especificado en \code{nombres_hojas} y se escribe un título principal,
@@ -52,6 +52,33 @@
 #'    'w'=rlnorm(32))
 #'  temp_agruados_num1 <-  generar_descriptivos_agrupados(temp, vars_grupo = 'grupo', return_df = T)
 #'  crear_Excel(temp_agruados_num1, exportar = T)
+#'
+#'  ## Es posible generar los univariados y luego los agrupados:
+#'  library(dplyr)
+#'  temp <- mtcars %>%
+#'    mutate('cyl'=as.character(cyl),
+#'           'carb'=factor(carb),
+#'           'gear' = factor(gear),
+#'           'grupo' = sample(c('A','B'),nrow(.),T),
+#'           'w'=rlnorm(32))
+#'
+#'  desc_univariados <- generar_descriptivos_univariados(temp)
+#'  desc_agrupados <- generar_descriptivos_agrupados(temp, vars_grupo = 'grupo', var_peso = 'w')
+#'
+#'  workbook <- crear_Excel(
+#'    desc_univariados,
+#'    nombres_hojas = 'UNIVARIADOS',
+#'    unificar_misma_hoja = T,
+#'    exportar = F
+#'  )
+#'
+#'  workbook <- crear_Excel(
+#'    desc_agrupados,
+#'    workbook = workbook,
+#'    nombres_hojas = 'AGRUPADO',
+#'    unificar_misma_hoja = T,
+#'    exportar = T
+#'  )#'
 #' }
 #'
 #' @importFrom openxlsx createWorkbook addWorksheet saveWorkbook
@@ -77,13 +104,15 @@ crear_Excel <- function(
 
     # exportar
     nombre_archivo = NULL,
-    exportar = TRUE,
+    exportar = FALSE,
     sobreescribir_archivo = TRUE,
 
     workbook = NULL
 
 
 ) {
+
+  if( is.data.frame(list_list_tablas) ) list_list_tablas <- list(list_list_tablas)
 
   for (i in 1:length(list_list_tablas)) {
     # hago este ajuste para cuando exporta las numericas en 1 solo tibble,
@@ -93,16 +122,23 @@ crear_Excel <- function(
     else next
 
   }
+  # genero workbook si no existe
+  if( is.null(workbook) ){
+    workbook_salida  <- createWorkbook()
+    hojas_existentes <- 0
+  } else{
+    workbook_salida <- workbook
+    hojas_existentes <- if(is.null(workbook)) 0 else length( workbook$sheet_names )
+  }
 
-  if( is.null(titulos_principales) ) titulos_principales <-  paste0('TÍTULO PRINCIPAL ', 1:length(list_list_tablas))
+  if( is.null(titulos_principales) ) titulos_principales <- paste0('TÍTULO PRINCIPAL ', (hojas_existentes + 1:length(list_list_tablas)))
 
-  if( is.null(nombres_hojas) ) nombres_hojas <-  paste0('Hoja ', 1:length(list_list_tablas))
+  if( is.null(nombres_hojas) ) nombres_hojas <-  paste0('Hoja ', (hojas_existentes + 1:length(list_list_tablas)) )
 
-  workbook <- createWorkbook()
   # print(unificar_misma_hoja)
   if( unificar_misma_hoja ){ # genero las hojas
     # creo la hoja y tambien ubico las tablas
-    addWorksheet(workbook, sheetName = nombres_hojas[1], gridLines = FALSE)
+    addWorksheet(workbook_salida, sheetName = nombres_hojas[1], gridLines = FALSE)
     # generar las posiciones
     # genero una lista de tibbles con las posiciones de lsa tablas
     filas_tablas_asignadas <- vector('list',length = length(list_list_tablas))
@@ -124,7 +160,7 @@ crear_Excel <- function(
     # si no unifico, genero varias hojas
     for (i in seq_len(length(list_list_tablas))) {
       # Creando el workbook y la hoja
-      addWorksheet(workbook, sheetName = nombres_hojas[i], gridLines = FALSE)
+      addWorksheet(workbook_salida, sheetName = nombres_hojas[i], gridLines = FALSE)
       filas_tablas_asignadas <- NULL
     }
 
@@ -134,18 +170,18 @@ crear_Excel <- function(
   for (i in seq_len(length(list_list_tablas))) {
     # ajustes en funcion de si es misma hoha o no
     if( unificar_misma_hoja ){
-      hoja <- 1 # el parametro de hoja es constante
+      hoja <- hojas_existentes+1 # el parametro de hoja es constante
       fila_titulo_principal.i  <- fila_titulo_principal[i]
       filas_tablas_asignadas.i <- filas_tablas_asignadas[[i]]
 
     } else {
-      hoja <- i
+      hoja <- hojas_existentes+i
       fila_titulo_principal.i <- 1
       filas_tablas_asignadas.i <- NULL
     }
 
     crear_Excel_hoja_Tablas(
-      workbook         = workbook,
+      workbook         = workbook_salida,
 
       filas_tablas_asignadas = filas_tablas_asignadas.i,
       fila_titulo_principal  = fila_titulo_principal.i,
@@ -174,10 +210,11 @@ crear_Excel <- function(
       sobreescribir_archivo = sobreescribir_archivo
     )
   }
-
   if (exportar) {
     if(is.null(nombre_archivo))  nombre_archivo <- 'Excel_analisisDescriptivo_temp'
-    saveWorkbook(workbook, file = paste0(nombre_archivo, ".xlsx"), overwrite = sobreescribir_archivo)
+    saveWorkbook(workbook_salida, file = paste0(nombre_archivo, ".xlsx"), overwrite = sobreescribir_archivo)
   }
-  workbook
+  workbook_salida
 }
+
+
