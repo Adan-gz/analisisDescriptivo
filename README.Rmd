@@ -27,7 +27,7 @@ Actualmente, una parte de este documento así como la mayor parte de documentaci
 
 ## Dependencias
 
-Para utilizar este paquete es necesario tener instalados los siguientes paquetes: `dplyr`, `emmeans`, `magrittr`, `openxlsx`, `purrr`, `rlang`, `scales`, `skimr`, `stringr`, `tibble`, `tidyr`.
+Para utilizar este paquete es necesario tener instalados los siguientes paquetes: `dplyr`, `emmeans`, `magrittr`, `openxlsx`, `purrr`, `rlang`, `scales`, `skimr`, `stringr`, `tibble`, `tidyr`. Para hacerlo se puede utilizar la función `install.packages`.
 
 ## Objetivo
 
@@ -71,10 +71,6 @@ remotes::install_github("Adan-gz/analisisDescriptivo")
 
 ```
 
-## Dependencias
-
-Para utilizar el paquete es necesario instalar estos paquetes: dplyr, emmeans, magrittr, openxlsx, purrr, rlang, scales, skimr, stringr, tibble, tidyr. Para hacerlo se puede utilizar la función `install.packages`.
-
 ## Uso Rápido
 
 Las funciones principales del paquete son 3:
@@ -107,7 +103,7 @@ resultados_univ <- generar_descriptivos_univariados(
   datos     = temp,
   selecc_vars_auto = TRUE, # dejamos que seleccione las variables automáticamente
   var_peso  = "pesos", # vector para ponderar
-  num_unificar_1tabla = TRUE # por defecto devuelve una lista, donde cada elemento son los descriptivos de cada variable. Con este argumento en TRUE devuelve un dataframe con todas las variables juntas
+  num_unificar_1tabla = TRUE # por defecto devuelve una lista, donde cada elemento son los descriptivos de cada variable. Con este argumento en TRUE devuelve un dataframe con todas las variables juntas, pero sólo para los descriptivos numéricos
 )
 ```
 
@@ -117,7 +113,7 @@ El output obtenido se ve de esta forma en la consola de R:
 print(resultados_univ)
 ```
 
-Y se puede exportar a Excel de esta forma:
+Y se puede exportar a Excel de esta forma. Así se ha generado en R el objeto workbook y además se ha exportado el Excel.
 
 ```{r eval=TRUE, message=FALSE, warning=FALSE}
 workbook <- crear_Excel(
@@ -133,17 +129,18 @@ Así se vería:
 
 ![](img/Imagen1.png)
 
-Si queremos obtener los descriptivos agrupads por `grupo` bastaría con:
+Si queremos obtener los descriptivos agrupados por la variable `grupo` bastaría con utilizar la función `generar_descriptivos_agrupados`:
 
 ```{r eval=TRUE, message=FALSE, warning=FALSE}
-# Análisis descriptivo univariado (tanto numérico como categórico)
+# Análisis descriptivo agrupado (tanto numérico como categórico)
 resultados_agrupados <- generar_descriptivos_agrupados( 
   datos      = temp,
   # podriamos indicar las variables de intereres con 'vars_categoricas' y 'vars_numericas', pero dejamos que seleccione las variables automáticamente
   vars_grupo = 'grupo',
   var_peso   = "pesos", # vector para ponderar
-  num_unificar_1tabla = FALSE # en este caso no queremos que unifique
+  num_unificar_1tabla = FALSE # en este caso no queremos que unifique los descriptivos numéricos en 1 tabla
 )
+print(resultados_agrupados)
 ```
 
 Y así podríamos añadirlo al workbook existente y exportar un nuevo excel:
@@ -168,7 +165,7 @@ Y este sería el output (se muestra sólo la segunda hoja):
 
 ## Detalles
 
-Para conocer mejor los parámetros de las funciones puede consultar la documentación de cada una, (por ejemplo, `?generar_descriptivos_categoricos`) para obtener más detalles.
+Para conocer mejor los parámetros de las funciones puede consultar la documentación de cada una, por ejemplo, `?generar_descriptivos_categoricos`).
 
 ## Contribución
 
