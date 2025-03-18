@@ -25,6 +25,10 @@ knitr::opts_chunk$set(
 
 Actualmente, una parte de este documento así como la mayor parte de documentación de las funciones está elaborado principalmente a través del modelo 03-mini de ChatGPT, por lo que puede haber algún error. Tampoco se explica, por ahora, con todo detalle las funcionalidades del paquete. Esta tarea está pendiente de llevarse a cabo.
 
+## Dependencias
+
+Para utilizar este paquete es necesario tener instalados los siguientes paquetes: `dplyr`, `emmeans`, `magrittr`, `openxlsx`, `purrr`, `rlang`, `scales`, `skimr`, `stringr`, `tibble`, `tidyr`.
+
 ## Objetivo
 
 El objetivo o razón de ser de este paquete es automatizar la tarea de explotación de datos habitual:
@@ -162,19 +166,9 @@ Y este sería el output (se muestra sólo la segunda hoja):
 
 Únicamente es necesario crear el workbook (`workbook <- crear_Excel()`) la primera vez. Las siguientes al llamar la función `crear_Excel()` ya se actualiza el objeto creado de forma automática.
 
-## Uso específico
+## Detalles
 
-El paquete incluye funciones para personalizar el análisis:
-
--   **`generar_descriptivo_categorico`**: Genera estadísticas descriptivas para una variable categórica.
-
--   **`generar_descriptivo_numerico`**: Genera estadísticas descriptivas para una variable numérica.
-
--   **`preparar_tabla_excel`**: Prepara una tabla para su exportación a Excel, incluyendo encabezados y formateo.
-
--   **`concatenar_tablas_excel`**: Concatena múltiples tablas (tibbles) en un único data frame, separadas por filas vacías.
-
-Consulta la documentación de cada función (por ejemplo, `?generar_descriptivo_categorico`) para obtener más detalles.
+Para conocer mejor los parámetros de las funciones puede consultar la documentación de cada una, (por ejemplo, `?generar_descriptivos_categoricos`) para obtener más detalles.
 
 ## Contribución
 
