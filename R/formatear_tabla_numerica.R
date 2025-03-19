@@ -41,7 +41,28 @@ formatear_tabla_numerica <- function(
   tabla %>%
     mutate(
       across(
-        c(where(is.numeric), -any_of(c('N', 'Missing', 'p_value'))),
+        any_of(c('R2','R2_w','OLS_coef','OLS_coef_w')),
+        function(x) {
+          scales::number(
+            x,
+            accuracy = 0.01,
+            scale = escala_num,
+            decimal.mark = separador_decimal,
+            big.mark = separador_miles,
+            prefix = prefijo_num,
+            suffix = sufijo_num,
+            style_positive = estilo_positivo_num
+          )
+        }
+      ),
+
+      across(
+        any_of(c('p_value','OLS_p_value','OLS_p_value_w')),
+        \(x) scales::number(x,accuracy = .0001,decimal.mark = separador_decimal,big.mark = separador_miles)
+      ),
+
+      across(
+        c(where(is.numeric), -any_of(c('N', 'Missing', 'p_value','R2','R2_w','OLS_coef','OLS_coef_w'))),
         function(x) {
           scales::number(
             x,
@@ -54,10 +75,6 @@ formatear_tabla_numerica <- function(
             style_positive = estilo_positivo_num
           )
         }
-      ),
-      across(
-        any_of('p_value'),
-        \(x) scales::number(x,accuracy = .0001,decimal.mark = separador_decimal,big.mark = separador_miles)
       )
     )
 }

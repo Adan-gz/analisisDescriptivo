@@ -9,7 +9,6 @@
 #'   \code{TRUE}, se seleccionan automáticamente todas las variables numéricas.
 #' @param vars_grupo Vector de nombres de variables para agrupar. Por defecto es \code{NULL} (sin agrupamiento).
 #' @param var_peso Nombre (carácter) de la variable de peso. Si es \code{NULL} (por defecto), se calculan estadísticas sin ponderación.
-#' @param digits Valor de precisión para formateos numéricos (por defecto \code{0.1}).
 #' @param nivel_confianza Nivel de confianza para el cálculo de intervalos (por defecto \code{0.95}).
 #' @param unificar_1tabla Lógico. Si es \code{TRUE}, se retorna un único data frame combinando todos los descriptivos; de lo contrario,
 #'   se retorna una lista de data frames.
@@ -52,7 +51,6 @@ generar_descriptivos_numericos <- function(
     vars_numericas = NULL,
     vars_grupo = NULL,
     var_peso = NULL,
-    digits = 0.1,
     nivel_confianza = 0.95,
     unificar_1tabla = FALSE,
     selecc_vars_auto = TRUE
@@ -69,7 +67,6 @@ generar_descriptivos_numericos <- function(
       var_numerica = var_num,
       vars_grupo = vars_grupo,
       var_peso = var_peso,
-      digits = digits,
       nivel_confianza = nivel_confianza
     )
   ) %>% purrr::set_names(vars_numericas)

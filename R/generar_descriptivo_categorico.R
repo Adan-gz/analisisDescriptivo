@@ -49,6 +49,7 @@
 #' @examples
 #' \dontrun{
 #'   library(dplyr)
+#'   library(analisisDescriptivo)
 #'   # Sin agrupación y sin pesos
 #'   mtcars$cyl <- factor(mtcars$cyl)
 #'   mtcars$vs <- factor(mtcars$vs)

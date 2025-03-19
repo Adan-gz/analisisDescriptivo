@@ -15,7 +15,6 @@
 #' @param pivot Lógico. Si es \code{TRUE}, se pivota la salida de variables categóricas a formato ancho (solo para tibbles agrupados). Por defecto \code{TRUE}.
 #' @param variable_pivot Vector de caracteres que indica la variable a utilizar para pivotear: \code{"var_grupo"} o \code{"var_categorica"}. Por defecto \code{c("var_grupo", "var_categorica")}.
 #' @param estrategia_valoresPerdidos Estrategia para el manejo de valores faltantes en variables categóricas: \code{"E"} (eliminar) o \code{"A"} (agrupar en "NS/NC"). Por defecto \code{c("E", "A")}.
-#' @param digits Valor de precisión para formatear los descriptivos numéricos. Por defecto \code{0.1}.
 #' @param num_unificar_1tabla Lógico. Si es \code{TRUE}, se retorna un único data frame combinando los descriptivos numéricos; si es \code{FALSE},
 #'   se retorna una lista. Por defecto \code{FALSE}.
 #' @param simplificar_output Por defecto \code{TRUE}. Cuando se calculan descriptivos agrupados reduce la cantidad de información
@@ -42,13 +41,13 @@
 #'                   pivot = TRUE,
 #'                   variable_pivot = "var_grupo",
 #'                   estrategia_valoresPerdidos = "E",
-#'                   digits = 0.1,
 #'                   num_unificar_1tabla = FALSE
 #'                 )
 #' }
 #'
 #' @importFrom dplyr select_if
 #' @importFrom magrittr %>%
+#' @importFrom purrr compact
 #'
 #' @export
 generar_descriptivos_agrupados <- function(
@@ -62,7 +61,6 @@ generar_descriptivos_agrupados <- function(
     pivot = TRUE,
     variable_pivot = c("var_grupo", "var_categorica"),
     estrategia_valoresPerdidos = c("E", "A"),
-    digits = 0.1,
     num_unificar_1tabla = FALSE,
     simplificar_output = TRUE
 ) {
@@ -105,7 +103,6 @@ generar_descriptivos_agrupados <- function(
       vars_numericas = vars_numericas,
       vars_grupo = vars_grupo,
       var_peso = var_peso,
-      digits = digits,
       nivel_confianza = nivel_confianza,
       unificar_1tabla = num_unificar_1tabla
     )
@@ -116,7 +113,8 @@ generar_descriptivos_agrupados <- function(
   salida <- list(
     Numericas = descriptivos_num,
     Categoricas = descriptivos_cat
-  )
+  ) %>%
+    purrr::compact()
 
   # Guardar atributos informativos
   attr(salida, "vars_grupo") <- TRUE

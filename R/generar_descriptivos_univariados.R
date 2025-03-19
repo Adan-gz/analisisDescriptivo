@@ -14,7 +14,6 @@
 #' @param pivot Lógico. Si es \code{TRUE}, se pivota la salida de variables categóricas a formato ancho (solo si los datos están agrupados). Por defecto \code{TRUE}.
 #' @param variable_pivot Vector de caracteres que indica la variable a utilizar para pivotear: \code{"var_grupo"} o \code{"var_categorica"}. Por defecto \code{"var_grupo"}.
 #' @param estrategia_valoresPerdidos Estrategia para el manejo de valores faltantes en variables categóricas: \code{"E"} (eliminar) o \code{"A"} (agrupar en "NS/NC"). Por defecto \code{"E")}.
-#' @param digits Valor de precisión para formatear los descriptivos numéricos. Por defecto \code{0.1}.
 #' @param num_unificar_1tabla Lógico. Si es \code{TRUE}, se retorna un único data frame combinando los descriptivos numéricos; si es \code{FALSE},
 #'   se retorna una lista. Por defecto \code{FALSE}. Sólo para las numéricas
 #'
@@ -38,7 +37,6 @@
 #'                   pivot = TRUE,
 #'                   variable_pivot = "var_grupo",
 #'                   estrategia_valoresPerdidos = "E",
-#'                   digits = 0.1,
 #'                   num_unificar_1tabla = FALSE
 #'                 )
 #' }
@@ -46,6 +44,7 @@
 #' @importFrom dplyr select_if
 #' @importFrom purrr map set_names
 #' @importFrom magrittr %>%
+#' @importFrom purrr compact
 #'
 #' @export
 generar_descriptivos_univariados <- function(
@@ -58,7 +57,6 @@ generar_descriptivos_univariados <- function(
     pivot = TRUE,
     variable_pivot = c("var_grupo", "var_categorica"),
     estrategia_valoresPerdidos = c("E", "A"),
-    digits = 0.1,
     num_unificar_1tabla = FALSE
 ) {
   # Inicializar resultados para descriptivos numéricos y categóricos
@@ -93,7 +91,6 @@ generar_descriptivos_univariados <- function(
       datos = datos,
       vars_numericas = vars_numericas,
       var_peso = var_peso,
-      digits = digits,
       nivel_confianza = nivel_confianza,
       unificar_1tabla = num_unificar_1tabla
     )
@@ -101,10 +98,10 @@ generar_descriptivos_univariados <- function(
   }
 
   # Crear lista de salida
-  salida <- list(
+  salida <- purrr::compact( list(
     Numericas   = descriptivos_num,
     Categoricas = descriptivos_cat
-  )
+  ) )
 
   # Guardar en un atributo si se aplicó ponderación
   attr(salida, "peso") <- !is.null(var_peso)

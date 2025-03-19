@@ -9,7 +9,6 @@ generar_descriptivo_numerico(
   var_numerica,
   vars_grupo = NULL,
   var_peso = NULL,
-  digits = 0.1,
   nivel_confianza = 0.95
 )
 }
@@ -21,8 +20,6 @@ generar_descriptivo_numerico(
 \item{vars_grupo}{Vector de nombres de variables para agrupar. Si es \code{NULL} (por defecto), no se realiza agrupamiento.}
 
 \item{var_peso}{Nombre (carácter) de la variable de peso. Si es \code{NULL} (por defecto), se calculan estadísticas sin ponderar.}
-
-\item{digits}{Valor de precisión para formateos numéricos (por defecto \code{0.1}). Actualmente se reserva para un futuro formateo.}
 
 \item{nivel_confianza}{Nivel de confianza para el cálculo de intervalos (por defecto \code{0.95}).}
 }

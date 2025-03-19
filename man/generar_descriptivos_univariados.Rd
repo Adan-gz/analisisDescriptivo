@@ -14,7 +14,6 @@ generar_descriptivos_univariados(
   pivot = TRUE,
   variable_pivot = c("var_grupo", "var_categorica"),
   estrategia_valoresPerdidos = c("E", "A"),
-  digits = 0.1,
   num_unificar_1tabla = FALSE
 )
 }
@@ -38,8 +37,6 @@ se seleccionan automáticamente las variables numéricas.}
 \item{variable_pivot}{Vector de caracteres que indica la variable a utilizar para pivotear: \code{"var_grupo"} o \code{"var_categorica"}. Por defecto \code{"var_grupo"}.}
 
 \item{estrategia_valoresPerdidos}{Estrategia para el manejo de valores faltantes en variables categóricas: \code{"E"} (eliminar) o \code{"A"} (agrupar en "NS/NC"). Por defecto \code{"E")}.}
-
-\item{digits}{Valor de precisión para formatear los descriptivos numéricos. Por defecto \code{0.1}.}
 
 \item{num_unificar_1tabla}{Lógico. Si es \code{TRUE}, se retorna un único data frame combinando los descriptivos numéricos; si es \code{FALSE},
 se retorna una lista. Por defecto \code{FALSE}. Sólo para las numéricas}
@@ -69,7 +66,6 @@ La función aplica internamente \code{generar_descriptivos_categoricos} y \code{
                   pivot = TRUE,
                   variable_pivot = "var_grupo",
                   estrategia_valoresPerdidos = "E",
-                  digits = 0.1,
                   num_unificar_1tabla = FALSE
                 )
 }

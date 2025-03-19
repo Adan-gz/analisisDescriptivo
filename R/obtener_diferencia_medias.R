@@ -16,5 +16,5 @@ obtener_diferencia_medias <- function(model_lm, var_grupo ){
   broom::tidy(model_lm) %>%
     filter( !grepl('Intercept',term) ) %>%
     mutate( !!var_grupo := gsub(var_grupo,'',term)) %>%
-    select( all_of(var_grupo) ,'Dif'=estimate, 'p_value' = p.value )
+    select( all_of(var_grupo) ,'Dif_categoriaReferencia'=estimate, 'p_value' = p.value )
 }

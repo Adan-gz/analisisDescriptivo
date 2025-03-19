@@ -9,7 +9,6 @@
 #' @param var_numerica Nombre (carácter) de la variable numérica a analizar.
 #' @param vars_grupo Vector de nombres de variables para agrupar. Si es \code{NULL} (por defecto), no se realiza agrupamiento.
 #' @param var_peso Nombre (carácter) de la variable de peso. Si es \code{NULL} (por defecto), se calculan estadísticas sin ponderar.
-#' @param digits Valor de precisión para formateos numéricos (por defecto \code{0.1}). Actualmente se reserva para un futuro formateo.
 #' @param nivel_confianza Nivel de confianza para el cálculo de intervalos (por defecto \code{0.95}).
 #'
 #' @return Data frame con las estadísticas descriptivas calculadas. Entre las variables se incluyen:
@@ -72,7 +71,6 @@ generar_descriptivo_numerico <- function(
     var_numerica,
     vars_grupo = NULL,
     var_peso = NULL,
-    digits = 0.1,
     nivel_confianza = 0.95
 ) {
   # Asegurarse de que la variable es de tipo numeric
@@ -144,7 +142,7 @@ generar_descriptivo_numerico <- function(
 
       salida <- salida %>%
         left_join(dif_medias) %>%
-        relocate( Dif, p_value, .after= Media )
+        relocate( Dif_categoriaReferencia, p_value, .after= Media )
 
     } else { # CON PESOS
       model_lm <-  lm( obtener_formula( VD = var_numerica, Xs = vars_grupo ), data = datos, weights = pesos_mod )
@@ -172,7 +170,7 @@ generar_descriptivo_numerico <- function(
 
       salida <- salida %>%
         left_join(dif_medias) %>%
-        relocate( Dif, p_value, .after= Media_w )
+        relocate( Dif_categoriaReferencia, p_value, .after= Media_w )
     }
 
     # Si no esta agrupado ajustamos las formulas de de lm y usamos emmeans

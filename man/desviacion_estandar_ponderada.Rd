@@ -23,7 +23,10 @@ la corrección de Bessel (dividiendo por \code{sum(pesos)-1}) para el cálculo d
 }
 \examples{
 \dontrun{
-desviacion_estandar_ponderada(c(1,2,3,4,5), c(1,1,1,1,1))
+temp <- mtcars
+temp$w <- rlnorm(nrow(temp))
+desviacion_estandar_ponderada( temp$mpg, pesos = temp$w  )
+sd( temp$mpg )
 }
 
 }

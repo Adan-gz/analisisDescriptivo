@@ -37,13 +37,13 @@ El objetivo o razón de ser de este paquete es automatizar la tarea de explotaci
 
 -   Descriptivos agrupados por una variabel categórica clave: Tratamiento vs Control; Territorio; u cualquier otra variable categórica. Además, identifica si existen diferencias significativas.
 
-Por ahora **no se recogen funcionalidades para analizar la relación entre variables numéricas**. El análisis bivariado se realiza entre:
+-   Descriptivos cuando la variable dependiente o de interés es una variable numérica: se extraen estadístics de relación con las otras variables numéricas y, si son categóricas, se utiliza la función anterior.
 
--   Variable Categórica y Variables Categóricas
+Estas son las relaciones bivariadas que pueden analizarse:
 
--   Variable Categórica y Variables Numéricas
+-   Variable Categórica frente a Variables Categóricas o Variables Numéricas
 
-En futuras actualizaciones se incorporará el análisis entre numéricas
+-   Variable Numérica frente a Variables Categóricas o Variables Numéricas
 
 ## Características
 
@@ -56,6 +56,10 @@ En futuras actualizaciones se incorporará el análisis entre numéricas
 <!-- -->
 
 -   **Análisis descriptivo agrupado:** Genera de forma sencilla descriptivos numéricos y categóricos agrupando por las categorías de una variable categórica.
+
+<!-- -->
+
+-   **Análisis descriptivo para una variable numérica (variable dependiente o de interés):** Genera de forma sencilla descriptivos de relación respecto a las variables numéricas explicativas y estadísticos agrupando por las categorías de una variable categórica.
 
 <!-- -->
 
@@ -77,7 +81,8 @@ Las funciones principales del paquete son 3:
 
 1.  `generar_descriptivos_univariados`: generar los descriptivos univariados de variables categóricas y numéricas. Si no se indican cuáles se seleccionan de manera automática.
 2.  `generar_descriptivos_agrupados`: calcula estadísticis descriptivos de variables categóricas y numéricas según las categorías de la variable categórica indicada.
-3.  `crear_Excel`: genera un workbook a través de `openxlsx` y exporta el archivo Excel ya formateado.
+3.  `generar_descriptivos_VDnumerica`: calcula estadísticos de relación entre 2 variables numéricas y estadísticis descriptivos de la variable numérica según las categorías de las variables categóricas.
+4.  `crear_Excel`: genera un workbook a través de `openxlsx` y exporta el archivo Excel ya formateado.
 
 **Ahora mismo las funciones no están diseñadas para poder pasar más de 1 variable de agrupación**. Podría funcionar, pero el comportamiento es imprevisto. Si se quiere agrupar por más de 1 variable la estrategia más sencilla es: crear una nueva variable uniendo los valores de cada fila de ambas y pasarle a la función esta nueva variable.
 
@@ -116,12 +121,12 @@ print(resultados_univ)
 Y se puede exportar a Excel de esta forma. Así se ha generado en R el objeto workbook y además se ha exportado el Excel.
 
 ```{r eval=TRUE, message=FALSE, warning=FALSE}
-workbook <- crear_Excel(
-  list_list_tablas    = resultados_univ, 
-  unificar_misma_hoja = TRUE,
+workbook <- crear_Excel( 
+  resultados_univ, 
+  unificar_misma_hoja = TRUE, 
   titulos_principales = 'DESCRIPTIVOS UNIVARIADOS', 
-  exportar            = TRUE,
-  nombre_archivo      = 'Descriptivos_Univariados' 
+  exportar            = TRUE, 
+  nombre_archivo      = 'Descriptivos_Univariados'
 )
 ```
 
@@ -129,7 +134,9 @@ Así se vería:
 
 ![](img/Imagen1.png)
 
-Si queremos obtener los descriptivos agrupados por la variable `grupo` bastaría con utilizar la función `generar_descriptivos_agrupados`:
+Si queremos obtener los descriptivos agrupados por la variable `grupo` bastaría con utilizar la función `generar_descriptivos_agrupados`.
+
+En el caso de las variables numéricas, se realiza una regresión OLS y se incluyen los coeficientes (`Dif_categoriaReferencia`) y el `p.valor`. Si se ha especificado pesos las regresiones se calculan aplicando la ponderación. Pero la distribución y cuartiles se calculan sin ponderar.
 
 ```{r eval=TRUE, message=FALSE, warning=FALSE}
 # Análisis descriptivo agrupado (tanto numérico como categórico)
@@ -143,7 +150,7 @@ resultados_agrupados <- generar_descriptivos_agrupados(
 print(resultados_agrupados)
 ```
 
-Y así podríamos añadirlo al workbook existente y exportar un nuevo excel:
+Y así podríamos añadirlo al workbook existente:
 
 ```{r eval=TRUE, message=FALSE, warning=FALSE}
 crear_Excel(
@@ -153,7 +160,7 @@ crear_Excel(
   nombres_hojas       = 'Hoja_Agrupada', # ponemos nombre a la hoja
   titulos_principales = 'DESCRIPTIVOS AGRUPADOS', 
   exportar            = TRUE,
-  nombre_archivo      = 'Descriptivos_Univariados_y_Agrupados' 
+  nombre_archivo      = 'Descriptivos_Univariados_y_Agrupados'
 )
 ```
 
@@ -162,6 +169,41 @@ Y este sería el output (se muestra sólo la segunda hoja):
 ![](img/Imagen2.png)
 
 Únicamente es necesario crear el workbook (`workbook <- crear_Excel()`) la primera vez. Las siguientes al llamar la función `crear_Excel()` ya se actualiza el objeto creado de forma automática.
+
+Por último, podrías estar interesados en estudiar como variable dependiente `mpg`. En este caso se calcula:
+
+-   Variable independiente numérica: coeficiente de correlación, coeficiente de una regresión lineal y su p.valor (aplicando pesos si corresponde), y se trocea la X numérica en cuartiles y se calcula la media de la VD para indicar por algún posible patrón no lineal.
+
+-   Variable independiente categórica: produce el mismo output que el visualizado en la imagen superior.
+
+```{r eval=TRUE, message=FALSE, warning=FALSE}
+resultados_VD_mpg <- generar_descriptivos_VDnumerica(
+  temp,
+  var_VDnum = 'mpg',
+  var_peso  = 'pesos', 
+  selecc_vars_auto = TRUE,
+  num_unificar_1tabla = T
+)
+print(resultados_VD_mpg)
+```
+
+Estos resultados podrían añadirse al workbook e imprimirse sobreescribiendo el actual:
+
+```{r eval=TRUE, message=FALSE, warning=FALSE}
+crear_Excel(
+  workbook            = workbook,
+  list_list_tablas    = resultados_VD_mpg,
+  unificar_misma_hoja = TRUE, # unificamos 
+  nombres_hojas       = 'Hoja_MPG', # ponemos nombre a la hoja
+  titulos_principales = 'DESCRIPTIVOS AGRUPADOS', 
+  exportar            = TRUE,
+  nombre_archivo      = 'Descriptivos_Univariados_y_Agrupados'
+)
+```
+
+Así se visualizaría:
+
+![](img/Imagen3.png)
 
 ## Detalles
 
