@@ -50,8 +50,7 @@
 #'  )
 #' }
 #'
-#' @export
-#'
+#' export
 generar_descriptivo_VDnumerica_varX <- function(
     datos,
     var_VDnum,

@@ -94,4 +94,5 @@ Cada tabla se escribe utilizando la función \code{crear_Excel_tabla}.
  crear_Excel_hoja_Tablas(temp_numericas, exportar = T)
 }
 
+
 }

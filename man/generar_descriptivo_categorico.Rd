@@ -101,9 +101,5 @@ La función realiza los siguientes pasos:
   )
 }
 
-generar_descriptivo_categorico( temp, 'cyl' )
-generar_descriptivo_categorico( temp, 'cyl', 'vs' )
-generar_descriptivo_categorico( temp, 'cyl', var_peso = 'w' )
-generar_descriptivo_categorico( temp, 'cyl', 'vs', var_peso = 'w' )
 
 }

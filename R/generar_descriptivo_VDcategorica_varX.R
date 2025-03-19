@@ -50,6 +50,7 @@
 #'  )
 #' }
 #'
+#' export
 generar_descriptivo_VDcategorica_varX <- function(
     datos,
     var_VDcat,
@@ -87,7 +88,7 @@ generar_descriptivo_VDcategorica_varX <- function(
       nivel_confianza = nivel_confianza
     )
 
-    attr(salida,'tipo_tabla') <- 'categorica'
+    attr(salida,'tipo_tabla') <- 'numerica'
     attr(salida,'vars_grupo') <- TRUE
   }
 

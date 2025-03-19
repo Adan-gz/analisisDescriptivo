@@ -74,10 +74,6 @@
 #'   )
 #' }
 #'
-#' generar_descriptivo_categorico( temp, 'cyl' )
-#' generar_descriptivo_categorico( temp, 'cyl', 'vs' )
-#' generar_descriptivo_categorico( temp, 'cyl', var_peso = 'w' )
-#' generar_descriptivo_categorico( temp, 'cyl', 'vs', var_peso = 'w' )
 #'
 #' @importFrom dplyr is.grouped_df group_vars group_by count mutate left_join filter if_else arrange desc ungroup select relocate all_of any_of rename_with `%>%`
 #' @importFrom tidyr pivot_wider
@@ -85,7 +81,7 @@
 #' @importFrom rlang sym
 #' @importFrom forcats fct_na_level_to_value
 #'
-#' @export
+#'
 generar_descriptivo_categorico <- function(
     datos,
     var_categorica,
