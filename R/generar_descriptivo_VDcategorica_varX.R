@@ -50,7 +50,7 @@
 #'  )
 #' }
 #'
-#' export
+#' @export
 generar_descriptivo_VDcategorica_varX <- function(
     datos,
     var_VDcat,

@@ -65,5 +65,4 @@ y se ajustan las métricas correspondientes.
  )
 }
 
-export
 }

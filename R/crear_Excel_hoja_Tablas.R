@@ -50,7 +50,7 @@
 #'
 #' @importFrom openxlsx createWorkbook addWorksheet createStyle writeData addStyle writeDataTable saveWorkbook
 #'
-#'
+#' @export
 crear_Excel_hoja_Tablas <- function(
     list_tablas,
     titulo_principal = NULL,#"DESCRIPTIVOS UNIVARIADOS",

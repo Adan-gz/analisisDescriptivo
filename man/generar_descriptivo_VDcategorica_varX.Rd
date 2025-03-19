@@ -72,5 +72,4 @@ Si se proporciona una variable de peso (\code{var_peso}), las métricas se ajust
  )
 }
 
-export
 }

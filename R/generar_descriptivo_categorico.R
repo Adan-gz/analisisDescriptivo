@@ -81,7 +81,7 @@
 #' @importFrom rlang sym
 #' @importFrom forcats fct_na_level_to_value
 #'
-#'
+#' @export
 generar_descriptivo_categorico <- function(
     datos,
     var_categorica,

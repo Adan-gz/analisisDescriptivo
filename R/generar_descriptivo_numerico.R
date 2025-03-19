@@ -65,7 +65,7 @@
 #' @importFrom stringr str_split_i
 #' @importFrom emmeans emmeans
 #'
-#'
+#' @export
 generar_descriptivo_numerico <- function(
     datos,
     var_numerica,
