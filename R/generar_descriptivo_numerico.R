@@ -127,7 +127,7 @@ generar_descriptivo_numerico <- function(
     if( is.null( var_peso ) ){
 
       model_lm <-  lm( obtener_formula( VD = var_numerica, Xs = vars_grupo ), data = datos )
-
+      # return(model_lm)
       IC_media_grupos <- model_lm %>%
         emmeans::emmeans( specs = vars_grupo, level = nivel_confianza ) %>%
         as_tibble() %>%
@@ -143,6 +143,8 @@ generar_descriptivo_numerico <- function(
       salida <- salida %>%
         left_join(dif_medias) %>%
         relocate( Dif_categoriaReferencia, p_value, .after= Media )
+
+
 
     } else { # CON PESOS
       model_lm <-  lm( obtener_formula( VD = var_numerica, Xs = vars_grupo ), data = datos, weights = pesos_mod )
