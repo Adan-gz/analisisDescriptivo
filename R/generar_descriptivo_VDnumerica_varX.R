@@ -1,4 +1,4 @@
-#' Genera un descriptivo para una variable dependiente numérica por grupos definidos por una variable X
+#' Genera un descriptivo para una variable dependiente numérica
 #'
 #' Esta función genera un resumen descriptivo para una variable dependiente numérica (`var_VDnum`)
 #' según los valores de una variable X, que puede ser numérica o categórica. En el caso de que la
@@ -60,7 +60,7 @@ generar_descriptivo_VDnumerica_varX <- function(
     nivel_confianza = 0.95
 ){
 
-  # si la X es numerica y tieen mas de 2 categorias, sino a else
+  # si la X es numerica
   if( is.numeric(datos[[var_X]]) ){
 
     medias_cuartiles <- datos %>%

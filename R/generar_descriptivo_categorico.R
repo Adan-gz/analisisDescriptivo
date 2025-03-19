@@ -130,6 +130,7 @@ generar_descriptivo_categorico <- function(
     } else if (estrategia_valoresPerdidos == "A") {
       # Agrupar faltantes bajo la categoría "NS/NC"
       datos[[var_categorica]] <- if_else(is.na(datos[[var_categorica]]),"NS/NC", datos[[var_categorica]])
+      datos[[vars_grupo]]     <- if_else(is.na(datos[[vars_grupo]]),"NS/NC", datos[[vars_grupo]])
     }
   }
 

@@ -63,6 +63,10 @@ Estas son las relaciones bivariadas que pueden analizarse:
 
 <!-- -->
 
+-   **Análisis descriptivo para una variable categórica (variable dependiente o de interés):** Genera de forma sencilla descriptivos de relación respecto a las variables numéricas explicativas y estadísticos agrupando por las categorías de una variable categórica. La principal diferencia respecto al análisis agrupado es que en el análisis con las variables categórica se calculan los porcentajes agrupando por la variable categórica, en vez de la variable de interés.
+
+<!-- -->
+
 -   **Exportación a Excel:** Exporta a Excel los resultados ya formateadas en una o varias hojas.
 
 ## Instalación
@@ -204,6 +208,21 @@ crear_Excel(
 Así se visualizaría:
 
 ![](img/Imagen3.png)
+
+Finalmente, si se tuviera interés en analizar una variable dependiente categórica, el código sería muy similar. 
+
+```{r eval=TRUE, message=FALSE, warning=FALSE}
+resultados_VD_cyl <- generar_descriptivos_VDcategorica(
+  temp,
+  var_VDcat = 'cyl',
+  var_peso  = 'pesos',
+  estrategia_valoresPerdidos = 'A',
+  selecc_vars_auto = TRUE,
+)
+print(resultados_VD_cyl)
+```
+
+El output se incluiría en el Excel de la misma forma que en los anteriores casos.
 
 ## Detalles
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/generar_descriptivo_VDnumerica_varX.R
 \name{generar_descriptivo_VDnumerica_varX}
 \alias{generar_descriptivo_VDnumerica_varX}
-\title{Genera un descriptivo para una variable dependiente numérica por grupos definidos por una variable X}
+\title{Genera un descriptivo para una variable dependiente numérica}
 \usage{
 generar_descriptivo_VDnumerica_varX(
   datos,
