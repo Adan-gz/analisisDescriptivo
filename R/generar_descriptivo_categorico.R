@@ -279,12 +279,25 @@ generar_descriptivo_categorico <- function(
   }
 
   # Añadir sufijo a los nombres de los intervalos según el nivel de confianza (por ejemplo, 95 para 0.95)
-  chr_nivel <- as.character(stringr::str_split_i(as.character(nivel_confianza), "\\.", 2))
-  salida <- salida %>%
-    rename_with(
-      .cols = contains(c("_Min", "_Max")),
-      .fn = \(x) paste0(x, "_", chr_nivel)
-    )
+  if( is.null(vars_grupo) ){
+
+    # en caso de no haber simplificado
+    chr_nivel <- as.character(stringr::str_split_i(as.character(nivel_confianza), "\\.", 2))
+    salida <- salida %>%
+      rename_with(
+        .cols = contains(c("_Min", "_Max")),
+        .fn = \(x) paste0(x, "_", chr_nivel)
+      )
+
+  } else if( !is.null(vars_grupo) & !simplificar_output ){
+    # en caso de no haber simplificado
+    chr_nivel <- as.character(stringr::str_split_i(as.character(nivel_confianza), "\\.", 2))
+    salida <- salida %>%
+      rename_with(
+        .cols = contains(c("_Min", "_Max")),
+        .fn = \(x) paste0(x, "_", chr_nivel)
+      )
+  }
 
   attr(salida,'tipo_tabla') <- 'categorica'
   attr(salida,'vars_grupo') <- !is.null(vars_grupo)
