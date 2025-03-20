@@ -9,7 +9,8 @@ generar_descriptivo_numerico(
   var_numerica,
   vars_grupo = NULL,
   var_peso = NULL,
-  nivel_confianza = 0.95
+  nivel_confianza = 0.95,
+  estrategia_valoresPerdidos_grupo = c("A", "E")
 )
 }
 \arguments{
@@ -22,6 +23,10 @@ generar_descriptivo_numerico(
 \item{var_peso}{Nombre (carácter) de la variable de peso. Si es \code{NULL} (por defecto), se calculan estadísticas sin ponderar.}
 
 \item{nivel_confianza}{Nivel de confianza para el cálculo de intervalos (por defecto \code{0.95}).}
+
+\item{estrategia_valoresPerdidos_grupo}{Estrategia para el manejo de valores faltantes en la variable de agrupación. Se debe elegir
+\code{"E"} para eliminar o \code{"A"} para agrupar (NS/NC). Por defecto es \code{c("A", "E")}, de modo que se selecciona
+\code{"E"}.}
 }
 \value{
 Data frame con las estadísticas descriptivas calculadas. Entre las variables se incluyen:

@@ -10,6 +10,9 @@
 #' @param vars_grupo Vector de nombres de variables para agrupar. Si es \code{NULL} (por defecto), no se realiza agrupamiento.
 #' @param var_peso Nombre (carácter) de la variable de peso. Si es \code{NULL} (por defecto), se calculan estadísticas sin ponderar.
 #' @param nivel_confianza Nivel de confianza para el cálculo de intervalos (por defecto \code{0.95}).
+#' @param estrategia_valoresPerdidos_grupo Estrategia para el manejo de valores faltantes en la variable de agrupación. Se debe elegir
+#'   \code{"E"} para eliminar o \code{"A"} para agrupar (NS/NC). Por defecto es \code{c("A", "E")}, de modo que se selecciona
+#'   \code{"E"}.
 #'
 #' @return Data frame con las estadísticas descriptivas calculadas. Entre las variables se incluyen:
 #' \itemize{
@@ -64,6 +67,7 @@
 #' @importFrom rlang sym syms
 #' @importFrom stringr str_split_i
 #' @importFrom emmeans emmeans
+#' @importFrom forcats fct_na_level_to_value
 #'
 #' @export
 generar_descriptivo_numerico <- function(
@@ -71,7 +75,8 @@ generar_descriptivo_numerico <- function(
     var_numerica,
     vars_grupo = NULL,
     var_peso = NULL,
-    nivel_confianza = 0.95
+    nivel_confianza = 0.95,
+    estrategia_valoresPerdidos_grupo = c('A','E')
 ) {
   # Asegurarse de que la variable es de tipo numeric
   if ( !is.numeric(datos[[var_numerica]]) ) {
@@ -82,8 +87,30 @@ generar_descriptivo_numerico <- function(
     if( !is.numeric(datos[[var_peso]]) )  datos[[var_peso]] <- as.numeric(datos[[var_peso]])
   }
 
+  if( is.grouped_df(datos) ){
+    vars_grupo <- group_vars(  datos)
+  }
+
   if ( !is.null(vars_grupo) ) {
     if( !is.factor(datos[[vars_grupo]]) ) datos[[vars_grupo]] <- factor(datos[[vars_grupo]])
+
+    # Manejo de valores faltantes
+    if (any(is.na(datos[[vars_grupo]]))) {
+      estrategia_valoresPerdidos_grupo <- match.arg(estrategia_valoresPerdidos_grupo)
+      if (estrategia_valoresPerdidos_grupo == "E") {
+        # Eliminar faltantes para el cálculo de recuentos porcentajes
+        datos <- datos %>% filter(!is.na(!!sym(vars_grupo)))
+
+      } else if (estrategia_valoresPerdidos_grupo == "A") {
+        # Agrupar faltantes bajo la categoría "NS/NC"
+        datos[[vars_grupo]] <- forcats::fct_na_value_to_level( datos[[vars_grupo]],"NS/NC")
+
+      }
+    }
+
+    # Si se especifican variables de agrupación, agrupar el data frame
+    datos <- datos %>% group_by(!!!syms(vars_grupo))
+
   }
 
   # Si se especifica la variable de peso, crear símbolo para evaluación tidy
@@ -91,10 +118,6 @@ generar_descriptivo_numerico <- function(
   #   w_sym <- sym(var_peso)
   # }
 
-  # Si se especifican variables de agrupación, agrupar el data frame
-  if (!is.null(vars_grupo)) {
-    datos <- datos %>% group_by(!!!syms(vars_grupo))
-  }
 
   # Crear símbolo para la variable numérica
   var_sym <- sym(var_numerica)
@@ -126,37 +149,59 @@ generar_descriptivo_numerico <- function(
   if (is.grouped_df(datos)) {
     if( is.null( var_peso ) ){
 
-      model_lm <-  lm( obtener_formula( VD = var_numerica, Xs = vars_grupo ), data = datos )
-      # return(model_lm)
-      IC_media_grupos <- model_lm %>%
-        emmeans::emmeans( specs = vars_grupo, level = nivel_confianza ) %>%
-        as_tibble() %>%
-        select(1, 'Media_Min'=lower.CL, 'Media_Max'=upper.CL)
+      model_lm <- tryCatch(
+        lm( obtener_formula( VD = var_numerica, Xs = vars_grupo ), data = datos ),
+        error = function(e){
+          message( 'No ha sido posible realizar la regresión OLS entre ', var_numerica, ' ~ ',vars_grupo  )
+          NULL
+        }
+      )
 
-      salida <- IC_media_grupos %>%
-        full_join(salida) %>%
-        relocate(Media_Min, Media_Max, .after = Media)
+      if( !is.null(model_lm) ){
 
-      # Añadir diferencia de medias
-      dif_medias <- obtener_diferencia_medias( model_lm, var_grupo =  vars_grupo )
+        IC_media_grupos <- model_lm %>%
+          emmeans::emmeans( specs = vars_grupo, level = nivel_confianza ) %>%
+          as_tibble() %>%
+          select(1, 'Media_Min'=lower.CL, 'Media_Max'=upper.CL)
 
-      salida <- salida %>%
-        left_join(dif_medias) %>%
-        relocate( Dif_categoriaReferencia, p_value, .after= Media )
+        salida <- IC_media_grupos %>%
+          full_join(salida) %>%
+          relocate(Media_Min, Media_Max, .after = Media)
 
+        # Añadir diferencia de medias
+        dif_medias <- obtener_diferencia_medias( model_lm, var_grupo =  vars_grupo )
 
+        salida <- salida %>%
+          left_join(dif_medias) %>%
+          relocate( Dif_categoriaReferencia, p_value, .after= Media )
+
+      }
 
     } else { # CON PESOS
-      model_lm <-  lm( obtener_formula( VD = var_numerica, Xs = vars_grupo ), data = datos, weights = pesos_mod )
+      model_lm <- tryCatch(
+        lm( obtener_formula( VD = var_numerica, Xs = vars_grupo ), data = datos, weights = pesos_mod ),
+        error = function(e){
+          message( 'No ha sido posible realizar la regresión OLS ponderada entre ', var_numerica, ' ~ ',vars_grupo  )
+          NULL
+        }
+      )
+      if( !is.null(model_lm) ){
 
-      IC_media_grupos <- model_lm %>%
-        emmeans::emmeans( specs = vars_grupo, level = nivel_confianza ) %>%
-        as_tibble() %>%
-        select(1, 'Media_w' = emmean, 'Media_w_Min'=lower.CL, 'Media_w_Max'=upper.CL)
+        IC_media_grupos <- model_lm %>%
+          emmeans::emmeans( specs = vars_grupo, level = nivel_confianza ) %>%
+          as_tibble() %>%
+          select(1, 'Media_w' = emmean, 'Media_w_Min'=lower.CL, 'Media_w_Max'=upper.CL)
 
-      salida <- IC_media_grupos %>%
-        full_join(salida) %>%
-        relocate(Media_w, Media_w_Min, Media_w_Max, .after = Media)
+        salida <- IC_media_grupos %>%
+          full_join(salida) %>%
+          relocate(Media_w, Media_w_Min, Media_w_Max, .after = Media)
+
+        dif_medias <- obtener_diferencia_medias( model_lm, var_grupo =  vars_grupo )
+
+        salida <- salida %>%
+          left_join(dif_medias) %>%
+          relocate( Dif_categoriaReferencia, p_value, .after= Media_w )
+      }
 
       # añado la desviacion estandar ponderada
       salida <- salida %>%
@@ -168,11 +213,7 @@ generar_descriptivo_numerico <- function(
         ) %>%
         relocate(sd.w, .after = sd)
 
-      dif_medias <- obtener_diferencia_medias( model_lm, var_grupo =  vars_grupo )
 
-      salida <- salida %>%
-        left_join(dif_medias) %>%
-        relocate( Dif_categoriaReferencia, p_value, .after= Media_w )
     }
 
     # Si no esta agrupado ajustamos las formulas de de lm y usamos emmeans
@@ -211,17 +252,19 @@ generar_descriptivo_numerico <- function(
     }
   }
 
+
   # Renombrar columnas de intervalos añadiendo un sufijo que indica el nivel de confianza
-  salida <- salida %>%
-    rename_with(
-      .cols = ends_with(c("_Min", "_Max")),
-      .fn = function(x){ paste0(x, "_", as.character(stringr::str_split_i(as.character(nivel_confianza), "\\.", 2))) }
-    )
+  if( any( grepl('_Min',colnames(salida)) ) & any( grepl('_Max',colnames(salida)) )   ){
+    salida <- salida %>%
+      rename_with(
+        .cols = ends_with(c("_Min", "_Max")),
+        .fn = function(x){ paste0(x, "_", as.character(stringr::str_split_i(as.character(nivel_confianza), "\\.", 2))) }
+      )
+  }
 
   attr(salida,'tipo_tabla') <- 'numerica'
   attr(salida,'vars_grupo') <- !is.null(vars_grupo)
 
   salida
 }
-
 

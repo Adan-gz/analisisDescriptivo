@@ -71,32 +71,59 @@ generar_descriptivo_VDnumerica_varX <- function(
 
     OLS_simple <- lm( datos[[var_VDnum]] ~ datos[[var_X]] )
 
-    salida <- tibble(
-      'Var_VD' = var_VDnum,
-      'var_X' = var_X,
-      'R2'    = cor(x = datos[[var_VDnum]], y = datos[[var_X]] ),
-      'OLS_coef' = coef( OLS_simple )[2],
-      'OLS_p_value'  = summary(OLS_simple)$coefficients[2,4],
+    OLS_simple_coef <- coef( OLS_simple )[2]
 
-    ) %>%
-      bind_cols( medias_cuartiles )
+    if( is.na(OLS_simple_coef) ){
+      message( 'No ha sido posible realizar la regresión OLS entre ', var_VDnum, ' ~ ',var_X  )
+
+      salida <- tibble(
+        'Var_VD' = var_VDnum,
+        'var_X' = var_X,
+        'R2'    = cor(x = datos[[var_VDnum]], y = datos[[var_X]] )
+        )
+
+    } else {
+
+      salida <- tibble(
+        'Var_VD' = var_VDnum,
+        'var_X' = var_X,
+        'R2'    = cor(x = datos[[var_VDnum]], y = datos[[var_X]] ),
+        'OLS_coef' = OLS_simple_coef,
+        'OLS_p_value'  = summary(OLS_simple)$coefficients[2,4]
+      )
+    }
+
+    salida <- salida %>% bind_cols( medias_cuartiles )
 
     if(!is.null(var_peso)){
 
       pesos <- datos[[var_peso]]
 
       OLS_simple_w <- lm( datos[[var_VDnum]] ~ datos[[var_X]], weights = pesos )
+      OLS_simple__w_coef <- coef( OLS_simple_w )[2]
 
-      salida <- salida %>%
-        mutate(
-          'R2_w'  = coeficiente_correlacion_ponderado(x = datos[[var_VDnum]], y = datos[[var_X]], pesos = pesos ),
-          .after  = R2
-        ) %>%
-        mutate(
-          'OLS_coef_w' = coef( OLS_simple_w )[2],
-          'OLS_p_value_w'  = summary(OLS_simple_w)$coefficients[2,4],
-          .after = OLS_p_value
-        )
+      if( is.na(OLS_simple__w_coef) ){
+        message( 'No ha sido posible realizar la regresión ponderada OLS entre ', var_VDnum, ' ~ ',var_X  )
+
+        salida <- salida %>%
+          mutate(
+            'R2_w'  = coeficiente_correlacion_ponderado(x = datos[[var_VDnum]], y = datos[[var_X]], pesos = pesos ),
+            .after  = R2
+          )
+
+      } else {
+
+        salida <- salida %>%
+          mutate(
+            'R2_w'  = coeficiente_correlacion_ponderado(x = datos[[var_VDnum]], y = datos[[var_X]], pesos = pesos ),
+            .after  = R2
+          ) %>%
+          mutate(
+            'OLS_coef_w' = coef( OLS_simple_w )[2],
+            'OLS_p_value_w'  = summary(OLS_simple_w)$coefficients[2,4],
+            .after = OLS_p_value
+          )
+      }
 
     }
 
@@ -104,6 +131,7 @@ generar_descriptivo_VDnumerica_varX <- function(
     attr(salida,'vars_grupo') <- FALSE
 
   } else { # si la X es categorica
+
     salida <- generar_descriptivo_numerico(
       datos = datos,
       var_numerica = var_VDnum,
@@ -117,3 +145,6 @@ generar_descriptivo_VDnumerica_varX <- function(
 
   salida
 }
+
+
+

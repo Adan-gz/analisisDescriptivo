@@ -15,7 +15,7 @@
 #'   \code{"var_categorica"}. Por defecto es \code{c("var_grupo", "var_categorica")}.
 #' @param nivel_confianza Nivel de confianza para los intervalos. Por defecto es \code{0.95}.
 #' @param estrategia_valoresPerdidos Estrategia para el manejo de valores faltantes en la variable categórica. Se debe elegir
-#'   \code{"E"} para eliminar o \code{"A"} para agrupar (NS/NC). Por defecto es \code{c("E", "A")}, de modo que se selecciona
+#'   \code{"E"} para eliminar o \code{"A"} para agrupar (NS/NC). Por defecto es \code{c("A", "E")}, de modo que se selecciona
 #'   \code{"E"}.
 #' @param simplificar_output Por defecto \code{TRUE}. Cuando se calculan descriptivos agrupados reduce la cantidad de información
 #' exportada en caso de pivotar.
@@ -90,7 +90,7 @@ generar_descriptivo_categorico <- function(
     pivot = TRUE,
     variable_pivot = c("var_grupo", "var_categorica"),
     nivel_confianza = 0.95,
-    estrategia_valoresPerdidos = c("E", "A"),
+    estrategia_valoresPerdidos = c("A", "E"),
     simplificar_output = TRUE
 ) {
   # Convertir la variable categórica a carácter si es numérica
@@ -151,20 +151,20 @@ generar_descriptivo_categorico <- function(
   var_sym <- sym(var_categorica)
 
   # Manejo de valores faltantes
-  if (!any(is.na(datos[[var_categorica]]))) {
-    estrategia_valoresPerdidos <- match.arg(estrategia_valoresPerdidos)
-    if (estrategia_valoresPerdidos == "E") {
-      # Eliminar faltantes para el cálculo de recuentos porcentajes
-      datos <- datos %>% filter(!is.na(!!var_sym))
-
-    } else if (estrategia_valoresPerdidos == "A") {
-      # Agrupar faltantes bajo la categoría "NS/NC"
-      datos[[var_categorica]] <- if_else(is.na(datos[[var_categorica]]),"NS/NC", datos[[var_categorica]])
-      # if( !is.null(vars_grupo) ){
-      #   datos[[vars_grupo]]     <- if_else(is.na(datos[[vars_grupo]]),"NS/NC", datos[[vars_grupo]])
-      # }
-    }
-  }
+  # if (!any(is.na(datos[[var_categorica]]))) {
+  #   estrategia_valoresPerdidos <- match.arg(estrategia_valoresPerdidos)
+  #   if (estrategia_valoresPerdidos == "E") {
+  #     # Eliminar faltantes para el cálculo de recuentos porcentajes
+  #     datos <- datos %>% filter(!is.na(!!var_sym))
+  #
+  #   } else if (estrategia_valoresPerdidos == "A") {
+  #     # Agrupar faltantes bajo la categoría "NS/NC"
+  #     datos[[var_categorica]] <- if_else(is.na(datos[[var_categorica]]),"NS/NC", datos[[var_categorica]])
+  #     # if( !is.null(vars_grupo) ){
+  #     #   datos[[vars_grupo]]     <- if_else(is.na(datos[[vars_grupo]]),"NS/NC", datos[[vars_grupo]])
+  #     # }
+  #   }
+  # }
 
     # Calcular recuentos: SI NO HAY PONDERACION
   if (is.null(var_peso)) {
