@@ -48,6 +48,12 @@ generar_descriptivos_VDnumerica <- function(
     selecc_vars_auto = T
 ){
 
+  # Si alguna variable categórica coincide con las de agrupación, eliminarla de vars_categoricas
+  if (any(vars_X %in% var_VDnum)) {
+    warning("Alguna variable X coincide con la variable dependiente. Se eliminará de vars_X")
+    vars_X <- vars_X[!vars_X %in% var_VDnum]
+  }
+
   if( is.null(vars_X) & selecc_vars_auto ){
     vars_X <- datos %>% select( -any_of(c(var_VDnum,var_peso)) ) %>% colnames()
   }

@@ -63,7 +63,11 @@ generar_descriptivo_VDnumerica_varX <- function(
   if( is.numeric(datos[[var_X]]) ){
 
     medias_cuartiles <- datos %>%
-      mutate( 'x_cuartiles' = trocear_por_cuartiles(!!sym(var_X))) %>%
+      mutate(
+        'x_cuartiles' = trocear_por_cuartiles(!!sym(var_X)),
+        'x_cuartiles' = ifelse( is.na(x_cuartiles) == T,'Cuartil_NA',x_cuartiles),
+        # 'x_cuartiles' = factor(x_cuartiles, levels =  paste0('Cuartil_',c(1:4,'NA') ) )
+       ) %>%
       group_by(x_cuartiles) %>%
       summarise( 'Media' = mean(!!sym(var_VDnum), na.rm=T ) ) %>%
       ungroup() %>%
@@ -79,7 +83,7 @@ generar_descriptivo_VDnumerica_varX <- function(
       salida <- tibble(
         'Var_VD' = var_VDnum,
         'var_X' = var_X,
-        'R2'    = cor(x = datos[[var_VDnum]], y = datos[[var_X]] )
+        'R2'    = cor(x = datos[[var_VDnum]], y = datos[[var_X]], use = 'complete.obs' )
         )
 
     } else {
@@ -87,7 +91,7 @@ generar_descriptivo_VDnumerica_varX <- function(
       salida <- tibble(
         'Var_VD' = var_VDnum,
         'var_X' = var_X,
-        'R2'    = cor(x = datos[[var_VDnum]], y = datos[[var_X]] ),
+        'R2'    = cor(x = datos[[var_VDnum]], y = datos[[var_X]], use = 'complete.obs' ),
         'OLS_coef' = OLS_simple_coef,
         'OLS_p_value'  = summary(OLS_simple)$coefficients[2,4]
       )
