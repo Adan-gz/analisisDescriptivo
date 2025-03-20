@@ -13,7 +13,7 @@
 #' @examples
 #' trocear_por_cuartiles(c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
 trocear_por_cuartiles <- function(x){
-  cuartiles <- quantile(x)
+  cuartiles <- quantile(x,na.rm=T)
   case_when(
     x < cuartiles[2] ~ 'Cuartil_1',
     x >= cuartiles[2] & x < cuartiles[3]  ~ 'Cuartil_2',
