@@ -131,6 +131,8 @@ generar_descriptivo_VDnumerica_varX <- function(
 
     }
 
+    salida <- salida %>% relocate( any_of( paste0('Cuartil_',c(1:4,'NA'),'_Media') ), .after=last_col())
+
     attr(salida,'tipo_tabla') <- 'numerica'
     attr(salida,'vars_grupo') <- FALSE
 

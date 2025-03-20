@@ -71,7 +71,9 @@ generar_descriptivos_VDnumerica <- function(
       \(x.i) generar_descriptivo_VDnumerica_varX( datos = datos,  var_VDnum = var_VDnum,var_X =  x.i, var_peso = var_peso )
     ) %>%
       set_names(vars_X_num)
-    if(num_unificar_1tabla) descriptivos_num <- bind_rows( descriptivos_num )
+    if(num_unificar_1tabla){
+      descriptivos_num <- bind_rows( descriptivos_num )  %>% relocate( any_of( paste0('Cuartil_',c(1:4,'NA'),'_Media') ), .after=last_col())
+    }
 
   }
   if( length(vars_X_fac) > 0 ){
