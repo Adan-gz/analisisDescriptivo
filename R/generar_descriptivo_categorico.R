@@ -93,6 +93,11 @@ generar_descriptivo_categorico <- function(
     estrategia_valoresPerdidos = c("A", "E"),
     simplificar_output = TRUE
 ) {
+
+  if( !var_categorica %in% colnames(datos) ){
+    stop("La variable categórica ", var_categorica, " no se encuentra en la matriz de datos")
+  }
+
   # Convertir la variable categórica a carácter si es numérica
   if (!is.factor(datos[[var_categorica]]) )
     {
@@ -115,6 +120,11 @@ generar_descriptivo_categorico <- function(
   }
 
   if ( !is.null(var_peso) ) {
+
+    if( !var_peso %in% colnames(datos) ){
+      stop("La variable de ponderación ", var_peso ," no se encuentra en la matriz de datos")
+    }
+
     if(!is.numeric(datos[[var_peso]])) datos[[var_peso]] <- as.numeric(datos[[var_peso]])
   }
 
@@ -125,6 +135,10 @@ generar_descriptivo_categorico <- function(
 
   # Si se especifican variables de agrupación, agrupar
   if ( !is.null(vars_grupo) ) {
+
+    if( !vars_grupo %in% colnames(datos) ){
+      stop("La variable de agrupación ", vars_grupo, " no se encuentra en la matriz de datos")
+    }
 
     if( !is.factor(datos[[vars_grupo]]) ){
 

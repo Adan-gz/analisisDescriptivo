@@ -79,11 +79,20 @@ generar_descriptivo_numerico <- function(
     estrategia_valoresPerdidos_grupo = c('A','E')
 ) {
   # Asegurarse de que la variable es de tipo numeric
+  if( !var_numerica %in% colnames(datos) ){
+    stop("La variable numérica ", var_numerica ," no se encuentra en la matriz de datos")
+  }
+
   if ( !is.numeric(datos[[var_numerica]]) ) {
     datos[[var_numerica]] <- as.numeric(datos[[var_numerica]])
   }
 
   if ( !is.null(var_peso)  ) {
+
+    if( !var_peso %in% colnames(datos) ){
+      stop("La variable de ponderación ", var_peso ," no se encuentra en la matriz de datos")
+    }
+
     if( !is.numeric(datos[[var_peso]]) )  datos[[var_peso]] <- as.numeric(datos[[var_peso]])
   }
 
@@ -92,6 +101,11 @@ generar_descriptivo_numerico <- function(
   }
 
   if ( !is.null(vars_grupo) ) {
+
+    if( !vars_grupo %in% colnames(datos) ){
+      stop("La variable de agrupación ", vars_grupo, " no se encuentra en la matriz de datos")
+    }
+
     if( !is.factor(datos[[vars_grupo]]) ) datos[[vars_grupo]] <- factor(datos[[vars_grupo]])
 
     # Manejo de valores faltantes
