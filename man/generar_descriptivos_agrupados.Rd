@@ -14,7 +14,7 @@ generar_descriptivos_agrupados(
   selecc_vars_auto = TRUE,
   pivot = TRUE,
   variable_pivot = c("var_grupo", "var_categorica"),
-  estrategia_valoresPerdidos = c("E", "A"),
+  estrategia_valoresPerdidos = c("A", "E"),
   num_unificar_1tabla = FALSE,
   simplificar_output = TRUE
 )
@@ -40,7 +40,7 @@ se seleccionan automáticamente las variables numéricas.}
 
 \item{variable_pivot}{Vector de caracteres que indica la variable a utilizar para pivotear: \code{"var_grupo"} o \code{"var_categorica"}. Por defecto \code{c("var_grupo", "var_categorica")}.}
 
-\item{estrategia_valoresPerdidos}{Estrategia para el manejo de valores faltantes en variables categóricas: \code{"E"} (eliminar) o \code{"A"} (agrupar en "NS/NC"). Por defecto \code{c("E", "A")}.}
+\item{estrategia_valoresPerdidos}{Estrategia para el manejo de valores faltantes en variables categóricas: \code{"E"} (eliminar) o \code{"A"} (agrupar en "NS/NC"). Por defecto \code{c("A", "E")}.}
 
 \item{num_unificar_1tabla}{Lógico. Si es \code{TRUE}, se retorna un único data frame combinando los descriptivos numéricos; si es \code{FALSE},
 se retorna una lista. Por defecto \code{FALSE}.}

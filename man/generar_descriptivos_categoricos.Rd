@@ -12,7 +12,7 @@ generar_descriptivos_categoricos(
   pivot = TRUE,
   variable_pivot = c("var_grupo", "var_categorica"),
   nivel_confianza = 0.95,
-  estrategia_valoresPerdidos = c("E", "A"),
+  estrategia_valoresPerdidos = c("A", "E"),
   selecc_vars_auto = TRUE,
   simplificar_output = TRUE
 )
@@ -35,7 +35,7 @@ generar_descriptivos_categoricos(
 \item{nivel_confianza}{Nivel de confianza para los intervalos. Por defecto es \code{0.95}.}
 
 \item{estrategia_valoresPerdidos}{Estrategia para manejar faltantes: \code{"E"} (eliminar) o \code{"A"} (agrupar en "NS/NC").
-Por defecto es \code{c("E", "A")}, lo que selecciona \code{"E"}.}
+Por defecto es \code{c("A", "E")}, lo que selecciona \code{"A"}.}
 
 \item{selecc_vars_auto}{Lógico. Si es \code{TRUE} y \code{vars_categoricas} es \code{NULL}, se seleccionan
 automáticamente las variables de tipo carácter o factor. Por defecto es \code{TRUE}.}

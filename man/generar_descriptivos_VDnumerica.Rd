@@ -11,7 +11,8 @@ generar_descriptivos_VDnumerica(
   var_peso = NULL,
   num_unificar_1tabla = T,
   nivel_confianza = 0.95,
-  selecc_vars_auto = T
+  selecc_vars_auto = T,
+  estrategia_valoresPerdidos_grupo = c("A", "E")
 )
 }
 \arguments{
@@ -28,6 +29,10 @@ generar_descriptivos_VDnumerica(
 \item{nivel_confianza}{El nivel de confianza para los intervalos de confianza (por defecto, 0.95).}
 
 \item{selecc_vars_auto}{Un valor lógico que indica si se deben seleccionar automáticamente las variables X si no se especifican (por defecto TRUE).}
+
+\item{estrategia_valoresPerdidos_grupo}{Estrategia para el manejo de valores faltantes en la variable de agrupación. Se debe elegir
+\code{"E"} para eliminar o \code{"A"} para agrupar (NS/NC). Por defecto es \code{c("A", "E")}, de modo que se selecciona
+\code{"E"}.}
 }
 \value{
 Un tibble con los resultados del análisis descriptivo, que incluye tanto los descriptivos para las variables X numéricas como categóricas.

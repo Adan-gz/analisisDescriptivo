@@ -10,7 +10,7 @@ generar_descriptivo_VDcategorica_varX(
   var_X,
   var_peso = NULL,
   variable_pivot = "var_grupo",
-  estrategia_valoresPerdidos = "A",
+  estrategia_valoresPerdidos = c("A", "E"),
   nivel_confianza = 0.95,
   simplificar_output = T
 )

@@ -10,7 +10,9 @@
 #' @param vars_grupo Vector de nombres de variables para agrupar. Por defecto es \code{NULL} (sin agrupamiento).
 #' @param var_peso Nombre (carácter) de la variable de peso. Si es \code{NULL} (por defecto), se calculan estadísticas sin ponderación.
 #' @param nivel_confianza Nivel de confianza para el cálculo de intervalos (por defecto \code{0.95}).
-#' @param unificar_1tabla Lógico. Si es \code{TRUE}, se retorna un único data frame combinando todos los descriptivos; de lo contrario,
+#' @param estrategia_valoresPerdidos_grupo Estrategia para el manejo de valores faltantes en la variable de agrupación. Se debe elegir
+#'   \code{"E"} para eliminar o \code{"A"} para agrupar (NS/NC). Por defecto es \code{c("A", "E")}, de modo que se selecciona
+#'  @param unificar_1tabla Lógico. Si es \code{TRUE}, se retorna un único data frame combinando todos los descriptivos; de lo contrario,
 #'   se retorna una lista de data frames.
 #' @param selecc_vars_auto Lógico. Si es \code{TRUE} y \code{vars_numericas} es \code{NULL}, se seleccionan automáticamente las variables numéricas.
 #'
@@ -53,7 +55,8 @@ generar_descriptivos_numericos <- function(
     var_peso = NULL,
     nivel_confianza = 0.95,
     unificar_1tabla = FALSE,
-    selecc_vars_auto = TRUE
+    selecc_vars_auto = TRUE,
+    estrategia_valoresPerdidos_grupo = c('A','E')
 ) {
   # Seleccionar automáticamente las variables numéricas si no se especifican
   if (is.null(vars_numericas) && selecc_vars_auto) {
@@ -67,7 +70,8 @@ generar_descriptivos_numericos <- function(
       var_numerica = var_num,
       vars_grupo = vars_grupo,
       var_peso = var_peso,
-      nivel_confianza = nivel_confianza
+      nivel_confianza = nivel_confianza,
+      estrategia_valoresPerdidos_grupo = estrategia_valoresPerdidos_grupo
     )
   ) %>% purrr::set_names(vars_numericas)
 

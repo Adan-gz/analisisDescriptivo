@@ -14,7 +14,7 @@
 #' @param selecc_vars_auto Lógico. Si es \code{TRUE}, se seleccionan automáticamente las variables si no se especifican. Por defecto \code{TRUE}.
 #' @param pivot Lógico. Si es \code{TRUE}, se pivota la salida de variables categóricas a formato ancho (solo para tibbles agrupados). Por defecto \code{TRUE}.
 #' @param variable_pivot Vector de caracteres que indica la variable a utilizar para pivotear: \code{"var_grupo"} o \code{"var_categorica"}. Por defecto \code{c("var_grupo", "var_categorica")}.
-#' @param estrategia_valoresPerdidos Estrategia para el manejo de valores faltantes en variables categóricas: \code{"E"} (eliminar) o \code{"A"} (agrupar en "NS/NC"). Por defecto \code{c("E", "A")}.
+#' @param estrategia_valoresPerdidos Estrategia para el manejo de valores faltantes en variables categóricas: \code{"E"} (eliminar) o \code{"A"} (agrupar en "NS/NC"). Por defecto \code{c("A", "E")}.
 #' @param num_unificar_1tabla Lógico. Si es \code{TRUE}, se retorna un único data frame combinando los descriptivos numéricos; si es \code{FALSE},
 #'   se retorna una lista. Por defecto \code{FALSE}.
 #' @param simplificar_output Por defecto \code{TRUE}. Cuando se calculan descriptivos agrupados reduce la cantidad de información
@@ -60,7 +60,7 @@ generar_descriptivos_agrupados <- function(
     selecc_vars_auto = TRUE,
     pivot = TRUE,
     variable_pivot = c("var_grupo", "var_categorica"),
-    estrategia_valoresPerdidos = c("E", "A"),
+    estrategia_valoresPerdidos = c("A", "E"),
     num_unificar_1tabla = FALSE,
     simplificar_output = TRUE
 ) {

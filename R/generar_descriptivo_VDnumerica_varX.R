@@ -14,6 +14,9 @@
 #' @param var_X El nombre de la variable X (puede ser numérica o categórica).
 #' @param var_peso El nombre de la variable de pesos (opcional).
 #' @param nivel_confianza El nivel de confianza para los intervalos de confianza (por defecto, 0.95).
+#' @param estrategia_valoresPerdidos_grupo Estrategia para el manejo de valores faltantes en la variable de agrupación. Se debe elegir
+#'  \code{"E"} para eliminar o \code{"A"} para agrupar (NS/NC). Por defecto es \code{c("A", "E")}, de modo que se selecciona
+#'  \code{"E"}.
 #'
 #' @return Un tibble con los resultados del análisis descriptivo, que incluye la media por cuartiles (si X es numérica),
 #' el coeficiente de la regresión OLS, el valor p de la regresión, y otros detalles de la regresión ponderada si se proporciona `var_peso`.
@@ -56,7 +59,8 @@ generar_descriptivo_VDnumerica_varX <- function(
     var_VDnum,
     var_X,
     var_peso = NULL,
-    nivel_confianza = 0.95
+    nivel_confianza = 0.95,
+    estrategia_valoresPerdidos_grupo = c('A','E')
 ){
   if( !var_VDnum %in% colnames(datos) ){
     stop("La variable dependiente ", var_VDnum ," no se encuentra en la matriz de datos")
@@ -150,7 +154,9 @@ generar_descriptivo_VDnumerica_varX <- function(
       var_numerica = var_VDnum,
       vars_grupo = var_X,
       var_peso = var_peso,
-      nivel_confianza = nivel_confianza)
+      nivel_confianza = nivel_confianza,
+      estrategia_valoresPerdidos_grupo = estrategia_valoresPerdidos_grupo
+      )
 
     attr(salida,'tipo_tabla') <- 'numerica'
     attr(salida,'vars_grupo') <- TRUE

@@ -11,7 +11,8 @@ generar_descriptivos_numericos(
   var_peso = NULL,
   nivel_confianza = 0.95,
   unificar_1tabla = FALSE,
-  selecc_vars_auto = TRUE
+  selecc_vars_auto = TRUE,
+  estrategia_valoresPerdidos_grupo = c("A", "E")
 )
 }
 \arguments{
@@ -26,10 +27,12 @@ generar_descriptivos_numericos(
 
 \item{nivel_confianza}{Nivel de confianza para el cálculo de intervalos (por defecto \code{0.95}).}
 
-\item{unificar_1tabla}{Lógico. Si es \code{TRUE}, se retorna un único data frame combinando todos los descriptivos; de lo contrario,
-se retorna una lista de data frames.}
-
 \item{selecc_vars_auto}{Lógico. Si es \code{TRUE} y \code{vars_numericas} es \code{NULL}, se seleccionan automáticamente las variables numéricas.}
+
+\item{estrategia_valoresPerdidos_grupo}{Estrategia para el manejo de valores faltantes en la variable de agrupación. Se debe elegir
+\code{"E"} para eliminar o \code{"A"} para agrupar (NS/NC). Por defecto es \code{c("A", "E")}, de modo que se selecciona
+@param unificar_1tabla Lógico. Si es \code{TRUE}, se retorna un único data frame combinando todos los descriptivos; de lo contrario,
+se retorna una lista de data frames.}
 }
 \value{
 Lista de data frames, uno por cada variable numérica analizada, o un data frame único si \code{unificar_1tabla} es \code{TRUE}.
