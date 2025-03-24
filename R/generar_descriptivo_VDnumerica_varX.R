@@ -58,6 +58,13 @@ generar_descriptivo_VDnumerica_varX <- function(
     var_peso = NULL,
     nivel_confianza = 0.95
 ){
+  if( !var_VDnum %in% colnames(datos) ){
+    stop("La variable dependiente ", var_VDnum ," no se encuentra en la matriz de datos")
+  }
+
+  if( !var_X %in% colnames(datos) ){
+    stop("La variable independiente ", var_X ," no se encuentra en la matriz de datos")
+  }
 
   # si la X es numerica
   if( is.numeric(datos[[var_X]]) ){

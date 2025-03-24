@@ -78,10 +78,10 @@ generar_descriptivo_numerico <- function(
     nivel_confianza = 0.95,
     estrategia_valoresPerdidos_grupo = c('A','E')
 ) {
-  # Asegurarse de que la variable es de tipo numeric
   if( !var_numerica %in% colnames(datos) ){
     stop("La variable numérica ", var_numerica ," no se encuentra en la matriz de datos")
   }
+  # Asegurarse de que la variable es de tipo numeric
 
   if ( !is.numeric(datos[[var_numerica]]) ) {
     datos[[var_numerica]] <- as.numeric(datos[[var_numerica]])

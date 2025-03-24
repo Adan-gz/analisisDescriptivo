@@ -61,6 +61,13 @@ generar_descriptivo_VDcategorica_varX <- function(
     nivel_confianza = 0.95,
     simplificar_output = T
 ){
+  if( !var_VDcat %in% colnames(datos) ){
+    stop("La variable dependiente ", var_VDcat ," no se encuentra en la matriz de datos")
+  }
+
+  if( !var_X %in% colnames(datos) ){
+    stop("La variable independiente ", var_X ," no se encuentra en la matriz de datos")
+  }
 
   # si la X NO es numerica, es decir categorica (factor o chr)
   if( !is.numeric(datos[[var_X]]) ){
