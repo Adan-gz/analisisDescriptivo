@@ -86,7 +86,8 @@ Las funciones principales del paquete son 3:
 1.  `generar_descriptivos_univariados`: generar los descriptivos univariados de variables categóricas y numéricas. Si no se indican cuáles se seleccionan de manera automática.
 2.  `generar_descriptivos_agrupados`: calcula estadísticis descriptivos de variables categóricas y numéricas según las categorías de la variable categórica indicada.
 3.  `generar_descriptivos_VDnumerica`: calcula estadísticos de relación entre 2 variables numéricas y estadísticis descriptivos de la variable numérica según las categorías de las variables categóricas.
-4.  `crear_Excel`: genera un workbook a través de `openxlsx` y exporta el archivo Excel ya formateado.
+4.  `generar_descriptivos_VDcategorica`: calcula estadísticos de relación entre 2 variables categóricas (agrupando por la variable independiente) y entre la categórica y la numérica.
+5.  `crear_Excel`: genera un workbook a través de `openxlsx` y exporta el archivo Excel ya formateado.
 
 **Ahora mismo las funciones no están diseñadas para poder pasar más de 1 variable de agrupación**. Podría funcionar, pero el comportamiento es imprevisto. Si se quiere agrupar por más de 1 variable la estrategia más sencilla es: crear una nueva variable uniendo los valores de cada fila de ambas y pasarle a la función esta nueva variable.
 
