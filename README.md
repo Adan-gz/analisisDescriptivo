@@ -107,12 +107,12 @@ remotes::install_github("Adan-gz/analisisDescriptivo")
 
 ## Uso Rápido
 
-Las funciones principales del paquete son 3:
+Las funciones principales del paquete son:
 
 1.  `generar_descriptivos_univariados`: generar los descriptivos
     univariados de variables categóricas y numéricas. Si no se indican
     cuáles se seleccionan de manera automática.
-2.  `generar_descriptivos_agrupados`: calcula estadísticis descriptivos
+2.  `generar_descriptivos_agrupados`: calcula estadísticos descriptivos
     de variables categóricas y numéricas según las categorías de la
     variable categórica indicada.
 3.  `generar_descriptivos_VDnumerica`: calcula estadísticos de relación
@@ -163,46 +163,46 @@ El output obtenido se ve de esta forma en la consola de R:
 print(resultados_univ)
 #> $Numericas
 #> # A tibble: 9 × 15
-#>   Variable     N Missing   Media Media_w Media_w_Min_95 Media_w_Max_95     Min
-#>   <chr>    <int>   <int>   <dbl>   <dbl>          <dbl>          <dbl>   <dbl>
-#> 1 mpg         32       0  20.1    20.1           18.1           22.0   10.4   
-#> 2 disp        32       0 231.    223.           183.           264.    71.1   
-#> 3 hp          32       0 147.    151.           126.           177.    52     
-#> 4 drat        32       0   3.60    3.57           3.40           3.75   2.76  
-#> 5 wt          32       0   3.22    3.22           2.91           3.53   1.51  
-#> 6 qsec        32       0  17.8    17.8           17.2           18.4   14.5   
-#> 7 vs          32       0   0.438   0.416          0.236          0.597  0     
-#> 8 am          32       0   0.406   0.443          0.261          0.625  0     
-#> 9 pesos       32       0   0.770   1.08           0.881          1.29   0.0832
+#>   Variable     N Missing   Media Media_w Media_w_Min_95 Media_w_Max_95    Min
+#>   <chr>    <int>   <int>   <dbl>   <dbl>          <dbl>          <dbl>  <dbl>
+#> 1 mpg         32       0  20.1    19.9           17.6           22.2   10.4  
+#> 2 disp        32       0 231.    243.           196.           290.    71.1  
+#> 3 hp          32       0 147.    156.           126.           187.    52    
+#> 4 drat        32       0   3.60    3.61           3.43           3.78   2.76 
+#> 5 wt          32       0   3.22    3.26           2.91           3.60   1.51 
+#> 6 qsec        32       0  17.8    17.5           16.9           18.2   14.5  
+#> 7 vs          32       0   0.438   0.385          0.206          0.563  0    
+#> 8 am          32       0   0.406   0.462          0.280          0.645  0    
+#> 9 pesos       32       0   1.41    2.22           1.84           2.61   0.125
 #> # ℹ 7 more variables: Q25 <dbl>, Mediana <dbl>, Q75 <dbl>, Max <dbl>, sd <dbl>,
 #> #   sd_w <dbl>, hist <chr>
 #> 
 #> $Categoricas
 #> $Categoricas$cyl
 #>   cyl    n         p   p_Min_95  p_Max_95         sd N_eff n_sinW  p_sinW
-#> 1   4  8.4 0.3415269 0.18265323 0.5462375 0.09948752  22.7     11 0.34375
-#> 2   6  5.2 0.2100328 0.09148801 0.4124480 0.08545456  22.7      7 0.21875
-#> 3   8 11.0 0.4484402 0.26661864 0.6451750 0.10433636  22.7     14 0.43750
+#> 1   4 14.9 0.3309268 0.16829009 0.5473086 0.10436578  20.3     11 0.34375
+#> 2   6  6.8 0.1499934 0.05278752 0.3584596 0.07919588  20.3      7 0.21875
+#> 3   8 23.4 0.5190798 0.31683281 0.7152616 0.11081764  20.3     14 0.43750
 #> 
 #> $Categoricas$gear
-#>   gear    n         p   p_Min_95  p_Max_95         sd N_eff n_sinW  p_sinW
-#> 1    3 10.9 0.4422654 0.26155751 0.6396725 0.10419392  22.7     15 0.46875
-#> 2    4  9.3 0.3762277 0.20903321 0.5792222 0.10163084  22.7     12 0.37500
-#> 3    5  4.5 0.1815069 0.07392281 0.3812121 0.08086139  22.7      5 0.15625
+#>   gear    n         p   p_Min_95  p_Max_95        sd N_eff n_sinW  p_sinW
+#> 1    3 19.2 0.4255152 0.23988640 0.6348213 0.1096610  20.3     15 0.46875
+#> 2    4 18.5 0.4096638 0.22744074 0.6206030 0.1090734  20.3     12 0.37500
+#> 3    5  7.4 0.1648209 0.06087804 0.3753106 0.0822908  20.3      5 0.15625
 #> 
 #> $Categoricas$carb
-#>   carb   n          p   p_Min_95  p_Max_95         sd N_eff n_sinW  p_sinW
-#> 1    1 4.5 0.18271413 0.07464678 0.3825534 0.08107000  22.7      7 0.21875
-#> 2    2 8.0 0.32439813 0.16995908 0.5296284 0.09821362  22.7     10 0.31250
-#> 3    3 4.0 0.16127986 0.06206915 0.3584622 0.07715884  22.7      3 0.09375
-#> 4    4 5.4 0.21994634 0.09780441 0.4230912 0.08689759  22.7     10 0.31250
-#> 5    6 1.5 0.05904029 0.01280681 0.2328173 0.04944779  22.7      1 0.03125
-#> 6    8 1.3 0.05262125 0.01057045 0.2240722 0.04684136  22.7      1 0.03125
+#>   carb    n          p     p_Min_95  p_Max_95         sd N_eff n_sinW  p_sinW
+#> 1    1 11.3 0.24986853 0.1125048309 0.4667441 0.09602400  20.3      7 0.21875
+#> 2    2 12.8 0.28238757 0.1342054267 0.4997444 0.09984425  20.3     10 0.31250
+#> 3    3  2.0 0.04445877 0.0073434564 0.2263817 0.04571500  20.3      3 0.09375
+#> 4    4 14.9 0.32925766 0.1670863895 0.5457046 0.10423201  20.3     10 0.31250
+#> 5    6  0.5 0.01087977 0.0005634873 0.1766778 0.02300857  20.3      1 0.03125
+#> 6    8  3.8 0.08314770 0.0209252749 0.2778793 0.06123929  20.3      1 0.03125
 #> 
 #> $Categoricas$grupo
 #>         grupo    n         p  p_Min_95  p_Max_95        sd N_eff n_sinW  p_sinW
-#> 1     Control 15.3 0.6192702 0.4165615 0.7874811 0.1018675  22.7     21 0.65625
-#> 2 Tratamiento  9.4 0.3807298 0.2125189 0.5834385 0.1018675  22.7     11 0.34375
+#> 1     Control 25.6 0.5669377 0.3584702 0.7541270 0.1099001  20.3     17 0.53125
+#> 2 Tratamiento 19.6 0.4330623 0.2458730 0.6415298 0.1099001  20.3     15 0.46875
 #> 
 #> 
 #> attr(,"peso")
@@ -249,8 +249,8 @@ print(resultados_agrupados)
 #> # A tibble: 2 × 18
 #>   grupo      Variable     N Missing Media Media_w Dif_categoriaReferen…¹ p_value
 #>   <chr>      <chr>    <int>   <int> <dbl>   <dbl>                  <dbl>   <dbl>
-#> 1 Control    mpg         21       0  20.1    21.2                  NA     NA    
-#> 2 Tratamien… mpg         11       0  20      18.3                  -2.87   0.146
+#> 1 Control    mpg         17       0  19.8    21.1                  NA     NA    
+#> 2 Tratamien… mpg         15       0  20.4    18.3                  -2.88   0.217
 #> # ℹ abbreviated name: ¹​Dif_categoriaReferencia
 #> # ℹ 10 more variables: Media_w_Min_95 <dbl>, Media_w_Max_95 <dbl>, Min <dbl>,
 #> #   Q25 <dbl>, Mediana <dbl>, Q75 <dbl>, Max <dbl>, sd <dbl>, sd.w <dbl>,
@@ -260,8 +260,8 @@ print(resultados_agrupados)
 #> # A tibble: 2 × 18
 #>   grupo      Variable     N Missing Media Media_w Dif_categoriaReferen…¹ p_value
 #>   <chr>      <chr>    <int>   <int> <dbl>   <dbl>                  <dbl>   <dbl>
-#> 1 Control    disp        21       0  219.    189.                   NA   NA     
-#> 2 Tratamien… disp        11       0  253.    280.                   91.5  0.0225
+#> 1 Control    disp        17       0  233.    226.                   NA    NA    
+#> 2 Tratamien… disp        15       0  228.    266.                   40.5   0.390
 #> # ℹ abbreviated name: ¹​Dif_categoriaReferencia
 #> # ℹ 10 more variables: Media_w_Min_95 <dbl>, Media_w_Max_95 <dbl>, Min <dbl>,
 #> #   Q25 <dbl>, Mediana <dbl>, Q75 <dbl>, Max <dbl>, sd <dbl>, sd.w <dbl>,
@@ -271,8 +271,8 @@ print(resultados_agrupados)
 #> # A tibble: 2 × 18
 #>   grupo      Variable     N Missing Media Media_w Dif_categoriaReferen…¹ p_value
 #>   <chr>      <chr>    <int>   <int> <dbl>   <dbl>                  <dbl>   <dbl>
-#> 1 Control    hp          21       0  143.    134.                   NA   NA     
-#> 2 Tratamien… hp          11       0  154.    180.                   46.0  0.0691
+#> 1 Control    hp          17       0  159.    164.                   NA    NA    
+#> 2 Tratamien… hp          15       0  133.    147.                  -17.4   0.568
 #> # ℹ abbreviated name: ¹​Dif_categoriaReferencia
 #> # ℹ 10 more variables: Media_w_Min_95 <dbl>, Media_w_Max_95 <dbl>, Min <dbl>,
 #> #   Q25 <dbl>, Mediana <dbl>, Q75 <dbl>, Max <dbl>, sd <dbl>, sd.w <dbl>,
@@ -282,8 +282,8 @@ print(resultados_agrupados)
 #> # A tibble: 2 × 18
 #>   grupo      Variable     N Missing Media Media_w Dif_categoriaReferen…¹ p_value
 #>   <chr>      <chr>    <int>   <int> <dbl>   <dbl>                  <dbl>   <dbl>
-#> 1 Control    drat        21       0  3.61    3.67                 NA      NA    
-#> 2 Tratamien… drat        11       0  3.57    3.42                 -0.245   0.170
+#> 1 Control    drat        17       0  3.59    3.67                 NA      NA    
+#> 2 Tratamien… drat        15       0  3.61    3.52                 -0.157   0.375
 #> # ℹ abbreviated name: ¹​Dif_categoriaReferencia
 #> # ℹ 10 more variables: Media_w_Min_95 <dbl>, Media_w_Max_95 <dbl>, Min <dbl>,
 #> #   Q25 <dbl>, Mediana <dbl>, Q75 <dbl>, Max <dbl>, sd <dbl>, sd.w <dbl>,
@@ -293,8 +293,8 @@ print(resultados_agrupados)
 #> # A tibble: 2 × 18
 #>   grupo      Variable     N Missing Media Media_w Dif_categoriaReferen…¹ p_value
 #>   <chr>      <chr>    <int>   <int> <dbl>   <dbl>                  <dbl>   <dbl>
-#> 1 Control    wt          21       0  3.24    3.06                 NA      NA    
-#> 2 Tratamien… wt          11       0  3.18    3.48                  0.422   0.181
+#> 1 Control    wt          17       0  3.22    3.06                 NA      NA    
+#> 2 Tratamien… wt          15       0  3.22    3.52                  0.463   0.177
 #> # ℹ abbreviated name: ¹​Dif_categoriaReferencia
 #> # ℹ 10 more variables: Media_w_Min_95 <dbl>, Media_w_Max_95 <dbl>, Min <dbl>,
 #> #   Q25 <dbl>, Mediana <dbl>, Q75 <dbl>, Max <dbl>, sd <dbl>, sd.w <dbl>,
@@ -304,8 +304,8 @@ print(resultados_agrupados)
 #> # A tibble: 2 × 18
 #>   grupo      Variable     N Missing Media Media_w Dif_categoriaReferen…¹ p_value
 #>   <chr>      <chr>    <int>   <int> <dbl>   <dbl>                  <dbl>   <dbl>
-#> 1 Control    qsec        21       0  18.1    18.2                 NA      NA    
-#> 2 Tratamien… qsec        11       0  17.4    17.2                 -0.970   0.130
+#> 1 Control    qsec        17       0  17.6    17.4                 NA      NA    
+#> 2 Tratamien… qsec        15       0  18.2    17.7                  0.298   0.633
 #> # ℹ abbreviated name: ¹​Dif_categoriaReferencia
 #> # ℹ 10 more variables: Media_w_Min_95 <dbl>, Media_w_Max_95 <dbl>, Min <dbl>,
 #> #   Q25 <dbl>, Mediana <dbl>, Q75 <dbl>, Max <dbl>, sd <dbl>, sd.w <dbl>,
@@ -315,8 +315,8 @@ print(resultados_agrupados)
 #> # A tibble: 2 × 18
 #>   grupo      Variable     N Missing Media Media_w Dif_categoriaReferen…¹ p_value
 #>   <chr>      <chr>    <int>   <int> <dbl>   <dbl>                  <dbl>   <dbl>
-#> 1 Control    vs          21       0 0.524   0.578                 NA     NA     
-#> 2 Tratamien… vs          11       0 0.273   0.152                 -0.426  0.0167
+#> 1 Control    vs          17       0 0.412   0.442                 NA      NA    
+#> 2 Tratamien… vs          15       0 0.467   0.309                 -0.133   0.459
 #> # ℹ abbreviated name: ¹​Dif_categoriaReferencia
 #> # ℹ 10 more variables: Media_w_Min_95 <dbl>, Media_w_Max_95 <dbl>, Min <dbl>,
 #> #   Q25 <dbl>, Mediana <dbl>, Q75 <dbl>, Max <dbl>, sd <dbl>, sd.w <dbl>,
@@ -326,8 +326,8 @@ print(resultados_agrupados)
 #> # A tibble: 2 × 18
 #>   grupo      Variable     N Missing Media Media_w Dif_categoriaReferen…¹ p_value
 #>   <chr>      <chr>    <int>   <int> <dbl>   <dbl>                  <dbl>   <dbl>
-#> 1 Control    am          21       0 0.381   0.486                 NA      NA    
-#> 2 Tratamien… am          11       0 0.455   0.374                 -0.112   0.552
+#> 1 Control    am          17       0 0.412   0.571                 NA      NA    
+#> 2 Tratamien… am          15       0 0.4     0.320                 -0.251   0.169
 #> # ℹ abbreviated name: ¹​Dif_categoriaReferencia
 #> # ℹ 10 more variables: Media_w_Min_95 <dbl>, Media_w_Max_95 <dbl>, Min <dbl>,
 #> #   Q25 <dbl>, Mediana <dbl>, Q75 <dbl>, Max <dbl>, sd <dbl>, sd.w <dbl>,
@@ -339,9 +339,9 @@ print(resultados_agrupados)
 #> # A tibble: 3 × 10
 #>   cyl   grupo_Control_p grupo_Tratamiento_p Control_n Tratamiento_n
 #>   <fct>           <dbl>               <dbl>     <dbl>         <dbl>
-#> 1 4               0.406               0.236       6.2           2.2
-#> 2 6               0.339              NA           5.2          NA  
-#> 3 8               0.254               0.764       3.9           7.2
+#> 1 4              0.422                0.212      10.8           4.1
+#> 2 6              0.0787               0.243       2             4.8
+#> 3 8              0.499                0.545      12.8          10.7
 #> # ℹ 5 more variables: Control_p_sinW <dbl>, Tratamiento_p_sinW <dbl>,
 #> #   Chi2 <dbl>, p_value <dbl>, VCramer <dbl>
 #> 
@@ -349,9 +349,9 @@ print(resultados_agrupados)
 #> # A tibble: 3 × 10
 #>   gear  grupo_Control_p grupo_Tratamiento_p Control_n Tratamiento_n
 #>   <fct>           <dbl>               <dbl>     <dbl>         <dbl>
-#> 1 3               0.329               0.626       5             5.9
-#> 2 4               0.514               0.152       7.8           1.4
-#> 3 5               0.157               0.222       2.4           2.1
+#> 1 3               0.399               0.460      10.2           9  
+#> 2 4               0.396               0.428      10.1           8.4
+#> 3 5               0.205               0.112       5.2           2.2
 #> # ℹ 5 more variables: Control_p_sinW <dbl>, Tratamiento_p_sinW <dbl>,
 #> #   Chi2 <dbl>, p_value <dbl>, VCramer <dbl>
 #> 
@@ -359,12 +359,12 @@ print(resultados_agrupados)
 #> # A tibble: 6 × 10
 #>   carb  grupo_Control_p grupo_Tratamiento_p Control_n Tratamiento_n
 #>   <fct>           <dbl>               <dbl>     <dbl>         <dbl>
-#> 1 1              0.211                0.137       3.2           1.3
-#> 2 2              0.284                0.389       4.3           3.7
-#> 3 3              0.140                0.195       2.1           1.8
-#> 4 4              0.269                0.140       4.1           1.3
-#> 5 6              0.0953              NA           1.5          NA  
-#> 6 8             NA                    0.138      NA             1.3
+#> 1 1              0.402               0.0511      10.3           1  
+#> 2 2              0.196               0.395        5             7.7
+#> 3 3              0.0437              0.0455       1.1           0.9
+#> 4 4              0.193               0.508        4.9           9.9
+#> 5 6              0.0192             NA            0.5          NA  
+#> 6 8              0.147              NA            3.8          NA  
 #> # ℹ 5 more variables: Control_p_sinW <dbl>, Tratamiento_p_sinW <dbl>,
 #> #   Chi2 <dbl>, p_value <dbl>, VCramer <dbl>
 #> 
@@ -434,49 +434,49 @@ print(resultados_VD_mpg)
 #> # A tibble: 7 × 12
 #>   Var_VD var_X     R2   R2_w OLS_coef OLS_p_value OLS_coef_w OLS_p_value_w
 #>   <chr>  <chr>  <dbl>  <dbl>    <dbl>       <dbl>      <dbl>         <dbl>
-#> 1 mpg    disp  -0.848 -0.773  -0.0412    9.38e-10    -0.0387 0.0000000260 
-#> 2 mpg    hp    -0.776 -0.731  -0.0682    1.79e- 7    -0.0590 0.000000402  
-#> 3 mpg    drat   0.681  0.658   7.68      1.78e- 5     7.63   0.0000146    
-#> 4 mpg    wt    -0.868 -0.792  -5.34      1.29e-10    -5.18   0.00000000628
-#> 5 mpg    qsec   0.419  0.456   1.41      1.71e- 2     1.46   0.00596      
-#> 6 mpg    vs     0.664  0.638   7.94      3.42e- 5     7.16   0.0000332    
-#> 7 mpg    am     0.600  0.514   7.24      2.85e- 4     5.72   0.00157      
+#> 1 mpg    disp  -0.848 -0.861  -0.0412    9.38e-10    -0.0437      3.09e-11
+#> 2 mpg    hp    -0.776 -0.757  -0.0682    1.79e- 7    -0.0600      2.01e- 7
+#> 3 mpg    drat   0.681  0.657   7.68      1.78e- 5     8.91        2.50e- 5
+#> 4 mpg    wt    -0.868 -0.837  -5.34      1.29e-10    -5.79        4.26e-10
+#> 5 mpg    qsec   0.419  0.601   1.41      1.71e- 2     2.32        1.82e- 4
+#> 6 mpg    vs     0.664  0.744   7.94      3.42e- 5     9.93        4.30e- 7
+#> 7 mpg    am     0.600  0.538   7.24      2.85e- 4     7.00        1.11e- 3
 #> # ℹ 4 more variables: Cuartil_1_Media <dbl>, Cuartil_2_Media <dbl>,
 #> #   Cuartil_3_Media <dbl>, Cuartil_4_Media <dbl>
 #> 
 #> $Categoricas
 #> $Categoricas$cyl
 #> # A tibble: 3 × 18
-#>   cyl   Variable     N Missing Media Media_w Dif_categoriaReferencia  p_value
-#>   <chr> <chr>    <int>   <int> <dbl>   <dbl>                   <dbl>    <dbl>
-#> 1 4     mpg         11       0  26.7    25.9                   NA    NA      
-#> 2 6     mpg          7       0  19.7    19.9                   -5.95  3.79e-4
-#> 3 8     mpg         14       0  15.1    15.7                  -10.1   3.24e-9
+#>   cyl   Variable     N Missing Media Media_w Dif_categoriaReferencia   p_value
+#>   <chr> <chr>    <int>   <int> <dbl>   <dbl>                   <dbl>     <dbl>
+#> 1 4     mpg         11       0  26.7    27.5                   NA    NA       
+#> 2 6     mpg          7       0  19.7    20.0                   -7.49  1.08e- 4
+#> 3 8     mpg         14       0  15.1    15.0                  -12.6   2.06e-11
 #> # ℹ 10 more variables: Media_w_Min_95 <dbl>, Media_w_Max_95 <dbl>, Min <dbl>,
 #> #   Q25 <dbl>, Mediana <dbl>, Q75 <dbl>, Max <dbl>, sd <dbl>, sd.w <dbl>,
 #> #   hist <chr>
 #> 
 #> $Categoricas$gear
 #> # A tibble: 3 × 18
-#>   gear  Variable     N Missing Media Media_w Dif_categoriaReferencia    p_value
-#>   <chr> <chr>    <int>   <int> <dbl>   <dbl>                   <dbl>      <dbl>
-#> 1 3     mpg         15       0  16.1    16.5                   NA    NA        
-#> 2 4     mpg         12       0  24.5    24.2                    7.66  0.0000732
-#> 3 5     mpg          5       0  21.4    20.2                    3.68  0.0881   
+#>   gear  Variable     N Missing Media Media_w Dif_categoriaReferencia     p_value
+#>   <chr> <chr>    <int>   <int> <dbl>   <dbl>                   <dbl>       <dbl>
+#> 1 3     mpg         15       0  16.1    15.3                   NA    NA         
+#> 2 4     mpg         12       0  24.5    25.6                   10.3   0.00000127
+#> 3 5     mpg          5       0  21.4    17.5                    2.20  0.333     
 #> # ℹ 10 more variables: Media_w_Min_95 <dbl>, Media_w_Max_95 <dbl>, Min <dbl>,
 #> #   Q25 <dbl>, Mediana <dbl>, Q75 <dbl>, Max <dbl>, sd <dbl>, sd.w <dbl>,
 #> #   hist <chr>
 #> 
 #> $Categoricas$carb
 #> # A tibble: 6 × 18
-#>   carb  Variable     N Missing Media Media_w Dif_categoriaReferencia   p_value
-#>   <chr> <chr>    <int>   <int> <dbl>   <dbl>                   <dbl>     <dbl>
-#> 1 1     mpg          7       0  25.3    26.6                   NA    NA       
-#> 2 2     mpg         10       0  22.4    21.6                   -5.05  0.0223  
-#> 3 3     mpg          3       0  16.3    16.1                  -10.5   0.000188
-#> 4 4     mpg         10       0  15.8    16.7                   -9.94  0.000153
-#> 5 6     mpg          1       0  19.7    19.7                   -6.93  0.0493  
-#> 6 8     mpg          1       0  15      15.0                  -11.6   0.00273 
+#>   carb  Variable     N Missing Media Media_w Dif_categoriaReferencia     p_value
+#>   <chr> <chr>    <int>   <int> <dbl>   <dbl>                   <dbl>       <dbl>
+#> 1 1     mpg          7       0  25.3    27.8                   NA    NA         
+#> 2 2     mpg         10       0  22.4    20.1                   -7.66  0.00138   
+#> 3 3     mpg          3       0  16.3    16.3                  -11.4   0.00852   
+#> 4 4     mpg         10       0  15.8    15.4                  -12.3   0.00000270
+#> 5 6     mpg          1       0  19.7    19.7                   -8.05  0.300     
+#> 6 8     mpg          1       0  15      15                    -12.8   0.000367  
 #> # ℹ 10 more variables: Media_w_Min_95 <dbl>, Media_w_Max_95 <dbl>, Min <dbl>,
 #> #   Q25 <dbl>, Mediana <dbl>, Q75 <dbl>, Max <dbl>, sd <dbl>, sd.w <dbl>,
 #> #   hist <chr>
@@ -485,8 +485,8 @@ print(resultados_VD_mpg)
 #> # A tibble: 2 × 18
 #>   grupo      Variable     N Missing Media Media_w Dif_categoriaReferen…¹ p_value
 #>   <chr>      <chr>    <int>   <int> <dbl>   <dbl>                  <dbl>   <dbl>
-#> 1 Control    mpg         21       0  20.1    21.2                  NA     NA    
-#> 2 Tratamien… mpg         11       0  20      18.3                  -2.87   0.146
+#> 1 Control    mpg         17       0  19.8    21.1                  NA     NA    
+#> 2 Tratamien… mpg         15       0  20.4    18.3                  -2.88   0.217
 #> # ℹ abbreviated name: ¹​Dif_categoriaReferencia
 #> # ℹ 10 more variables: Media_w_Min_95 <dbl>, Media_w_Max_95 <dbl>, Min <dbl>,
 #> #   Q25 <dbl>, Mediana <dbl>, Q75 <dbl>, Max <dbl>, sd <dbl>, sd.w <dbl>,
@@ -544,16 +544,16 @@ print(resultados_VD_cyl)
 #> # A tibble: 24 × 18
 #>    cyl   Variable     N Missing  Media Media_w Dif_categoriaReferencia   p_value
 #>    <chr> <chr>    <int>   <int>  <dbl>   <dbl>                   <dbl>     <dbl>
-#>  1 4     mpg         11       0  26.7    25.9                    NA    NA       
-#>  2 6     mpg          7       0  19.7    19.9                    -5.95  3.79e- 4
-#>  3 8     mpg         14       0  15.1    15.7                   -10.1   3.24e- 9
-#>  4 4     disp        11       0 105.    109.                     NA    NA       
-#>  5 6     disp         7       0 183.    181.                     71.7   5.54e- 3
-#>  6 8     disp        14       0 353.    331.                    222.    3.66e-12
-#>  7 4     hp          11       0  82.6    86.8                    NA    NA       
-#>  8 6     hp           7       0 122.    131.                     44.3   4.27e- 2
-#>  9 8     hp          14       0 209.    210.                    123.    6.17e- 8
-#> 10 4     drat        11       0   4.07    4.06                   NA    NA       
+#>  1 4     mpg         11       0  26.7    27.5                    NA    NA       
+#>  2 6     mpg          7       0  19.7    20.0                    -7.49  1.08e- 4
+#>  3 8     mpg         14       0  15.1    15.0                   -12.6   2.06e-11
+#>  4 4     disp        11       0 105.     99.2                    NA    NA       
+#>  5 6     disp         7       0 183.    175.                     76.0   1.10e- 2
+#>  6 8     disp        14       0 353.    354.                    255.    2.02e-13
+#>  7 4     hp          11       0  82.6    72.8                    NA    NA       
+#>  8 6     hp           7       0 122.    119.                     46.3   8.82e- 2
+#>  9 8     hp          14       0 209.    221.                    148.    1.07e- 8
+#> 10 4     drat        11       0   4.07    4.03                   NA    NA       
 #> # ℹ 14 more rows
 #> # ℹ 10 more variables: Media_w_Min_95 <dbl>, Media_w_Max_95 <dbl>, Min <dbl>,
 #> #   Q25 <dbl>, Mediana <dbl>, Q75 <dbl>, Max <dbl>, sd <dbl>, sd.w <dbl>,
@@ -564,9 +564,9 @@ print(resultados_VD_cyl)
 #> # A tibble: 3 × 13
 #>   cyl   gear_3_p gear_4_p gear_5_p `3_n` `4_n` `5_n` `3_p_sinW` `4_p_sinW`
 #>   <fct>    <dbl>    <dbl>    <dbl> <dbl> <dbl> <dbl>      <dbl>      <dbl>
-#> 1 4       0.0220    0.745    0.284   0.2   6.9   1.3     0.0667      0.667
-#> 2 6       0.124     0.255    0.325   1.4   2.4   1.5     0.133       0.333
-#> 3 8       0.854    NA        0.390   9.3  NA     1.7     0.8        NA    
+#> 1 4       0.0226    0.717   0.168    0.4  13.3   1.3     0.0667      0.667
+#> 2 6       0.0541    0.283   0.0660   1     5.2   0.5     0.133       0.333
+#> 3 8       0.923    NA       0.766   17.7  NA     5.7     0.8        NA    
 #> # ℹ 4 more variables: `5_p_sinW` <dbl>, Chi2 <dbl>, p_value <dbl>,
 #> #   VCramer <dbl>
 #> 
@@ -574,9 +574,9 @@ print(resultados_VD_cyl)
 #> # A tibble: 3 × 22
 #>   cyl   carb_1_p carb_2_p carb_4_p carb_6_p carb_3_p carb_8_p `1_n` `2_n` `4_n`
 #>   <fct>    <dbl>    <dbl>    <dbl>    <dbl>    <dbl>    <dbl> <dbl> <dbl> <dbl>
-#> 1 4        0.699    0.659   NA           NA       NA       NA   3.1   5.3  NA  
-#> 2 6        0.301   NA        0.437        1       NA       NA   1.4  NA     2.4
-#> 3 8       NA        0.341    0.563       NA        1        1  NA     2.7   3.1
+#> 1 4       0.908     0.369   NA           NA       NA       NA  10.2   4.7  NA  
+#> 2 6       0.0922   NA        0.353        1       NA       NA   1    NA     5.2
+#> 3 8      NA         0.631    0.647       NA        1        1  NA     8.1   9.6
 #> # ℹ 12 more variables: `6_n` <dbl>, `3_n` <dbl>, `8_n` <dbl>, `1_p_sinW` <dbl>,
 #> #   `2_p_sinW` <dbl>, `4_p_sinW` <dbl>, `6_p_sinW` <dbl>, `3_p_sinW` <dbl>,
 #> #   `8_p_sinW` <dbl>, Chi2 <dbl>, p_value <dbl>, VCramer <dbl>
@@ -585,9 +585,9 @@ print(resultados_VD_cyl)
 #> # A tibble: 3 × 10
 #>   cyl   grupo_Control_p grupo_Tratamiento_p Control_n Tratamiento_n
 #>   <fct>           <dbl>               <dbl>     <dbl>         <dbl>
-#> 1 4               0.406               0.236       6.2           2.2
-#> 2 6               0.339              NA           5.2          NA  
-#> 3 8               0.254               0.764       3.9           7.2
+#> 1 4              0.422                0.212      10.8           4.1
+#> 2 6              0.0787               0.243       2             4.8
+#> 3 8              0.499                0.545      12.8          10.7
 #> # ℹ 5 more variables: Control_p_sinW <dbl>, Tratamiento_p_sinW <dbl>,
 #> #   Chi2 <dbl>, p_value <dbl>, VCramer <dbl>
 ```
