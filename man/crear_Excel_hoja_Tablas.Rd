@@ -21,7 +21,7 @@ crear_Excel_hoja_Tablas(
   titulo_tabla_tamanyo = 12,
   tabla_conFiltro = TRUE,
   nombre_archivo = NULL,
-  exportar = TRUE,
+  exportar = FALSE,
   sobreescribir_archivo = TRUE,
   workbook = NULL,
   filas_tablas_asignadas = NULL

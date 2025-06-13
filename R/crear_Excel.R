@@ -132,6 +132,7 @@ crear_Excel <- function(
   }
 
   if( is.null(titulos_principales) ) titulos_principales <- paste0('TÍTULO PRINCIPAL ', (hojas_existentes + 1:length(list_list_tablas)))
+  if( !is.null(titulos_tablas) ) titulos_tablas <- unlist(titulos_tablas)
 
   if( is.null(nombres_hojas) ) nombres_hojas <-  paste0('Hoja ', (hojas_existentes + 1:length(list_list_tablas)) )
 
@@ -188,12 +189,12 @@ crear_Excel <- function(
 
       list_tablas      = list_list_tablas[[i]],
       titulo_principal = titulos_principales[i],#"DESCRIPTIVOS UNIVARIADOS",
-      titulos_tablas   = titulos_tablas[[i]],
+      titulos_tablas   = titulos_tablas[i],
       nombre_hoja      = nombres_hojas.i,
       hoja             = hoja,
-      hay_var_grupo = NULL,
+      hay_var_grupo    = hay_var_grupo,
       #formatear: redondear valores y ajustarlo a formato para Excel
-      formatear_tabla = TRUE,
+      formatear_tabla = formatear_tabla,
       # estilo tabla
       estilo_tabla = estilo_tabla,
       # formatos
