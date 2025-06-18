@@ -87,7 +87,9 @@ crear_Excel_hoja_Tablas <- function(
   # list_tablas <- if(is.data.frame(list_tablas)) list(list_tablas)
 
   ## ajustar
-  titulos_tablas <- if( is.null(titulos_tablas) ){ titulos_tablas <- paste0('Tabla ', 1:length(list_tablas)) }
+  # cat(titulos_tablas,'\n')
+  # titulos_tablas <- if( is.null(titulos_tablas) ){ titulos_tablas <- paste0('Tabla ', 1:length(list_tablas)) }
+  # cat(titulos_tablas,'\n')
   # titulos_tablas <- if(!is.null(names(list_tablas)))paste0(titulos_tablas,'. ', names(list_tablas))
 
 
@@ -138,7 +140,7 @@ crear_Excel_hoja_Tablas <- function(
       hay_var_grupo = hay_var_grupo,
 
       # titulos y ubicacion
-      titulo_tabla = titulos_tablas[ ifelse( length(titulos_tablas) == 1, 1, i ) ],
+      titulo_tabla = titulos_tablas,
       numero_fila  = tablas_posicion$primeraFila[i],
 
       # formatos
