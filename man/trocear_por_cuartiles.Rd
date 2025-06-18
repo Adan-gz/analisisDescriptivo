@@ -4,10 +4,14 @@
 \alias{trocear_por_cuartiles}
 \title{Trocea un vector numérico en cuartiles}
 \usage{
-trocear_por_cuartiles(x)
+trocear_por_cuartiles(x, añadirValor = F, ...)
 }
 \arguments{
 \item{x}{Un vector numérico.}
+
+\item{añadirValor}{Por defecto FALSE. Si TRUE añade a la etiqueta el valor del cuartil.}
+
+\item{...}{Parámetros de la función \code{analisisDescriptivo::formatear_numero}.}
 }
 \value{
 Un vector con las etiquetas de cuartiles ('Cuartil_1', 'Cuartil_2', 'Cuartil_3', 'Cuartil_4')
@@ -18,4 +22,6 @@ es asignado a un cuartil dependiendo de su valor.
 }
 \examples{
 trocear_por_cuartiles(c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
+trocear_por_cuartiles(mtcars$mpg)
+trocear_por_cuartiles(mtcars$mpg, añadirValor = T)
 }
