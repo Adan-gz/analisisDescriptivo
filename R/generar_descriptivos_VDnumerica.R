@@ -14,10 +14,8 @@
 #' @param var_peso El nombre de la variable de pesos (opcional).
 #' @param num_unificar_1tabla Un valor lógico que indica si los resultados numéricos deben unificarse en una sola tabla (por defecto TRUE).
 #' @param nivel_confianza El nivel de confianza para los intervalos de confianza (por defecto, 0.95).
-#' @param selecc_vars_auto Un valor lógico que indica si se deben seleccionar automáticamente las variables X si no se especifican (por defecto TRUE).
-#' @param estrategia_valoresPerdidos_grupo Estrategia para el manejo de valores faltantes en la variable de agrupación. Se debe elegir
-#'  \code{"E"} para eliminar o \code{"A"} para agrupar (NS/NC). Por defecto es \code{c("A", "E")}, de modo que se selecciona
-#'  \code{"E"}.
+#' @param selecc_vars_auto Un valor lógico que indica si se deben seleccionar automáticamente las variables X si no se especifican (por defecto FALSE).
+#' @param estrategia_valoresPerdidos_grupo Estrategia para el manejo de valores faltantes en la variable de agrupación. Por defecto \code{"Nada"}. \code{"Eliminar"} para eliminar o \code{"Agrupar"} para agrupar (NS/NC).
 #'
 #' @return Un tibble con los resultados del análisis descriptivo, que incluye tanto los descriptivos para las variables X numéricas como categóricas.
 #'
@@ -48,8 +46,8 @@ generar_descriptivos_VDnumerica <- function(
     var_peso = NULL,
     num_unificar_1tabla = T, # revisar el nombre
     nivel_confianza = 0.95,
-    selecc_vars_auto = T,
-    estrategia_valoresPerdidos_grupo = c('A','E')
+    selecc_vars_auto = FALSE,
+    estrategia_valoresPerdidos_grupo = c('Nada','Agrupar','Eliminar')
 ){
 
   # Si alguna variable categórica coincide con las de agrupación, eliminarla de vars_categoricas

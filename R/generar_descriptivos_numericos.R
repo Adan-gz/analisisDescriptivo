@@ -10,8 +10,7 @@
 #' @param vars_grupo Vector de nombres de variables para agrupar. Por defecto es \code{NULL} (sin agrupamiento).
 #' @param var_peso Nombre (carácter) de la variable de peso. Si es \code{NULL} (por defecto), se calculan estadísticas sin ponderación.
 #' @param nivel_confianza Nivel de confianza para el cálculo de intervalos (por defecto \code{0.95}).
-#' @param estrategia_valoresPerdidos_grupo Estrategia para el manejo de valores faltantes en la variable de agrupación. Se debe elegir
-#'   \code{"E"} para eliminar o \code{"A"} para agrupar (NS/NC). Por defecto es \code{c("A", "E")}, de modo que se selecciona
+#' @param estrategia_valoresPerdidos_grupo Estrategia para el manejo de valores faltantes en la variable de agrupación. Por defecto \code{"Nada"}. \code{"Eliminar"} para eliminar o \code{"Agrupar"} para agrupar (NS/NC).
 #'  @param unificar_1tabla Lógico. Si es \code{TRUE}, se retorna un único data frame combinando todos los descriptivos; de lo contrario,
 #'   se retorna una lista de data frames.
 #' @param selecc_vars_auto Lógico. Si es \code{TRUE} y \code{vars_numericas} es \code{NULL}, se seleccionan automáticamente las variables numéricas.
@@ -55,8 +54,8 @@ generar_descriptivos_numericos <- function(
     var_peso = NULL,
     nivel_confianza = 0.95,
     unificar_1tabla = FALSE,
-    selecc_vars_auto = TRUE,
-    estrategia_valoresPerdidos_grupo = c('A','E')
+    selecc_vars_auto = FALSE,
+    estrategia_valoresPerdidos_grupo = c('Nada','Agrupar','Eliminar')
 ) {
   # Seleccionar automáticamente las variables numéricas si no se especifican
   if (is.null(vars_numericas) && selecc_vars_auto) {

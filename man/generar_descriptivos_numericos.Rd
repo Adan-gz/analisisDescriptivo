@@ -11,8 +11,8 @@ generar_descriptivos_numericos(
   var_peso = NULL,
   nivel_confianza = 0.95,
   unificar_1tabla = FALSE,
-  selecc_vars_auto = TRUE,
-  estrategia_valoresPerdidos_grupo = c("A", "E")
+  selecc_vars_auto = FALSE,
+  estrategia_valoresPerdidos_grupo = c("Nada", "Agrupar", "Eliminar")
 )
 }
 \arguments{
@@ -29,8 +29,7 @@ generar_descriptivos_numericos(
 
 \item{selecc_vars_auto}{Lógico. Si es \code{TRUE} y \code{vars_numericas} es \code{NULL}, se seleccionan automáticamente las variables numéricas.}
 
-\item{estrategia_valoresPerdidos_grupo}{Estrategia para el manejo de valores faltantes en la variable de agrupación. Se debe elegir
-\code{"E"} para eliminar o \code{"A"} para agrupar (NS/NC). Por defecto es \code{c("A", "E")}, de modo que se selecciona
+\item{estrategia_valoresPerdidos_grupo}{Estrategia para el manejo de valores faltantes en la variable de agrupación. Por defecto \code{"Nada"}. \code{"Eliminar"} para eliminar o \code{"Agrupar"} para agrupar (NS/NC).
 @param unificar_1tabla Lógico. Si es \code{TRUE}, se retorna un único data frame combinando todos los descriptivos; de lo contrario,
 se retorna una lista de data frames.}
 }

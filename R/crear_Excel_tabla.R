@@ -56,7 +56,7 @@ crear_Excel_tabla <- function(
     hoja = 1,
 
     # formatea porcentajes y numeros
-    formatear_tabla = TRUE,
+    formatear_tabla = FALSE,
     tipo_tabla = NULL,
     hay_var_grupo = NULL,
 

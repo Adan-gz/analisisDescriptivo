@@ -13,8 +13,7 @@
 #' @param variable_pivot Vector de caracteres que indica la variable a utilizar para pivotear:
 #'   \code{"var_grupo"} o \code{"var_categorica"}. Por defecto es \code{c("var_grupo", "var_categorica")}.
 #' @param nivel_confianza Nivel de confianza para los intervalos. Por defecto es \code{0.95}.
-#' @param estrategia_valoresPerdidos Estrategia para manejar faltantes: \code{"E"} (eliminar) o \code{"A"} (agrupar en "NS/NC").
-#'   Por defecto es \code{c("A", "E")}, lo que selecciona \code{"A"}.
+#' @param estrategia_valoresPerdidos Estrategia para el manejo de valores faltantes en la variable de agrupación. Por defecto \code{"Nada"}. \code{"Eliminar"} para eliminar o \code{"Agrupar"} para agrupar (NS/NC).
 #' @param selecc_vars_auto Lógico. Si es \code{TRUE} y \code{vars_categoricas} es \code{NULL}, se seleccionan
 #'   automáticamente las variables de tipo carácter o factor. Por defecto es \code{TRUE}.
 #' @param simplificar_output Reducir la cantidad de información que se exporta cuando se utiliza \code{vars_grupo}.
@@ -58,8 +57,8 @@ generar_descriptivos_categoricos <- function(
     pivot = TRUE,
     variable_pivot = c("var_grupo", "var_categorica"),
     nivel_confianza = 0.95,
-    estrategia_valoresPerdidos = c("A", "E"),
-    selecc_vars_auto = TRUE,
+    estrategia_valoresPerdidos = c('Nada','Agrupar','Eliminar'),
+    selecc_vars_auto = FALSE,
     simplificar_output = TRUE
 ) {
   # Seleccionar automáticamente variables categóricas si no se especifica ninguna

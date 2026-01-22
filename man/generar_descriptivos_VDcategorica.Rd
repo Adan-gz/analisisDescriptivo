@@ -10,10 +10,10 @@ generar_descriptivos_VDcategorica(
   vars_X = NULL,
   var_peso = NULL,
   variable_pivot = "var_grupo",
-  estrategia_valoresPerdidos = c("A", "E"),
+  estrategia_valoresPerdidos = c("Nada", "Agrupar", "Eliminar"),
   nivel_confianza = 0.95,
   simplificar_output = T,
-  selecc_vars_auto = T,
+  selecc_vars_auto = F,
   num_unificar_1tabla = T
 )
 }
@@ -28,13 +28,13 @@ generar_descriptivos_VDcategorica(
 
 \item{variable_pivot}{El nombre de la variable de agrupación para el pivoteo (por defecto "var_grupo").}
 
-\item{estrategia_valoresPerdidos}{La estrategia para manejar los valores perdidos (por defecto 'A').}
+\item{estrategia_valoresPerdidos}{Estrategia para el manejo de valores faltantes en la variable de agrupación. Por defecto \code{"Nada"}. \code{"Eliminar"} para eliminar o \code{"Agrupar"} para agrupar (NS/NC).}
 
 \item{nivel_confianza}{El nivel de confianza para los intervalos de confianza (por defecto, 0.95).}
 
 \item{simplificar_output}{Indica si se debe simplificar el output (por defecto, TRUE).}
 
-\item{selecc_vars_auto}{Un valor lógico que indica si se deben seleccionar automáticamente las variables X si no se especifican (por defecto TRUE).}
+\item{selecc_vars_auto}{Un valor lógico que indica si se deben seleccionar automáticamente las variables X si no se especifican (por defecto FALSE).}
 
 \item{num_unificar_1tabla}{Un valor lógico que indica si los resultados numéricos deben unificarse en una sola tabla (por defecto TRUE).}
 }

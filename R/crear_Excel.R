@@ -1,12 +1,12 @@
 #' Crea un workbook de Excel con varias hojas, cada una conteniendo tablas formateadas
 #'
 #' Esta función genera un archivo Excel en el que cada hoja contiene un conjunto de tablas formateadas.
-#' Cada elemento de la lista principal (\code{list_list_tablas}) corresponde a una hoja distinta.
+#' Cada elemento de la lista principal (\code{tablas}) corresponde a una hoja distinta.
 #' Dentro de cada hoja se escribe un título principal y se exporta cada tabla (data.frame o tibble)
 #' usando la función \code{crear_Excel_hoja_Tablas}. Además, se ajusta el formato (por ejemplo, fuente, colores, estilos)
 #' y se puede optar por exportar el workbook a un archivo Excel.
 #'
-#' @param list_list_tablas Lista de listas. Cada elemento de esta lista debe ser, a su vez, una lista de data.frames o tibbles
+#' @param tablas Lista de listas. Cada elemento de esta lista debe ser, a su vez, una lista de data.frames o tibbles
 #'   que se escribirán en una hoja separada. Si algún elemento es un data.frame, se convertirá en una lista para asegurar la consistencia. Si únicamente
 #'   se quiere exportar una tabla (1 data.frame), utilizar \code{crear_Excel_tabla}.
 #' @param unificar_misma_hoja Unificar listas en 1 misma hoja. Por ejemplo, que las tablas de descriptivos numéricos y categóricos, que por defecto
@@ -36,7 +36,7 @@
 #'
 #' @return Devuelve un objeto workbook de \code{openxlsx} con todas las hojas y tablas agregadas. Exporta un archivo Excel.
 #'
-#' @details La función revisa cada elemento de \code{list_list_tablas} para asegurar que sea una lista de tablas.
+#' @details La función revisa cada elemento de \code{tablas} para asegurar que sea una lista de tablas.
 #' Para cada hoja se crea un nuevo worksheet con el nombre especificado en \code{nombres_hojas} y se escribe un título principal,
 #' seguido de las tablas formateadas (usando \code{crear_Excel_hoja_Tablas}). Si \code{exportar} es \code{TRUE}, se guarda el workbook en un archivo Excel.
 #'
@@ -84,14 +84,14 @@
 #' @importFrom openxlsx createWorkbook addWorksheet saveWorkbook
 #' @export
 crear_Excel <- function(
-    list_list_tablas,# output de generar_descriptivos_univariados o generar_descriptivos_agrupados
+    tablas,# output de generar_descriptivos_univariados o generar_descriptivos_agrupados
     unificar_misma_hoja = TRUE,
     titulos_principales = NULL,#"DESCRIPTIVOS UNIVARIADOS",
     titulos_tablas = NULL,
     nombres_hojas = NULL,
     hay_var_grupo = NULL,
     #formatear: redondear valores y ajustarlo a formato para Excel
-    formatear_tabla = TRUE,
+    formatear_tabla = FALSE,
     # estilo tabla
     estilo_tabla = "TableStyleLight1",
     # formatos
@@ -112,13 +112,13 @@ crear_Excel <- function(
 
 ) {
 
-  if( is.data.frame(list_list_tablas) ) list_list_tablas <- list(list_list_tablas)
+  if( is.data.frame(tablas) ) tablas <- list(tablas)
 
-  for (i in 1:length(list_list_tablas)) {
+  for (i in 1:length(tablas)) {
     # hago este ajuste para cuando exporta las numericas en 1 solo tibble,
     # para poder tener una lista y que funcionen bien los [[]]
 
-    if( is.data.frame(list_list_tablas[[i]]) ) list_list_tablas[[i]] <- list(list_list_tablas[[i]])
+    if( is.data.frame(tablas[[i]]) ) tablas[[i]] <- list(tablas[[i]])
     else next
 
   }
@@ -131,10 +131,10 @@ crear_Excel <- function(
     hojas_existentes <- if(is.null(workbook)) 0 else length( workbook$sheet_names )
   }
 
-  if( is.null(titulos_principales) ) titulos_principales <- paste0('TÍTULO PRINCIPAL ', (hojas_existentes + 1:length(list_list_tablas)))
+  if( is.null(titulos_principales) ) titulos_principales <- paste0('TÍTULO PRINCIPAL ', (hojas_existentes + 1:length(tablas)))
   if( !is.null(titulos_tablas) ) titulos_tablas <- unlist(titulos_tablas)
 
-  if( is.null(nombres_hojas) ) nombres_hojas <-  paste0('Hoja ', (hojas_existentes + 1:length(list_list_tablas)) )
+  if( is.null(nombres_hojas) ) nombres_hojas <-  paste0('Hoja ', (hojas_existentes + 1:length(tablas)) )
 
   # print(unificar_misma_hoja)
   if( unificar_misma_hoja ){ # genero las hojas
@@ -142,13 +142,13 @@ crear_Excel <- function(
     addWorksheet(workbook_salida, sheetName = nombres_hojas[1], gridLines = FALSE)
     # generar las posiciones
     # genero una lista de tibbles con las posiciones de lsa tablas
-    filas_tablas_asignadas <- vector('list',length = length(list_list_tablas))
+    filas_tablas_asignadas <- vector('list',length = length(tablas))
     primera_fila.i <- 4 # primera fila de la tabla, se va ajustando
     # ubico tambien la fila del titulo principa
-    fila_titulo_principal  <- rep(NA,length = length(list_list_tablas))
-    for (i in seq_len(length(list_list_tablas))) {
+    fila_titulo_principal  <- rep(NA,length = length(tablas))
+    for (i in seq_len(length(tablas))) {
       # Creando el workbook y la hoja
-      filas_tablas_asignadas.i    <- asignar_filas_tablas(list_list_tablas[[i]], primeraFila = primera_fila.i )
+      filas_tablas_asignadas.i    <- asignar_filas_tablas(tablas[[i]], primeraFila = primera_fila.i )
       filas_tablas_asignadas[[i]] <- filas_tablas_asignadas.i
       # la primera tabla de la lista i se ubica 4 filas despues de la ultima de la tabla i-1
       primera_fila.i <- filas_tablas_asignadas.i$primeraFila[nrow(filas_tablas_asignadas.i)] +
@@ -159,7 +159,7 @@ crear_Excel <- function(
 
   } else {
     # si no unifico, genero varias hojas
-    for (i in seq_len(length(list_list_tablas))) {
+    for (i in seq_len(length(tablas))) {
       # Creando el workbook y la hoja
       addWorksheet(workbook_salida, sheetName = nombres_hojas[i], gridLines = FALSE)
       filas_tablas_asignadas <- NULL
@@ -168,7 +168,7 @@ crear_Excel <- function(
   }
 
   # gEnero el Excel
-  for (i in seq_len(length(list_list_tablas))) {
+  for (i in seq_len(length(tablas))) {
     # ajustes en funcion de si es misma hoha o no
     if( unificar_misma_hoja ){
       hoja <- hojas_existentes+1 # el parametro de hoja es constante
@@ -187,7 +187,7 @@ crear_Excel <- function(
       filas_tablas_asignadas = filas_tablas_asignadas.i,
       fila_titulo_principal  = fila_titulo_principal.i,
 
-      list_tablas      = list_list_tablas[[i]],
+      tablas      = tablas[[i]],
       titulo_principal = titulos_principales[i],#"DESCRIPTIVOS UNIVARIADOS",
       titulos_tablas   = titulos_tablas[i],
       nombre_hoja      = nombres_hojas.i,

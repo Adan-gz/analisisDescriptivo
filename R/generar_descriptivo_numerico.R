@@ -10,10 +10,7 @@
 #' @param vars_grupo Vector de nombres de variables para agrupar. Si es \code{NULL} (por defecto), no se realiza agrupamiento.
 #' @param var_peso Nombre (carácter) de la variable de peso. Si es \code{NULL} (por defecto), se calculan estadísticas sin ponderar.
 #' @param nivel_confianza Nivel de confianza para el cálculo de intervalos (por defecto \code{0.95}).
-#' @param estrategia_valoresPerdidos_grupo Estrategia para el manejo de valores faltantes en la variable de agrupación. Se debe elegir
-#'   \code{"E"} para eliminar o \code{"A"} para agrupar (NS/NC). Por defecto es \code{c("A", "E")}, de modo que se selecciona
-#'   \code{"E"}.
-#'
+#' @param estrategia_valoresPerdidos_grupo Estrategia para el manejo de valores faltantes en la variable de agrupación. Por defecto \code{"Nada"}. \code{"Eliminar"} para eliminar o \code{"Agrupar"} para agrupar (NS/NC).
 #' @return Data frame con las estadísticas descriptivas calculadas. Entre las variables se incluyen:
 #' \itemize{
 #'   \item \code{Variable}: Nombre de la variable.
@@ -76,7 +73,7 @@ generar_descriptivo_numerico <- function(
     vars_grupo = NULL,
     var_peso = NULL,
     nivel_confianza = 0.95,
-    estrategia_valoresPerdidos_grupo = c('A','E')
+    estrategia_valoresPerdidos_grupo = c('Nada','Agrupar','Eliminar')
 ) {
   if( !var_numerica %in% colnames(datos) ){
     stop("La variable numérica ", var_numerica ," no se encuentra en la matriz de datos")
@@ -109,18 +106,22 @@ generar_descriptivo_numerico <- function(
     if( !is.factor(datos[[vars_grupo]]) ) datos[[vars_grupo]] <- factor(datos[[vars_grupo]])
 
     # Manejo de valores faltantes
-    if (any(is.na(datos[[vars_grupo]]))) {
-      estrategia_valoresPerdidos_grupo <- match.arg(estrategia_valoresPerdidos_grupo)
-      if (estrategia_valoresPerdidos_grupo == "E") {
-        # Eliminar faltantes para el cálculo de recuentos porcentajes
-        datos <- datos %>% filter(!is.na(!!sym(vars_grupo)))
+    estrategia_valoresPerdidos_grupo <- match.arg(estrategia_valoresPerdidos_grupo)
+    if( estrategia_valoresPerdidos_grupo != 'Nada' ){
+      if (any(is.na(datos[[vars_grupo]]))) {
+        if (estrategia_valoresPerdidos_grupo == "Eliminar") {
+          # Eliminar faltantes para el cálculo de recuentos porcentajes
+          datos <- datos %>% filter(!is.na(!!sym(vars_grupo)))
 
-      } else if (estrategia_valoresPerdidos_grupo == "A") {
-        # Agrupar faltantes bajo la categoría "NS/NC"
-        datos[[vars_grupo]] <- forcats::fct_na_value_to_level( datos[[vars_grupo]],"NS/NC")
+        } else if (estrategia_valoresPerdidos_grupo == "Agrupar") {
+          # Agrupar faltantes bajo la categoría "NS/NC"
+          datos[[vars_grupo]] <- forcats::fct_na_value_to_level( datos[[vars_grupo]],"NS/NC")
 
+        }
       }
     }
+
+
 
     # Si se especifican variables de agrupación, agrupar el data frame
     datos <- datos %>% group_by(!!!syms(vars_grupo))

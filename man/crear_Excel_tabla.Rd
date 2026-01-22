@@ -9,7 +9,7 @@ crear_Excel_tabla(
   workbook = NULL,
   nombre_hoja = NULL,
   hoja = 1,
-  formatear_tabla = TRUE,
+  formatear_tabla = FALSE,
   tipo_tabla = NULL,
   hay_var_grupo = NULL,
   titulo_tabla = NULL,

@@ -12,7 +12,7 @@
 #' @param var_X El nombre de la variable X (puede ser numérica o categórica).
 #' @param var_peso El nombre de la variable de pesos (opcional).
 #' @param variable_pivot El nombre de la variable de agrupación para la pivoteo (por defecto "var_grupo").
-#' @param estrategia_valoresPerdidos La estrategia para manejar los valores perdidos, por defecto 'A'.
+#' @param estrategia_valoresPerdidos Estrategia para el manejo de valores faltantes en la variable de agrupación. Por defecto \code{"Nada"}. \code{"Eliminar"} para eliminar o \code{"Agrupar"} para agrupar (NS/NC).
 #' @param nivel_confianza El nivel de confianza para los intervalos de confianza (por defecto, 0.95).
 #' @param simplificar_output Indica si se debe simplificar el output (por defecto, TRUE).
 #'
@@ -57,7 +57,7 @@ generar_descriptivo_VDcategorica_varX <- function(
     var_X,
     var_peso = NULL,
     variable_pivot = "var_grupo",
-    estrategia_valoresPerdidos = c('A','E'),
+    estrategia_valoresPerdidos = c('Nada','Agrupar','Eliminar'),
     nivel_confianza = 0.95,
     simplificar_output = T
 ){

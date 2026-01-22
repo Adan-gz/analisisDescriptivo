@@ -5,13 +5,13 @@
 \title{Crea un workbook de Excel con varias hojas, cada una conteniendo tablas formateadas}
 \usage{
 crear_Excel(
-  list_list_tablas,
+  tablas,
   unificar_misma_hoja = TRUE,
   titulos_principales = NULL,
   titulos_tablas = NULL,
   nombres_hojas = NULL,
   hay_var_grupo = NULL,
-  formatear_tabla = TRUE,
+  formatear_tabla = FALSE,
   estilo_tabla = "TableStyleLight1",
   fuente = "Calibri",
   titulo_principal_tamanyo = 14,
@@ -26,7 +26,7 @@ crear_Excel(
 )
 }
 \arguments{
-\item{list_list_tablas}{Lista de listas. Cada elemento de esta lista debe ser, a su vez, una lista de data.frames o tibbles
+\item{tablas}{Lista de listas. Cada elemento de esta lista debe ser, a su vez, una lista de data.frames o tibbles
 que se escribirán en una hoja separada. Si algún elemento es un data.frame, se convertirá en una lista para asegurar la consistencia. Si únicamente
 se quiere exportar una tabla (1 data.frame), utilizar \code{crear_Excel_tabla}.}
 
@@ -74,13 +74,13 @@ Devuelve un objeto workbook de \code{openxlsx} con todas las hojas y tablas agre
 }
 \description{
 Esta función genera un archivo Excel en el que cada hoja contiene un conjunto de tablas formateadas.
-Cada elemento de la lista principal (\code{list_list_tablas}) corresponde a una hoja distinta.
+Cada elemento de la lista principal (\code{tablas}) corresponde a una hoja distinta.
 Dentro de cada hoja se escribe un título principal y se exporta cada tabla (data.frame o tibble)
 usando la función \code{crear_Excel_hoja_Tablas}. Además, se ajusta el formato (por ejemplo, fuente, colores, estilos)
 y se puede optar por exportar el workbook a un archivo Excel.
 }
 \details{
-La función revisa cada elemento de \code{list_list_tablas} para asegurar que sea una lista de tablas.
+La función revisa cada elemento de \code{tablas} para asegurar que sea una lista de tablas.
 Para cada hoja se crea un nuevo worksheet con el nombre especificado en \code{nombres_hojas} y se escribe un título principal,
 seguido de las tablas formateadas (usando \code{crear_Excel_hoja_Tablas}). Si \code{exportar} es \code{TRUE}, se guarda el workbook en un archivo Excel.
 }

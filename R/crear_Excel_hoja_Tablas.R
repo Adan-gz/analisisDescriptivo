@@ -4,7 +4,7 @@
 #' Se escribe un título principal en la parte superior de la hoja y, para cada tabla de la lista, se calcula la posición de inicio (utilizando la función \code{asignar_filas_tablas}) para evitar solapamientos.
 #' Cada tabla se escribe aplicando un título propio y, opcionalmente, se pueden aplicar filtros y estilos.
 #'
-#' @param list_tablas Lista de data.frames o tibbles. Cada elemento de la lista se escribirá como una tabla en la hoja.
+#' @param tablas Lista de data.frames o tibbles. Cada elemento de la lista se escribirá como una tabla en la hoja.
 #' @param titulo_principal Carácter. Título principal que se escribirá en la parte superior de la hoja. Si es \code{NULL}, se asigna un título por defecto basado en el valor de \code{hoja}.
 #' @param titulos_tablas Vector de caracteres. Títulos para cada tabla. Si es \code{NULL}, se asignan títulos por defecto.
 #' @param nombre_hoja Carácter. Nombre de la hoja. Si es \code{NULL}, se asigna un nombre basado en el valor de \code{hoja}.
@@ -28,7 +28,7 @@
 #' @param filas_tablas_asignadas Data.frame con la posición de cada tabla. Por defecto \code{NULL}, es de uso interno.
 #' @return Devuelve un objeto workbook de \code{openxlsx} con la hoja y las tablas agregadas.
 #'
-#' @details La función valida que \code{list_tablas} sea una lista y, en caso de que se proporcionen nombres para las tablas (a través de \code{names(list_tablas)}), se incorporan al título de cada tabla.
+#' @details La función valida que \code{tablas} sea una lista y, en caso de que se proporcionen nombres para las tablas (a través de \code{names(tablas)}), se incorporan al título de cada tabla.
 #' Se utiliza la función \code{asignar_filas_tablas} para calcular la posición de cada tabla en la hoja y se escribe un título principal en la parte superior.
 #' Cada tabla se escribe utilizando la función \code{crear_Excel_tabla}.
 #'
@@ -52,7 +52,7 @@
 #'
 #' @export
 crear_Excel_hoja_Tablas <- function(
-    list_tablas,
+    tablas,
     titulo_principal = NULL,#"DESCRIPTIVOS UNIVARIADOS",
     fila_titulo_principal = 1,
     titulos_tablas = NULL,
@@ -60,7 +60,7 @@ crear_Excel_hoja_Tablas <- function(
     hoja = 1,
     hay_var_grupo = NULL,
     #formatear: redondear valores y ajustarlo a formato para Excel
-    formatear_tabla = TRUE,
+    formatear_tabla = FALSE,
     # estilo tabla
     estilo_tabla = "TableStyleLight1",
     # formatos
@@ -81,16 +81,16 @@ crear_Excel_hoja_Tablas <- function(
 
 ) {
 
-  if( !is.list(list_tablas) ){
-    stop("El objeto list_tablas debe ser una lista. Si tienes una sola tabla puedes utilizar 'crear_Excel_tabla'")
+  if( !is.list(tablas) ){
+    stop("El objeto tablas debe ser una lista. Si tienes una sola tabla puedes utilizar 'crear_Excel_tabla'")
   }
-  # list_tablas <- if(is.data.frame(list_tablas)) list(list_tablas)
+  # tablas <- if(is.data.frame(tablas)) list(tablas)
 
   ## ajustar
   # cat(titulos_tablas,'\n')
-  # titulos_tablas <- if( is.null(titulos_tablas) ){ titulos_tablas <- paste0('Tabla ', 1:length(list_tablas)) }
+  # titulos_tablas <- if( is.null(titulos_tablas) ){ titulos_tablas <- paste0('Tabla ', 1:length(tablas)) }
   # cat(titulos_tablas,'\n')
-  # titulos_tablas <- if(!is.null(names(list_tablas)))paste0(titulos_tablas,'. ', names(list_tablas))
+  # titulos_tablas <- if(!is.null(names(tablas)))paste0(titulos_tablas,'. ', names(tablas))
 
 
 
@@ -105,7 +105,7 @@ crear_Excel_hoja_Tablas <- function(
 
   # Obtengo la posición de cada tabla
   if ( is.null(filas_tablas_asignadas)  ){
-    tablas_posicion <- asignar_filas_tablas(list_tablas)
+    tablas_posicion <- asignar_filas_tablas(tablas)
   } else {
     tablas_posicion <- filas_tablas_asignadas
   }
@@ -128,10 +128,10 @@ crear_Excel_hoja_Tablas <- function(
     fontColour = titulo_tabla_colorFuente
   )
 
-  for (i in seq_len(length(list_tablas))) {
+  for (i in seq_len(length(tablas))) {
 
     crear_Excel_tabla(
-      tabla    = list_tablas[[i]],
+      tabla    = tablas[[i]],
       workbook = workbook,
       hoja = hoja,
       # formatea porcentajes y numeros

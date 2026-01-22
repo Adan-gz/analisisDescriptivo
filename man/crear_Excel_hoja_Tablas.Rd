@@ -5,14 +5,14 @@
 \title{Crea una hoja de Excel con múltiples tablas formateadas}
 \usage{
 crear_Excel_hoja_Tablas(
-  list_tablas,
+  tablas,
   titulo_principal = NULL,
   fila_titulo_principal = 1,
   titulos_tablas = NULL,
   nombre_hoja = NULL,
   hoja = 1,
   hay_var_grupo = NULL,
-  formatear_tabla = TRUE,
+  formatear_tabla = FALSE,
   estilo_tabla = "TableStyleLight1",
   fuente = "Calibri",
   titulo_principal_tamanyo = 14,
@@ -28,7 +28,7 @@ crear_Excel_hoja_Tablas(
 )
 }
 \arguments{
-\item{list_tablas}{Lista de data.frames o tibbles. Cada elemento de la lista se escribirá como una tabla en la hoja.}
+\item{tablas}{Lista de data.frames o tibbles. Cada elemento de la lista se escribirá como una tabla en la hoja.}
 
 \item{titulo_principal}{Carácter. Título principal que se escribirá en la parte superior de la hoja. Si es \code{NULL}, se asigna un título por defecto basado en el valor de \code{hoja}.}
 
@@ -75,7 +75,7 @@ Se escribe un título principal en la parte superior de la hoja y, para cada tab
 Cada tabla se escribe aplicando un título propio y, opcionalmente, se pueden aplicar filtros y estilos.
 }
 \details{
-La función valida que \code{list_tablas} sea una lista y, en caso de que se proporcionen nombres para las tablas (a través de \code{names(list_tablas)}), se incorporan al título de cada tabla.
+La función valida que \code{tablas} sea una lista y, en caso de que se proporcionen nombres para las tablas (a través de \code{names(tablas)}), se incorporan al título de cada tabla.
 Se utiliza la función \code{asignar_filas_tablas} para calcular la posición de cada tabla en la hoja y se escribe un título principal en la parte superior.
 Cada tabla se escribe utilizando la función \code{crear_Excel_tabla}.
 }

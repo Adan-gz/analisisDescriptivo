@@ -10,7 +10,7 @@ generar_descriptivo_VDcategorica_varX(
   var_X,
   var_peso = NULL,
   variable_pivot = "var_grupo",
-  estrategia_valoresPerdidos = c("A", "E"),
+  estrategia_valoresPerdidos = c("Nada", "Agrupar", "Eliminar"),
   nivel_confianza = 0.95,
   simplificar_output = T
 )
@@ -26,7 +26,7 @@ generar_descriptivo_VDcategorica_varX(
 
 \item{variable_pivot}{El nombre de la variable de agrupación para la pivoteo (por defecto "var_grupo").}
 
-\item{estrategia_valoresPerdidos}{La estrategia para manejar los valores perdidos, por defecto 'A'.}
+\item{estrategia_valoresPerdidos}{Estrategia para el manejo de valores faltantes en la variable de agrupación. Por defecto \code{"Nada"}. \code{"Eliminar"} para eliminar o \code{"Agrupar"} para agrupar (NS/NC).}
 
 \item{nivel_confianza}{El nivel de confianza para los intervalos de confianza (por defecto, 0.95).}
 

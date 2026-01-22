@@ -14,9 +14,7 @@
 #' @param variable_pivot Vector de caracteres que indica la variable a utilizar para pivotear: \code{"var_grupo"} o
 #'   \code{"var_categorica"}. Por defecto es \code{c("var_grupo", "var_categorica")}.
 #' @param nivel_confianza Nivel de confianza para los intervalos. Por defecto es \code{0.95}.
-#' @param estrategia_valoresPerdidos Estrategia para el manejo de valores faltantes en la variable categórica. Se debe elegir
-#'   \code{"E"} para eliminar o \code{"A"} para agrupar (NS/NC). Por defecto es \code{c("A", "E")}, de modo que se selecciona
-#'   \code{"E"}.
+#' @param estrategia_valoresPerdidos Estrategia para el manejo de valores faltantes en la variable de agrupación. Por defecto \code{"Nada"}. \code{"Eliminar"} para eliminar o \code{"Agrupar"} para agrupar (NS/NC).
 #' @param simplificar_output Por defecto \code{TRUE}. Cuando se calculan descriptivos agrupados reduce la cantidad de información
 #' exportada en caso de pivotar.
 #'
@@ -90,7 +88,7 @@ generar_descriptivo_categorico <- function(
     pivot = TRUE,
     variable_pivot = c("var_grupo", "var_categorica"),
     nivel_confianza = 0.95,
-    estrategia_valoresPerdidos = c("A", "E"),
+    estrategia_valoresPerdidos = c('Nada','Agrupar','Eliminar'),
     simplificar_output = TRUE
 ) {
 
@@ -103,21 +101,39 @@ generar_descriptivo_categorico <- function(
     {
     datos[[var_categorica]] <- factor(datos[[var_categorica]])
 
+    # if( any(is.na(datos[[var_categorica]])) ){
+    #   estrategia_valoresPerdidos <- match.arg(estrategia_valoresPerdidos)
+    #   if (estrategia_valoresPerdidos == "E") {
+    #     # Eliminar faltantes para el cálculo de recuentos porcentajes
+    #     datos <- datos %>% filter(!is.na(!!sym(var_categorica)))
+    #
+    #   } else if (estrategia_valoresPerdidos == "A") {
+    #     # Agrupar faltantes bajo la categoría "NS/NC"
+    #     datos[[var_categorica]] <- forcats::fct_na_value_to_level( datos[[var_categorica]],"NS/NC")
+    #     # if( !is.null(vars_grupo) ){
+    #     #   datos[[vars_grupo]]     <- if_else(is.na(datos[[vars_grupo]]),"NS/NC", datos[[vars_grupo]])
+    #     # }
+    #   }
+    # }
+  }
+
+  estrategia_valoresPerdidos <- match.arg(estrategia_valoresPerdidos)
+  # Manejo de valores faltantes
+  if( estrategia_valoresPerdidos != 'Nada' ){
     if( any(is.na(datos[[var_categorica]])) ){
-      estrategia_valoresPerdidos <- match.arg(estrategia_valoresPerdidos)
-      if (estrategia_valoresPerdidos == "E") {
+      if (estrategia_valoresPerdidos == "Eliminar") {
         # Eliminar faltantes para el cálculo de recuentos porcentajes
         datos <- datos %>% filter(!is.na(!!sym(var_categorica)))
 
-      } else if (estrategia_valoresPerdidos == "A") {
+      } else if (estrategia_valoresPerdidos == "Agrupar") {
         # Agrupar faltantes bajo la categoría "NS/NC"
         datos[[var_categorica]] <- forcats::fct_na_value_to_level( datos[[var_categorica]],"NS/NC")
-        # if( !is.null(vars_grupo) ){
-        #   datos[[vars_grupo]]     <- if_else(is.na(datos[[vars_grupo]]),"NS/NC", datos[[vars_grupo]])
-        # }
+
       }
     }
   }
+
+
 
   if ( !is.null(var_peso) ) {
 
@@ -145,16 +161,19 @@ generar_descriptivo_categorico <- function(
       datos[[vars_grupo]] <- factor(datos[[vars_grupo]])
     }
 
-    if( any(is.na(datos[[vars_grupo]])) ){
-      estrategia_valoresPerdidos <- match.arg(estrategia_valoresPerdidos)
-      if (estrategia_valoresPerdidos == "E") {
-        # Eliminar faltantes para el cálculo de recuentos porcentajes
-        datos <- datos %>% filter(!is.na(!!sym(vars_grupo)))
+    estrategia_valoresPerdidos <- match.arg(estrategia_valoresPerdidos)
+    # Manejo de valores faltantes
+    if( estrategia_valoresPerdidos != 'Nada' ){
+      if( any(is.na(datos[[vars_grupo]])) ){
+        if (estrategia_valoresPerdidos == "Eliminar") {
+          # Eliminar faltantes para el cálculo de recuentos porcentajes
+          datos <- datos %>% filter(!is.na(!!sym(vars_grupo)))
 
-      } else if (estrategia_valoresPerdidos == "A") {
-        # Agrupar faltantes bajo la categoría "NS/NC"
-        datos[[vars_grupo]] <- forcats::fct_na_value_to_level( datos[[vars_grupo]],"NS/NC")
+        } else if (estrategia_valoresPerdidos == "Agrupar") {
+          # Agrupar faltantes bajo la categoría "NS/NC"
+          datos[[vars_grupo]] <- forcats::fct_na_value_to_level( datos[[vars_grupo]],"NS/NC")
 
+        }
       }
     }
 
