@@ -97,24 +97,10 @@ generar_descriptivo_categorico <- function(
   }
 
   # Convertir la variable categórica a carácter si es numérica
-  if (!is.factor(datos[[var_categorica]]) )
-    {
+  if (!is.factor(datos[[var_categorica]]) )  {
     datos[[var_categorica]] <- factor(datos[[var_categorica]])
 
-    # if( any(is.na(datos[[var_categorica]])) ){
-    #   estrategia_valoresPerdidos <- match.arg(estrategia_valoresPerdidos)
-    #   if (estrategia_valoresPerdidos == "E") {
-    #     # Eliminar faltantes para el cálculo de recuentos porcentajes
-    #     datos <- datos %>% filter(!is.na(!!sym(var_categorica)))
-    #
-    #   } else if (estrategia_valoresPerdidos == "A") {
-    #     # Agrupar faltantes bajo la categoría "NS/NC"
-    #     datos[[var_categorica]] <- forcats::fct_na_value_to_level( datos[[var_categorica]],"NS/NC")
-    #     # if( !is.null(vars_grupo) ){
-    #     #   datos[[vars_grupo]]     <- if_else(is.na(datos[[vars_grupo]]),"NS/NC", datos[[vars_grupo]])
-    #     # }
-    #   }
-    # }
+
   }
 
   estrategia_valoresPerdidos <- match.arg(estrategia_valoresPerdidos)
@@ -132,8 +118,6 @@ generar_descriptivo_categorico <- function(
       }
     }
   }
-
-
 
   if ( !is.null(var_peso) ) {
 
@@ -183,21 +167,6 @@ generar_descriptivo_categorico <- function(
   # Crear símbolo para la variable categórica (evaluación tidy)
   var_sym <- sym(var_categorica)
 
-  # Manejo de valores faltantes
-  # if (!any(is.na(datos[[var_categorica]]))) {
-  #   estrategia_valoresPerdidos <- match.arg(estrategia_valoresPerdidos)
-  #   if (estrategia_valoresPerdidos == "E") {
-  #     # Eliminar faltantes para el cálculo de recuentos porcentajes
-  #     datos <- datos %>% filter(!is.na(!!var_sym))
-  #
-  #   } else if (estrategia_valoresPerdidos == "A") {
-  #     # Agrupar faltantes bajo la categoría "NS/NC"
-  #     datos[[var_categorica]] <- if_else(is.na(datos[[var_categorica]]),"NS/NC", datos[[var_categorica]])
-  #     # if( !is.null(vars_grupo) ){
-  #     #   datos[[vars_grupo]]     <- if_else(is.na(datos[[vars_grupo]]),"NS/NC", datos[[vars_grupo]])
-  #     # }
-  #   }
-  # }
 
     # Calcular recuentos: SI NO HAY PONDERACION
   if (is.null(var_peso)) {
@@ -217,14 +186,15 @@ generar_descriptivo_categorico <- function(
 
     # pero necesitamos la N efectiva para la desv.est y los intervalos
     n_efectiva <- datos %>% summarise('N_eff' = calcular_Nefectiva(!!w_sym) )
-    message("Los intervalos de confianza de las proporciones se calculan mediante la N efectiva")
+    # message("Los intervalos de confianza de las proporciones se calculan mediante la N efectiva")
     # si esta agrupado o no, ajustamos el join
+
     salida <- if( !is.grouped_df(datos) ){
 
       salida <- bind_cols( salida, n_efectiva )
 
     } else { # SI ES AGRUPADO EJECUTAMOS UN JOIN
-      salida <- left_join( salida, n_efectiva )
+      salida <- left_join( salida, n_efectiva, by = vars_grupo )
 
     }
     # calculamos la sd
@@ -233,7 +203,10 @@ generar_descriptivo_categorico <- function(
     # añadimos la N sin ponderacion
     salida <- salida %>%
       left_join(
-        datos %>% count(!!var_sym, name = 'n_sinW') %>% mutate('p_sinW'=n_sinW/sum(n_sinW))
+        datos %>%
+          count(!!var_sym, name = 'n_sinW') %>%
+          mutate('p_sinW'=n_sinW/sum(n_sinW)),
+        by = c(vars_grupo, var_categorica)
       )
   }
 

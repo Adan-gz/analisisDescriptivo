@@ -180,14 +180,14 @@ generar_descriptivo_numerico <- function(
           select(1, 'Media_Min'=lower.CL, 'Media_Max'=upper.CL)
 
         salida <- IC_media_grupos %>%
-          full_join(salida) %>%
+          full_join(salida, by = vars_grupo) %>%
           relocate(Media_Min, Media_Max, .after = Media)
 
         # Añadir diferencia de medias
         dif_medias <- obtener_diferencia_medias( model_lm, var_grupo =  vars_grupo )
 
         salida <- salida %>%
-          left_join(dif_medias) %>%
+          left_join(dif_medias, by = vars_grupo) %>%
           relocate( Dif_categoriaReferencia, p_value, .after= Media )
 
       }
@@ -208,26 +208,28 @@ generar_descriptivo_numerico <- function(
           select(1, 'Media_w' = emmean, 'Media_w_Min'=lower.CL, 'Media_w_Max'=upper.CL)
 
         salida <- IC_media_grupos %>%
-          full_join(salida) %>%
+          full_join(salida, by = vars_grupo) %>%
           relocate(Media_w, Media_w_Min, Media_w_Max, .after = Media)
 
         dif_medias <- obtener_diferencia_medias( model_lm, var_grupo =  vars_grupo )
 
         salida <- salida %>%
-          left_join(dif_medias) %>%
+          left_join(dif_medias, by = vars_grupo) %>%
           relocate( Dif_categoriaReferencia, p_value, .after= Media_w )
       }
 
-      # añado la desviacion estandar ponderada
+      # añado la desviacion estandar ponderada y la mediana ponderada
       salida <- salida %>%
         left_join(
           datos %>%
             dplyr::summarise(
+              'Mediana.w' = weights::wtd.median(!!var_sym, weight = pesos_mod , na.rm = T),
               'sd.w' = desviacion_estandar_ponderada(!!var_sym, pesos = pesos_mod )
-            )
+            ),
+          by = vars_grupo
         ) %>%
-        relocate(sd.w, .after = sd)
-
+        relocate(sd.w, .after = sd) %>%
+        relocate(Mediana.w, .after = Mediana)
 
     }
 

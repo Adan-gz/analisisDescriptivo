@@ -34,6 +34,8 @@ desviacion_estandar_ponderada <- function(x, pesos) {
     pesos <- pesos[-indices_na]
   }
 
+  # Basada en la implementación de Hmisc::wtd.var
+
   # Calcular la suma de los pesos
   pesos_sum <- sum(pesos)
 

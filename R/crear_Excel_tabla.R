@@ -12,7 +12,7 @@
 #' @param hay_var_grupo Lógico. Indica si se ha utilizado una variable de agrupación. Si es \code{NULL}, se intenta detectar automáticamente a partir del atributo \code{vars_grupo} de \code{tabla}.
 #'
 #' @param titulo_tabla Carácter. Título de la tabla. Si es \code{NULL}, se asigna el valor "Tabla 1".
-#' @param numero_fila Número. La fila de inicio donde se escribirá la tabla. Por defecto es 4.
+#' @param fila_tabla Número. La fila de inicio donde se escribirá la tabla. Por defecto es 4.
 #' @param titulo_principal Carácter. Título principal que se escribirá en la parte superior de la hoja. Si es \code{NULL}, no se escribe título principal.
 #'
 #' @param fuente Carácter. Nombre de la fuente a utilizar para los textos. Por defecto es "Calibri".
@@ -62,8 +62,9 @@ crear_Excel_tabla <- function(
 
     # titulos y ubicacion
     titulo_tabla = NULL,
-    numero_fila  = NULL,
+    fila_tabla  = NULL,
     titulo_principal = NULL,
+    fila_titulo = NULL,
 
     # formatos
     fuente  = 'Calibri',
@@ -116,33 +117,39 @@ crear_Excel_tabla <- function(
     fontColour = titulo_tabla_colorFuente
   )
 
+  # añadir título principal
   if( !is.null(titulo_principal) ){
 
-    titulo_principal <- 'TÍTULO PRINCIPAL 1'
+    if( is.null(fila_titulo) ) fila_titulo <- 1
+
+    # titulo_principal <- 'TÍTULO PRINCIPAL 1'
     estilo_titulo_principal <- createStyle(
       fontName = fuente,
       fontSize = titulo_principal_tamanyo,
       fontColour = titulo_principal_colorFuente
     )
     # Escribir el título principal en la hoja
-    writeData(workbook, sheet = hoja, x = titulo_principal, startRow = 1, startCol = 1)
-    addStyle(wb = workbook, sheet = hoja, rows = 1, cols = 1, style = estilo_titulo_principal)
+    writeData(workbook, sheet = hoja, x = titulo_principal, startRow = fila_titulo, startCol = 1)
+    addStyle(wb = workbook, sheet = hoja, rows = fila_titulo, cols = 1, style = estilo_titulo_principal)
   }
 
-  # Escribir el título de cada tabla
-  if( is.null(titulo_tabla) ) titulo_tabla <- 'Tabla 1'
-  if( is.null(numero_fila) ) numero_fila <- 4
+  # numero de fila para ubicar el titulo de la tabla (n-1) y luego la tabla
+  if( is.null(fila_tabla) ) fila_tabla <- 4
 
-  writeData(workbook, sheet = hoja, x = titulo_tabla,
-            startRow = numero_fila-1, startCol = 1)
-  addStyle(wb = workbook, sheet = hoja, rows = numero_fila-1,
-           cols = 1, style = estilo_titulo_tabla
-  )
+  # Escribir el título de cada tabla (solo si lo tiene)
+  if( !is.null(titulo_tabla) ){
+    # titulo_tabla <- 'Tabla 1'
+    writeData(workbook, sheet = hoja, x = titulo_tabla,
+              startRow = fila_tabla-1, startCol = 1)
+    addStyle(wb = workbook, sheet = hoja, rows = fila_tabla-1,
+             cols = 1, style = estilo_titulo_tabla
+    )
+  }
 
   # Escribir la tabla
   writeDataTable(
     workbook, sheet = hoja, x = tabla,
-    startRow = numero_fila,
+    startRow = fila_tabla,
     startCol = 2, tableStyle = estilo_tabla, withFilter = tabla_conFiltro
   )
 

@@ -54,7 +54,7 @@
 crear_Excel_hoja_Tablas <- function(
     tablas,
     titulo_principal = NULL,#"DESCRIPTIVOS UNIVARIADOS",
-    fila_titulo_principal = 1,
+    filas_titulo_principal = 1,
     titulos_tablas = NULL,
     nombre_hoja = NULL,
     hoja = 1,
@@ -118,8 +118,8 @@ crear_Excel_hoja_Tablas <- function(
     fontSize = titulo_principal_tamanyo,
     fontColour = titulo_principal_colorFuente
   )
-  writeData(workbook, sheet = hoja, x = titulo_principal, startRow = fila_titulo_principal, startCol = 1)
-  addStyle(wb = workbook, sheet = hoja, rows = fila_titulo_principal, cols = 1, style = estilo_titulo_principal)
+  writeData(workbook, sheet = hoja, x = titulo_principal, startRow = filas_titulo_principal, startCol = 1)
+  addStyle(wb = workbook, sheet = hoja, rows = filas_titulo_principal, cols = 1, style = estilo_titulo_principal)
 
   ## GENERAMOS LAS HOJA
   estilo_titulo_tabla <- createStyle(
@@ -141,7 +141,7 @@ crear_Excel_hoja_Tablas <- function(
 
       # titulos y ubicacion
       titulo_tabla = titulos_tablas,
-      numero_fila  = tablas_posicion$primeraFila[i],
+      fila_tabla  = tablas_posicion$primeraFila[i],
 
       # formatos
       fuente  = 'Calibri',

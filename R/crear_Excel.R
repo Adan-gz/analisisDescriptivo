@@ -185,7 +185,7 @@ crear_Excel <- function(
       workbook         = workbook_salida,
 
       filas_tablas_asignadas = filas_tablas_asignadas.i,
-      fila_titulo_principal  = fila_titulo_principal.i,
+      filas_titulo_principal  = fila_titulo_principal.i,
 
       tablas      = tablas[[i]],
       titulo_principal = titulos_principales[i],#"DESCRIPTIVOS UNIVARIADOS",
